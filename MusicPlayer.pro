@@ -24,17 +24,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES += \
-        main.cpp \
-        mainwindow.cpp
+INCLUDEPATH += $$PWD absFiles
+include(absFiles/absfiles.pri)
 
-HEADERS += \
-        mainwindow.h
+INCLUDEPATH += $$PWD mainWindow
+include(mainWindow/mainwindow.pri)
 
-FORMS += \
-        mainwindow.ui
+INCLUDEPATH += $$PWD playlistWidget
+include(playlistWidget/playlistwidget.pri)
+
+INCLUDEPATH += $$PWD playstateWidget
+include(playstateWidget/playstatewidget.pri)
+
+INCLUDEPATH += $$PWD scrollContentWidget
+include(scrollContentWidget/scrollcontentwidget.pri)
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
