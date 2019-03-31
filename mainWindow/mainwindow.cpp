@@ -10,13 +10,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    musicListWidget = new PlayListWidget(this);
+    playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
 
     ui->scrollArea->setWidget(localMusicWidget);
     localMusicWidget->show();
-    musicListWidget->hide();
+    playlistWidget->hide();
     playStateWidget->hide();
 
     defaultMusicPool.load();
@@ -29,16 +29,25 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     defaultMusicPool.save();
-    delete musicListWidget;
+    delete playlistWidget;
     delete localMusicWidget;
     delete playStateWidget;
     delete ui;
 }
 
+void MainWindow::connectSlots()
+{
+    connect(localMusicWidget,SIGNAL(localWidgetAddMusic(Music*)),this,SLOT(addMusicToPool(Music*)));
+    connect(localMusicWidget,SIGNAL(localWidgetLoadList(QList<int>)),this,SLOT(initLocalWidget(QList<int>)));
+    connect(this,SIGNAL(sliderPlayPositionChanged(int)),playlistWidget,SLOT(onSliderPlayPositonChanged(int)));
+    connect(playlistWidget,SIGNAL(positionChanged(int,QString)),this,SLOT(onPositionChanged(int,QString)));
+    connect(playlistWidget,SIGNAL(maxPositionChanged(QString)),this,SLOT(onMaxPositionChanged(QString)));
+    connect(localMusicWidget,SIGNAL(playLocalMusiclist(int,QList<Music*>)),this,SLOT(onChangelistRequested(int,QList<Music*>)));
+}
 
 void MainWindow::on_btnOpenPlaylist_clicked()
 {
-    if(musicListWidget->isHidden()){
+    if(playlistWidget->isHidden()){
         QSize size = this->size();
         int width = size.width();
         int height = size.height();
@@ -47,11 +56,11 @@ void MainWindow::on_btnOpenPlaylist_clicked()
         int playlistWidth = 300;
         int posx = width-playlistWidth;
         int posy = height-playlistHeight-marginx2-25;
-        musicListWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
-        musicListWidget->show();
-        musicListWidget->setFocus();
+        playlistWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
+        playlistWidget->show();
+        playlistWidget->setFocus();
     }
-    else musicListWidget->hide();
+    else playlistWidget->hide();
 }
 
 void MainWindow::allocateNewID(Music *music){
@@ -68,13 +77,13 @@ void MainWindow::on_btnPlay_clicked()
 {
     int posy = this->size().height()-16-25-100;
     playStateWidget->setGeometry(0,posy,200,100);
-//    if(player->isPlaying()){
-//        player->pause();
-//        playStateWidget->hide();
-//    }else {
-//        player->play();
-//        playStateWidget->show();
-//    }
+    if(playlistWidget->isPlaying()){
+        playlistWidget->pause();
+        playStateWidget->hide();
+    }else {
+        playlistWidget->play();
+        playStateWidget->show();
+    }
 }
 
 void MainWindow::addMusicToPool(Music *music)
@@ -107,15 +116,12 @@ void MainWindow::onMaxPositionChanged(QString duraText)
     refreshLabelPlayState();
 }
 
-
-
-void MainWindow::connectSlots()
+void MainWindow::onChangelistRequested(int index, QList<Music *> list)
 {
-    connect(localMusicWidget,SIGNAL(localWidgetAddMusic(Music*)),this,SLOT(addMusicToPool(Music*)));
-    connect(localMusicWidget,SIGNAL(localWidgetLoadList(QList<int>)),this,SLOT(initLocalWidget(QList<int>)));
-//    connect(this,SIGNAL(sliderPlayPositionChanged(int)),player,SLOT(onSliderPlayPositonChanged(int)));
-//    connect(player,SIGNAL(positionChanged(int,QString)),this,SLOT(onPositionChanged(int,QString)));
-//    connect(player,SIGNAL(maxPositionChanged(QString)),this,SLOT(onMaxPositionChanged(QString)));
+    qDebug()<<"index:"<<index<<"list:"<<list;
+    playlistWidget->setPlaylist(list);
+    playlistWidget->setCurMedia(index);
+    playlistWidget->play();
 }
 
 void MainWindow::on_sliderPlay_sliderReleased()

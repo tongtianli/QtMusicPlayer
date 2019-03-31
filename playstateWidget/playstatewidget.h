@@ -1,7 +1,7 @@
 #ifndef PLAYSTATEWIDGET_H
 #define PLAYSTATEWIDGET_H
 
-#include <QWidget>
+#include "music.h"
 
 namespace Ui {
 class PlayStateWidget;
@@ -17,6 +17,8 @@ public:
 
 private:
     Ui::PlayStateWidget *ui;
+    QMediaPlayer *player;
+    QMediaPlaylist playlist;
 };
 
 #endif // PLAYSTATEWIDGET_H

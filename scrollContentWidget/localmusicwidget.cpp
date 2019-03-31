@@ -88,3 +88,8 @@ void LocalMusicWidget::save()
 }
 
 
+
+void LocalMusicWidget::on_tableWidget_itemDoubleClicked(QTableWidgetItem *item)
+{
+    emit playLocalMusiclist(item->row(),list);
+}

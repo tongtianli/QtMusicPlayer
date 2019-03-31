@@ -29,12 +29,12 @@ private slots:
     void initLocalWidget(QList<int> idlist);
     void onPositionChanged(int pos,QString posiText);
     void onMaxPositionChanged(QString duraText);
-
+    void onChangelistRequested(int index,QList<Music*> list);
     void on_sliderPlay_sliderReleased();
 
 private:
     Ui::MainWindow *ui;
-    PlayListWidget *musicListWidget;
+    PlayListWidget *playlistWidget;
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
     MusicPool defaultMusicPool;

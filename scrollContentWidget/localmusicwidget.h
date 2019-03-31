@@ -30,19 +30,18 @@ public:
 signals:
     void localWidgetAddMusic(Music *music);
     void localWidgetLoadList(QList<int> idlist);
+    void playLocalMusiclist(int index,QList<Music*> playlist);
 
 private slots:
     void on_btnAddMedia_clicked();
 
 
+    void on_tableWidget_itemDoubleClicked(QTableWidgetItem *item);
+
 private:
     Ui::LocalMusicWidget *ui;
     void addMusicToTable(Music *music);
-
     QList<Music*> list;
-
-
-
 
 };
 
