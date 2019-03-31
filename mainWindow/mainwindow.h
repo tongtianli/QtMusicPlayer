@@ -6,7 +6,6 @@
 #include "playstatewidget.h"
 #include "localmusicwidget.h"
 #include "music.h"
-#include "player.h"
 
 namespace Ui {
 class MainWindow;
@@ -39,7 +38,6 @@ private:
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
     MusicPool defaultMusicPool;
-    Player *player;
     void connectSlots();
     void allocateNewID(Music *music);
     void refreshLabelPlayState();
