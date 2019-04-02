@@ -18,6 +18,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void initSliderVolume(int volume);
 
 signals:
     void sliderPlayPositionChanged(int pos);
@@ -25,6 +26,7 @@ signals:
 public slots:
     void onPlayerPositionChanged(qint64 position);
     void onPlayerDurationChanged(qint64 duration);
+    void onPlayerStateChanged(QMediaPlayer::State);
 
 private slots:
     void on_btnOpenPlaylist_clicked();

@@ -58,6 +58,18 @@ void MainWindow::onPlayerDurationChanged(qint64 duration)
     ui->labelPlayState->setText(posiText+"/"+duraText);
 }
 
+void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
+{
+    if(state == QMediaPlayer::State::PlayingState){
+        int posy = this->size().height()-16-25-100;
+        playStateWidget->setGeometry(0,posy,200,100);
+        playStateWidget->show();
+    }
+    else {
+        playStateWidget->hide();
+    }
+}
+
 void MainWindow::connectSlots()
 {
     connect(localMusicWidget,SIGNAL(localWidgetAddMusic(Music*)),this,SLOT(addMusicToPool(Music*)));
@@ -66,6 +78,8 @@ void MainWindow::connectSlots()
     connect(playlistWidget,SIGNAL(positionChanged(int,QString)),this,SLOT(onPositionChanged(int,QString)));
     connect(playlistWidget,SIGNAL(maxPositionChanged(QString)),this,SLOT(onMaxPositionChanged(QString)));
     connect(localMusicWidget,SIGNAL(playLocalMusiclist(int,QList<Music*>)),this,SLOT(onChangelistRequested(int,QList<Music*>)));
+    connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(onSliderVolumePositionChanged(int)));
+
 }
 
 void MainWindow::on_btnOpenPlaylist_clicked()
@@ -92,14 +106,10 @@ void MainWindow::allocateNewID(Music *music){
 
 void MainWindow::on_btnPlay_clicked()
 {
-    int posy = this->size().height()-16-25-100;
-    playStateWidget->setGeometry(0,posy,200,100);
     if(playlistWidget->isPlaying()){
         playlistWidget->pause();
-        playStateWidget->hide();
     }else {
         playlistWidget->play();
-        playStateWidget->show();
     }
 }
 
@@ -123,6 +133,7 @@ void MainWindow::initLocalWidget(QList<int> idlist)
 void MainWindow::onChangelistRequested(int index, QList<Music *> list)
 {
     qDebug()<<"index:"<<index<<"list:"<<list;
+    ui->btnOpenPlaylist->setText(QString::number(list.size()));
     playlistWidget->setPlaylist(list);
     playlistWidget->setCurMedia(index);
     playlistWidget->play();

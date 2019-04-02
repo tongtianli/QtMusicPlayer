@@ -30,6 +30,7 @@ signals:
 
 public slots:
     void onSliderPlayPositonChanged(int pos);
+    void onSliderVolumePositionChanged(int volume);
 
 private:
     Ui::PlayListWidget *ui;

@@ -348,6 +348,9 @@
       </item>
       <item>
        <widget class="QSlider" name="sliderVolumn">
+        <property name="sliderPosition">
+         <number>99</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -368,7 +371,7 @@
          </size>
         </property>
         <property name="text">
-         <string>100</string>
+         <string>0</string>
         </property>
        </widget>
       </item>

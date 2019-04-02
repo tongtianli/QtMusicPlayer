@@ -11,6 +11,8 @@ PlayListWidget::PlayListWidget(QWidget *parent) :
     player->setPlaylist(&playlist);
     connect(player,SIGNAL(positionChanged(qint64)),parent,SLOT(onPlayerPositionChanged(qint64)));
     connect(player,SIGNAL(durationChanged(qint64)),parent,SLOT(onPlayerDurationChanged(qint64)));
+    connect(player,SIGNAL(stateChanged(QMediaPlayer::State)),parent,SLOT(onPlayerStateChanged(QMediaPlayer::State)));
+    connect(player,SIGNAL(volumeChanged(int)),parent,SLOT(onPlayerVolumnChanged(int)));
 }
 
 PlayListWidget::~PlayListWidget()
@@ -97,6 +99,11 @@ bool PlayListWidget::isPlaying()
 void PlayListWidget::onSliderPlayPositonChanged(int pos)
 {
     player->setPosition(pos);
+}
+
+void PlayListWidget::onSliderVolumePositionChanged(int volume)
+{
+    player->setVolume(volume);
 }
 
 
