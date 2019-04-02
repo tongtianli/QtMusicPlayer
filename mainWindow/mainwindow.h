@@ -22,13 +22,15 @@ public:
 signals:
     void sliderPlayPositionChanged(int pos);
 
+public slots:
+    void onPlayerPositionChanged(qint64 position);
+    void onPlayerDurationChanged(qint64 duration);
+
 private slots:
     void on_btnOpenPlaylist_clicked();
     void on_btnPlay_clicked();
     void addMusicToPool(Music* music);
     void initLocalWidget(QList<int> idlist);
-    void onPositionChanged(int pos,QString posiText);
-    void onMaxPositionChanged(QString duraText);
     void onChangelistRequested(int index,QList<Music*> list);
     void on_sliderPlay_sliderReleased();
 
@@ -40,7 +42,7 @@ private:
     MusicPool defaultMusicPool;
     void connectSlots();
     void allocateNewID(Music *music);
-    void refreshLabelPlayState();
+    qint64 duration;
     QString posiText;
     QString duraText;
 };

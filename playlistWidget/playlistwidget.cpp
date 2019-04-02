@@ -9,6 +9,8 @@ PlayListWidget::PlayListWidget(QWidget *parent) :
     player = new QMediaPlayer(this);
     playlist.setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(&playlist);
+    connect(player,SIGNAL(positionChanged(qint64)),parent,SLOT(onPlayerPositionChanged(qint64)));
+    connect(player,SIGNAL(durationChanged(qint64)),parent,SLOT(onPlayerDurationChanged(qint64)));
 }
 
 PlayListWidget::~PlayListWidget()
@@ -31,6 +33,14 @@ void PlayListWidget::setPlaylist(QList<Music *> playlist)
     this->playlist.clear();
     foreach(Music* music,playlist){
         addMedia(music);
+        int row = ui->playlistWidget->rowCount();
+        ui->playlistWidget->insertRow(row);
+        QTableWidgetItem *name = new QTableWidgetItem(music->name);
+        QTableWidgetItem *author = new QTableWidgetItem(music->author);
+        QTableWidgetItem *duration = new QTableWidgetItem(music->duration);
+        ui->playlistWidget->setItem(row,0,name);
+        ui->playlistWidget->setItem(row,1,author);
+        ui->playlistWidget->setItem(row,2,duration);
     }
 }
 
@@ -86,6 +96,7 @@ bool PlayListWidget::isPlaying()
 
 void PlayListWidget::onSliderPlayPositonChanged(int pos)
 {
-    player->setPosition(pos*player->duration()/100);
+    player->setPosition(pos);
 }
+
 

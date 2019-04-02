@@ -35,6 +35,29 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::onPlayerPositionChanged(qint64 position)
+{
+    int pos = int(position);
+    if(ui->sliderPlay->isSliderDown()) return;
+    ui->sliderPlay->setSliderPosition(pos);
+    int secs = pos/1000;
+    int mins = secs/60;
+    secs = secs%60;
+    posiText=QString("%1:%2").arg(mins,2,10,QLatin1Char('0')).arg(secs,2,10,QLatin1Char('0'));
+    ui->labelPlayState->setText(posiText+"/"+duraText);
+}
+
+void MainWindow::onPlayerDurationChanged(qint64 duration)
+{
+    int dur = int(duration);
+    ui->sliderPlay->setMaximum(dur);
+    int secs = dur/1000;
+    int mins = secs/60;
+    secs = secs%60;
+    duraText = QString("%1:%2").arg(mins,2,10,QLatin1Char('0')).arg(secs,2,10,QLatin1Char('0'));
+    ui->labelPlayState->setText(posiText+"/"+duraText);
+}
+
 void MainWindow::connectSlots()
 {
     connect(localMusicWidget,SIGNAL(localWidgetAddMusic(Music*)),this,SLOT(addMusicToPool(Music*)));
@@ -67,12 +90,6 @@ void MainWindow::allocateNewID(Music *music){
     music->ID = defaultMusicPool.size();
 }
 
-void MainWindow::refreshLabelPlayState()
-{
-    ui->labelPlayState->setText(posiText + ":" + duraText);
-}
-
-
 void MainWindow::on_btnPlay_clicked()
 {
     int posy = this->size().height()-16-25-100;
@@ -102,19 +119,6 @@ void MainWindow::initLocalWidget(QList<int> idlist)
     localMusicWidget->refreshTable(list);
 }
 
-void MainWindow::onPositionChanged(int pos, QString posiText)
-{
-    ui->sliderPlay->setValue(pos);
-
-    this->posiText = posiText;
-    refreshLabelPlayState();
-}
-
-void MainWindow::onMaxPositionChanged(QString duraText)
-{
-    this->duraText = duraText;
-    refreshLabelPlayState();
-}
 
 void MainWindow::onChangelistRequested(int index, QList<Music *> list)
 {
@@ -126,6 +130,6 @@ void MainWindow::onChangelistRequested(int index, QList<Music *> list)
 
 void MainWindow::on_sliderPlay_sliderReleased()
 {
-    int pos = ui->sliderPlay->sliderPosition();
-    emit sliderPlayPositionChanged(pos);
+    int position = ui->sliderPlay->sliderPosition();
+    emit sliderPlayPositionChanged(position);
 }
