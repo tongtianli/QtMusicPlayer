@@ -23,6 +23,9 @@ public:
 signals:
     void sliderPlayPositionChanged(int pos);
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 public slots:
     void onPlayerPositionChanged(qint64 position);
     void onPlayerDurationChanged(qint64 duration);
@@ -35,6 +38,9 @@ private slots:
     void initLocalWidget(QList<int> idlist);
     void onChangelistRequested(int index,QList<Music*> list);
     void on_sliderPlay_sliderReleased();
+    void on_btnLast_clicked();
+
+    void on_btnNext_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -47,6 +53,8 @@ private:
     qint64 duration;
     QString posiText;
     QString duraText;
+
+    void resizeSubwidget();
 };
 
 #endif // MAINWINDOW_H

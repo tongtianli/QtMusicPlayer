@@ -35,6 +35,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::resizeSubwidget(){
+    QSize size = this->size();
+    int width = size.width();
+    int height = size.height();
+    int marginx2 = 16;
+    int playlistHeight = 400;
+    int playlistWidth = 300;
+    int posx = width-playlistWidth;
+    int posy = height-playlistHeight-marginx2-25;
+    playlistWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
+
+    int pos = this->size().height()-16-25-100;
+    playStateWidget->setGeometry(0,pos,200,100);
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    resizeSubwidget();
+}
+
 void MainWindow::onPlayerPositionChanged(qint64 position)
 {
     int pos = int(position);
@@ -61,8 +81,7 @@ void MainWindow::onPlayerDurationChanged(qint64 duration)
 void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
 {
     if(state == QMediaPlayer::State::PlayingState){
-        int posy = this->size().height()-16-25-100;
-        playStateWidget->setGeometry(0,posy,200,100);
+        resizeSubwidget();
         playStateWidget->show();
     }
     else {
@@ -79,21 +98,12 @@ void MainWindow::connectSlots()
     connect(playlistWidget,SIGNAL(maxPositionChanged(QString)),this,SLOT(onMaxPositionChanged(QString)));
     connect(localMusicWidget,SIGNAL(playLocalMusiclist(int,QList<Music*>)),this,SLOT(onChangelistRequested(int,QList<Music*>)));
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(onSliderVolumePositionChanged(int)));
-
 }
 
 void MainWindow::on_btnOpenPlaylist_clicked()
 {
     if(playlistWidget->isHidden()){
-        QSize size = this->size();
-        int width = size.width();
-        int height = size.height();
-        int marginx2 = 16;
-        int playlistHeight = 400;
-        int playlistWidth = 300;
-        int posx = width-playlistWidth;
-        int posy = height-playlistHeight-marginx2-25;
-        playlistWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
+        resizeSubwidget();
         playlistWidget->show();
         playlistWidget->setFocus();
     }
@@ -143,4 +153,14 @@ void MainWindow::on_sliderPlay_sliderReleased()
 {
     int position = ui->sliderPlay->sliderPosition();
     emit sliderPlayPositionChanged(position);
+}
+
+void MainWindow::on_btnLast_clicked()
+{
+    playlistWidget->previous();
+}
+
+void MainWindow::on_btnNext_clicked()
+{
+    playlistWidget->next();
 }

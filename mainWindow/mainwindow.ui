@@ -278,7 +278,7 @@
      </widget>
     </item>
     <item row="2" column="0" colspan="2">
-     <layout class="QHBoxLayout" name="mainwinFoot" stretch="0,0,1,0,0,0">
+     <layout class="QHBoxLayout" name="mainwinFoot" stretch="0,0,0,1,0,0,0">
       <property name="spacing">
        <number>12</number>
       </property>
@@ -294,6 +294,25 @@
       <property name="bottomMargin">
        <number>8</number>
       </property>
+      <item>
+       <widget class="QPushButton" name="btnLast">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="btnPlay">
         <property name="minimumSize">

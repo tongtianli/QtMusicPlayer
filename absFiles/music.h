@@ -11,6 +11,7 @@
 #include <QDir>
 #include <QUrl>
 #include <QHash>
+#include <QTime>
 #include <QHashIterator>
 #include <QException>
 #include <QFileDialog>

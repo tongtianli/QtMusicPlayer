@@ -23,7 +23,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="iconSize">
       <size>
@@ -139,7 +139,23 @@
         </layout>
        </item>
        <item row="1" column="0">
-        <widget class="QTableWidget" name="recordlist"/>
+        <widget class="QTableWidget" name="recordlist">
+         <column>
+          <property name="text">
+           <string>音乐标题</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>作者</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>播放时间</string>
+          </property>
+         </column>
+        </widget>
        </item>
       </layout>
      </widget>

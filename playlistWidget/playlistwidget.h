@@ -36,11 +36,16 @@ private:
     Ui::PlayListWidget *ui;
     void refreshMediaInfo();
     void refreshRandomlist();
-
-    QMediaPlaylist playlist;
+    QMediaPlaylist *playlist;
     QMediaPlayer *player = new QMediaPlayer(this);
     QMediaContent curMedia;
-private slots:
+    void clearTable();
 
+    QList<Music*> musicList;
+    int maxRecordNum = 100;
+
+private slots:
+    void onCurPlaylistIndexChanged(int index);
+    void on_btnCleanList_clicked();
 };
 #endif // PLAYLISTWIDGET_H
