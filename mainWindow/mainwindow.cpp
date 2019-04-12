@@ -3,12 +3,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDesktopServices>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
 
     playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
@@ -23,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSlots();
 
     localMusicWidget->load();
+
+    suggestBox = new SuggestBox(ui->searchBox);
 
 }
 
@@ -163,4 +166,17 @@ void MainWindow::on_btnLast_clicked()
 void MainWindow::on_btnNext_clicked()
 {
     playlistWidget->next();
+}
+
+void MainWindow::on_searchBox_editingFinished()
+{
+
+}
+
+
+void MainWindow::on_searchBox_returnPressed()
+{
+    suggestBox->preventSuggest();
+    QString url = gsearchUrl.arg(ui->searchBox->text());
+    QDesktopServices::openUrl(url);
 }

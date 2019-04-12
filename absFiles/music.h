@@ -24,6 +24,11 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QMetaDataReaderControl>
+#include <QtWidgets>
+#include <QLineEdit>
+#include <QNetworkAccessManager>
+#include <QTimer>
+#include <QTreeWidget>
 
 enum Playmode{loop,single,random};
 

@@ -6,6 +6,7 @@
 #include "playstatewidget.h"
 #include "localmusicwidget.h"
 #include "music.h"
+#include "suggestbox.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,10 @@ private slots:
 
     void on_btnNext_clicked();
 
+    void on_searchBox_editingFinished();
+
+    void on_searchBox_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     PlayListWidget *playlistWidget;
@@ -53,6 +58,7 @@ private:
     qint64 duration;
     QString posiText;
     QString duraText;
+    SuggestBox *suggestBox;
 
     void resizeSubwidget();
 };
