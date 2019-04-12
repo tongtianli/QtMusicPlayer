@@ -120,12 +120,12 @@ void SuggestBox::showResult(const QVector<QString> &choices)
 void SuggestBox::doneCompletion()
 {
     timer.stop();
-//    popup->hide();
+    popup->hide();
     editor->setFocus();
     QTreeWidgetItem *item = popup->currentItem();
     if (item) {
 //        editor->setText(item->text(0));
-        curIndex = popup->currentColumn();
+        curIndex = item->
         qDebug()<<curIndex;
 
     }

@@ -3,7 +3,7 @@
 
 #include "music.h"
 
-const QString gsearchUrl = QStringLiteral("http://google.com/complete/search?output=toolbar&q=%1");
+const QString searchUrl = QStringLiteral("https://api.itooi.cn/music/netease/search?key=579621905&s=%1&type=song&limit=4&offset=0");
 
 class SuggestBox : public QObject
 {
@@ -12,7 +12,7 @@ public:
     explicit SuggestBox(QLineEdit *parent = nullptr);
     ~SuggestBox() override;
     bool eventFilter(QObject *obj, QEvent *ev) override;
-    void showCompletion(const QVector<QString> &choices);
+    void showResult(const QVector<QString> &choices);
 
 public slots:
     void doneCompletion();
@@ -25,6 +25,8 @@ private:
     QTreeWidget *popup = nullptr;
     QTimer timer;
     QNetworkAccessManager networkManager;
+    QJsonArray arrayTemp;
+    int curIndex;
 
 signals:
 

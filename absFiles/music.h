@@ -29,6 +29,7 @@
 #include <QNetworkAccessManager>
 #include <QTimer>
 #include <QTreeWidget>
+#include <QtNetwork>
 
 enum Playmode{loop,single,random};
 

@@ -98,7 +98,6 @@ void MainWindow::connectSlots()
     connect(localMusicWidget,SIGNAL(localWidgetLoadList(QList<int>)),this,SLOT(initLocalWidget(QList<int>)));
     connect(this,SIGNAL(sliderPlayPositionChanged(int)),playlistWidget,SLOT(onSliderPlayPositonChanged(int)));
     connect(playlistWidget,SIGNAL(positionChanged(int,QString)),this,SLOT(onPositionChanged(int,QString)));
-    connect(playlistWidget,SIGNAL(maxPositionChanged(QString)),this,SLOT(onMaxPositionChanged(QString)));
     connect(localMusicWidget,SIGNAL(playLocalMusiclist(int,QList<Music*>)),this,SLOT(onChangelistRequested(int,QList<Music*>)));
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(onSliderVolumePositionChanged(int)));
 }
@@ -176,7 +175,7 @@ void MainWindow::on_searchBox_editingFinished()
 
 void MainWindow::on_searchBox_returnPressed()
 {
-    suggestBox->preventSuggest();
-    QString url = gsearchUrl.arg(ui->searchBox->text());
-    QDesktopServices::openUrl(url);
+//    suggestBox->preventSuggest();
+//    QString url = searchUrl.arg(ui->searchBox->text());
+//    QDesktopServices::openUrl(url);
 }
