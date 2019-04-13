@@ -4,11 +4,7 @@
 #include "music.h"
 #include "filemanager.h"
 
-namespace Ui {
-class MusicTableWidget;
-}
-
-class MusicTableWidget : public QWidget
+class MusicTableWidget : public QTableWidget
 {
     Q_OBJECT
 
@@ -18,7 +14,7 @@ public:
     void initColumnCats(QList<QString> categories);
     void insertMedia(int index, Music *music);
     void setMusiclist(QList<Music*> list);
-    void clear();
+    void clearAll();
     void remove(int index);
     void append(Music *music);
     Music* get(int index);
@@ -36,8 +32,6 @@ protected:
     FileManager* manager;
     QString name;
 
-private:
-    Ui::MusicTableWidget *ui;
 };
 
 #endif // MUSICTABLEWIDGET_H

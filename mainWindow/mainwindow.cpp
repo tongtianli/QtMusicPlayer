@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
+    userMusicWidget = new UserMusicWidget(this);
 
     ui->scrollArea->setWidget(localMusicWidget);
     localMusicWidget->show();
@@ -163,7 +164,7 @@ void MainWindow::on_btnNext_clicked()
     playlistWidget->next();
 }
 
-
-
-
-
+void MainWindow::on_listofMusiclist_itemClicked(QListWidgetItem *item)
+{
+    ui->scrollArea->setWidget(userMusicWidget);
+}

@@ -7,5 +7,4 @@ SOURCES += $$PWD/filemanager.cpp \
     $$PWD/musicpool.cpp \
     $$PWD/musictablewidget.cpp
 
-FORMS += \
-    $$PWD/musictablewidget.ui
+FORMS +=

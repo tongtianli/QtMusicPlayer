@@ -5,6 +5,7 @@
 #include "playlistwidget.h"
 #include "playstatewidget.h"
 #include "localmusicwidget.h"
+#include "usermusicwidget.h"
 #include "music.h"
 #include "suggestbox.h"
 
@@ -45,12 +46,15 @@ private slots:
     void on_btnNext_clicked();
 
 
+    void on_listofMusiclist_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
     SuggestBox *suggestBox;
     PlayListWidget *playlistWidget;
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
+    UserMusicWidget *userMusicWidget;
     MusicPool defaultMusicPool;
     void connectSlots();
     qint64 duration;

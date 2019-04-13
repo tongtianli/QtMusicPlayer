@@ -5,7 +5,7 @@
 class FileManager
 {
 public:
-    FileManager();
+    FileManager(QString filename);
 
     QMediaPlaylist* loadPlaylist(QObject *parent, QTableWidget *musicTable);
     bool savePlaylist(QTableWidget *musicTable, QMediaPlaylist *playlist);

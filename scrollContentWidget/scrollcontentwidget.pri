@@ -1,7 +1,10 @@
-HEADERS += $$PWD/localmusicwidget.h
+HEADERS += $$PWD/localmusicwidget.h \
+    $$PWD/usermusicwidget.h
 
 
-SOURCES += $$PWD/localmusicwidget.cpp
+SOURCES += $$PWD/localmusicwidget.cpp \
+    $$PWD/usermusicwidget.cpp
 
 
-FORMS += $$PWD/localmusicwidget.ui
+FORMS += $$PWD/localmusicwidget.ui \
+    $$PWD/usermusicwidget.ui

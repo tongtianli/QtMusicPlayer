@@ -1,12 +1,9 @@
 #include "musictablewidget.h"
-#include "ui_musictablewidget.h"
 
 MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
-    QWidget(parent),
-    ui(new Ui::MusicTableWidget)
+    QTableWidget(parent)
 {
-    ui->setupUi(this);
-    table = ui->tableWidget;
+    table = this;
     manager = new FileManager(tableName);
     name = tableName;
 }
@@ -15,5 +12,19 @@ MusicTableWidget::~MusicTableWidget()
 {
     delete manager;
     delete this;
-    delete ui;
+}
+
+void MusicTableWidget::initColumnCats(QList<QString> categories)
+{
+    int n = categories.size();
+    QTableWidgetItem *headitem;
+    table->setColumnCount(n);
+    for(int i=0;i<categories.size();i++){
+        headitem = new QTableWidgetItem(categories.at(i));
+        QFont font = headitem->font();
+        font.setBold(true);
+        font.setPointSize(12);
+        headitem->setFont(font);
+        table->setHorizontalHeaderItem(i,headitem);
+    }
 }

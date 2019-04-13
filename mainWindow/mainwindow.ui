@@ -214,6 +214,11 @@
         <string>本地音乐</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>测试</string>
+       </property>
+      </item>
      </widget>
     </item>
     <item row="1" column="1">
