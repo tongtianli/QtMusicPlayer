@@ -35,12 +35,15 @@
 enum Playmode{loop,single,random};
 
 typedef struct Music{
-    QString name;
-    QUrl url;
-    QString duration;
-    QString author;
-    QString size;
     int ID;
+    QString name;
+    QString singer;
+    QString duration;
+    QUrl pic;
+    QUrl lrc;
+    QUrl url;
+    bool local;
+    QString size;
 }Music;
 
 

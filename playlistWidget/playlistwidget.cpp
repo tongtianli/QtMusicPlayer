@@ -144,7 +144,7 @@ void PlayListWidget::insertToPlaylistWidget(int index, Music *music)
     ui->playlistWidget->insertRow(index);
     qDebug()<<"new row success, index at"<<index;
     QTableWidgetItem *name = new QTableWidgetItem(music->name);
-    QTableWidgetItem *author = new QTableWidgetItem(music->author);
+    QTableWidgetItem *author = new QTableWidgetItem(music->singer);
     QTableWidgetItem *duration = new QTableWidgetItem(music->duration);
     ui->playlistWidget->setItem(index,0,name);
     ui->playlistWidget->setItem(index,1,author);
@@ -158,14 +158,14 @@ void PlayListWidget::onCurPlaylistIndexChanged(int index)
     ui->recordlist->insertRow(0);
     Music *music = musicList.at(index);
     QTableWidgetItem *name = new QTableWidgetItem(music->name);
-    QTableWidgetItem *author = new QTableWidgetItem(music->author);
+    QTableWidgetItem *author = new QTableWidgetItem(music->singer);
     QTableWidgetItem *playTime = new QTableWidgetItem(QTime::currentTime().toString());
     qDebug()<<name->text()<<author->text()<<playTime->text();
     ui->recordlist->setItem(0,0,name);
     ui->recordlist->setItem(0,1,author);
     ui->recordlist->setItem(0,2,playTime);
     for(int i=1;i<ui->recordlist->rowCount();i++){
-        if(ui->recordlist->item(i,0)->text()==music->name&&ui->recordlist->item(i,1)->text()==music->author)
+        if(ui->recordlist->item(i,0)->text()==music->name&&ui->recordlist->item(i,1)->text()==music->singer)
         {
             ui->recordlist->removeRow(i);
             break;

@@ -55,7 +55,7 @@ void LocalMusicWidget::on_btnAddMedia_clicked()
         music->name = info.baseName();
         music->ID = 0;
         music->duration = "未知";
-        music->author = "未知";
+        music->singer = "未知";
         music->size = QString::number(info.size()/1000000)+"MB";
         addMusicToTable(music);
         this->list.append(music);

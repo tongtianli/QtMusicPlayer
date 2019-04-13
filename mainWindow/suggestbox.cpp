@@ -40,23 +40,23 @@ void SuggestBox::showResult(const QVector<QString> &choices)
     if (choices.isEmpty())
         return;
 
-    const QPalette &pal = editor->palette();
-    QColor color = pal.color(QPalette::Disabled, QPalette::WindowText);
+//    const QPalette &pal = editor->palette();
+//    QColor color = pal.color(QPalette::Disabled, QPalette::WindowText);
 
-    suggestList->setUpdatesEnabled(false);
+//    suggestList->setUpdatesEnabled(false);
     suggestList->clear();
 
     for (const auto &choice : choices) {
         auto item  = new QListWidgetItem();
         item->setText(choice);
-        item->setTextColor(color);
+//        item->setTextColor(color);
         ui->suggestList->addItem(item);
     }
 
     suggestList->setCurrentRow(0);
-    suggestList->setUpdatesEnabled(true);
+//    suggestList->setUpdatesEnabled(true);
 
-    suggestList->move(editor->mapToGlobal(QPoint(0, editor->height())));
+//    suggestList->move(editor->mapToGlobal(QPoint(0, editor->height())));
     suggestList->setFocus();
     this->show();
 }
@@ -86,9 +86,12 @@ void SuggestBox::doneSelection()
         music->ID = id;
         music->url = url;
         music->name = name;
-        music->author = singer;
+        music->singer = singer;
         music->duration = QString("%1:%2").
                 arg(min,2,10,QLatin1Char('0')).arg(sec,2,10,QLatin1Char('0'));
+        music->lrc = lrc;
+        music->pic = pic;
+        music->local = false;
         emit selectSearchedSong(music);
     }
 }

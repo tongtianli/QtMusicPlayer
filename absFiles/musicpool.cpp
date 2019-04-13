@@ -66,8 +66,8 @@ void MusicPool::save()
         writer.writeTextElement("mediaID",QString::number(music->ID));
         if(notEmpty(music->name))
             writer.writeTextElement("name",music->name);
-        if(notEmpty(music->author))
-            writer.writeTextElement("author",music->author);
+        if(notEmpty(music->singer))
+            writer.writeTextElement("author",music->singer);
         if(notEmpty(music->size))
             writer.writeTextElement("size",music->size);
         if(notEmpty(music->duration))
