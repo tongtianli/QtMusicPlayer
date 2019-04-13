@@ -10,28 +10,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    suggestBox = new SuggestBox(this,ui->searchBox);
     playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
 
     ui->scrollArea->setWidget(localMusicWidget);
     localMusicWidget->show();
-    playlistWidget->hide();
-    playStateWidget->hide();
-
     defaultMusicPool.load();
-    connectSlots();
-
     localMusicWidget->load();
 
-    suggestBox = new SuggestBox(ui->searchBox);
+    connectSlots();
 
 }
 
 MainWindow::~MainWindow()
 {
     defaultMusicPool.save();
+    delete suggestBox;
     delete playlistWidget;
     delete localMusicWidget;
     delete playStateWidget;
@@ -92,14 +88,17 @@ void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
     }
 }
 
+
+
 void MainWindow::connectSlots()
 {
     connect(localMusicWidget,SIGNAL(localWidgetAddMusic(Music*)),this,SLOT(addMusicToPool(Music*)));
     connect(localMusicWidget,SIGNAL(localWidgetLoadList(QList<int>)),this,SLOT(initLocalWidget(QList<int>)));
     connect(this,SIGNAL(sliderPlayPositionChanged(int)),playlistWidget,SLOT(onSliderPlayPositonChanged(int)));
-    connect(playlistWidget,SIGNAL(positionChanged(int,QString)),this,SLOT(onPositionChanged(int,QString)));
     connect(localMusicWidget,SIGNAL(playLocalMusiclist(int,QList<Music*>)),this,SLOT(onChangelistRequested(int,QList<Music*>)));
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(onSliderVolumePositionChanged(int)));
+    connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
+
 }
 
 void MainWindow::on_btnOpenPlaylist_clicked()
@@ -112,9 +111,6 @@ void MainWindow::on_btnOpenPlaylist_clicked()
     else playlistWidget->hide();
 }
 
-void MainWindow::allocateNewID(Music *music){
-    music->ID = defaultMusicPool.size();
-}
 
 void MainWindow::on_btnPlay_clicked()
 {
@@ -127,9 +123,9 @@ void MainWindow::on_btnPlay_clicked()
 
 void MainWindow::addMusicToPool(Music *music)
 {
-    if(music->ID==MUSIC::NOT_ALLOCATE) allocateNewID(music);
     defaultMusicPool.addMusic(music);
 }
+
 
 void MainWindow::initLocalWidget(QList<int> idlist)
 {
@@ -167,15 +163,7 @@ void MainWindow::on_btnNext_clicked()
     playlistWidget->next();
 }
 
-void MainWindow::on_searchBox_editingFinished()
-{
-
-}
 
 
-void MainWindow::on_searchBox_returnPressed()
-{
-//    suggestBox->preventSuggest();
-//    QString url = searchUrl.arg(ui->searchBox->text());
-//    QDesktopServices::openUrl(url);
-}
+
+

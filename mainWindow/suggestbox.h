@@ -5,32 +5,39 @@
 
 const QString searchUrl = QStringLiteral("https://api.itooi.cn/music/netease/search?key=579621905&s=%1&type=song&limit=4&offset=0");
 
-class SuggestBox : public QObject
+namespace Ui{
+class SuggestBox;
+}
+
+class SuggestBox : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SuggestBox(QLineEdit *parent = nullptr);
+    explicit SuggestBox(QWidget *parent = nullptr, QLineEdit *lineEdit = nullptr);
     ~SuggestBox() override;
-    bool eventFilter(QObject *obj, QEvent *ev) override;
     void showResult(const QVector<QString> &choices);
 
 public slots:
-    void doneCompletion();
+    void doneSelection();
     void preventSuggest();
     void autoSuggest();
     void handleNetworkData(QNetworkReply *networkReply);
 
 private:
+    Ui::SuggestBox *ui;
     QLineEdit *editor = nullptr;
-    QTreeWidget *popup = nullptr;
+    QListWidget *suggestList = nullptr;
     QTimer timer;
     QNetworkAccessManager networkManager;
     QJsonArray arrayTemp;
-    int curIndex;
+    int x;
+    int y;
+
+    void connectSlots();
 
 signals:
+    void selectSearchedSong(Music *music);
 
-public slots:
 };
 
 #endif // SUGGESTBOX_H

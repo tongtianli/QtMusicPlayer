@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
     void initSliderVolume(int volume);
 
 signals:
@@ -33,34 +33,32 @@ public slots:
     void onPlayerStateChanged(QMediaPlayer::State);
 
 private slots:
-    void on_btnOpenPlaylist_clicked();
-    void on_btnPlay_clicked();
     void addMusicToPool(Music* music);
     void initLocalWidget(QList<int> idlist);
+    void resizeSubwidget();
+
+    void on_btnOpenPlaylist_clicked();
+    void on_btnPlay_clicked();
     void onChangelistRequested(int index,QList<Music*> list);
     void on_sliderPlay_sliderReleased();
     void on_btnLast_clicked();
-
     void on_btnNext_clicked();
 
-    void on_searchBox_editingFinished();
-
-    void on_searchBox_returnPressed();
 
 private:
     Ui::MainWindow *ui;
+    SuggestBox *suggestBox;
     PlayListWidget *playlistWidget;
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
     MusicPool defaultMusicPool;
     void connectSlots();
-    void allocateNewID(Music *music);
     qint64 duration;
     QString posiText;
     QString duraText;
-    SuggestBox *suggestBox;
 
-    void resizeSubwidget();
+
+
 };
 
 #endif // MAINWINDOW_H

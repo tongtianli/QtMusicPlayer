@@ -53,7 +53,7 @@ void LocalMusicWidget::on_btnAddMedia_clicked()
         QFileInfo info(name);
         music->url = QUrl::fromLocalFile(name);
         music->name = info.baseName();
-        music->ID = MUSIC::NOT_ALLOCATE;
+        music->ID = 0;
         music->duration = "未知";
         music->author = "未知";
         music->size = QString::number(info.size()/1000000)+"MB";

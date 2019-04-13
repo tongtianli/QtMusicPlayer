@@ -30,12 +30,9 @@
 #include <QTimer>
 #include <QTreeWidget>
 #include <QtNetwork>
+#include <qnetworkreply.h>
 
 enum Playmode{loop,single,random};
-
-namespace MUSIC {
-static int NOT_ALLOCATE = 0;
-}
 
 typedef struct Music{
     QString name;

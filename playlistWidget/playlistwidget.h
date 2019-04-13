@@ -28,21 +28,24 @@ signals:
     void maxPositionChanged(QString duration);
     void positionChanged(int pos,QString position);
 
+
 public slots:
     void onSliderPlayPositonChanged(int pos);
     void onSliderVolumePositionChanged(int volume);
+    void addMusicAndPlay(Music* music);
 
 private:
+    QWidget* parent;
     Ui::PlayListWidget *ui;
     void refreshMediaInfo();
     void refreshRandomlist();
+    void connectSlots();
     QMediaPlaylist *playlist;
     QMediaPlayer *player = new QMediaPlayer(this);
-    QMediaContent curMedia;
-    void clearTable();
-
+    void insertToPlaylistWidget(int index, Music *music);
     QList<Music*> musicList;
     int maxRecordNum = 100;
+    void clearTable(int listIndex);
 
 private slots:
     void onCurPlaylistIndexChanged(int index);

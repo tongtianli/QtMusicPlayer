@@ -6,15 +6,13 @@ PlayListWidget::PlayListWidget(QWidget *parent) :
     ui(new Ui::PlayListWidget)
 {
     ui->setupUi(this);
+    this->parent = parent;
     player = new QMediaPlayer(this);
     playlist = new QMediaPlaylist(this);
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(playlist);
-    connect(player,SIGNAL(positionChanged(qint64)),parent,SLOT(onPlayerPositionChanged(qint64)));
-    connect(player,SIGNAL(durationChanged(qint64)),parent,SLOT(onPlayerDurationChanged(qint64)));
-    connect(player,SIGNAL(stateChanged(QMediaPlayer::State)),parent,SLOT(onPlayerStateChanged(QMediaPlayer::State)));
-    connect(player,SIGNAL(volumeChanged(int)),parent,SLOT(onPlayerVolumnChanged(int)));
-    connect(playlist,SIGNAL(currentIndexChanged(int)),this,SLOT(onCurPlaylistIndexChanged(int)));
+    connectSlots();
+    this->hide();
 }
 
 PlayListWidget::~PlayListWidget()
@@ -22,6 +20,18 @@ PlayListWidget::~PlayListWidget()
     delete player;
     delete playlist;
     delete ui;
+}
+
+void PlayListWidget::connectSlots()
+{
+    connect(player,SIGNAL(positionChanged(qint64)),
+            parent,SLOT(onPlayerPositionChanged(qint64)));
+    connect(player,SIGNAL(durationChanged(qint64)),
+            parent,SLOT(onPlayerDurationChanged(qint64)));
+    connect(player,SIGNAL(stateChanged(QMediaPlayer::State)),
+            parent,SLOT(onPlayerStateChanged(QMediaPlayer::State)));
+    connect(playlist,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(onCurPlaylistIndexChanged(int)));
 }
 
 
@@ -37,17 +47,11 @@ void PlayListWidget::setPlaylist(QList<Music *> playlist)
 {
     this->playlist->clear();
     musicList.clear();
-    clearTable();
+    clearTable(0);
     foreach(Music* music,playlist){
         addMedia(music);
         int row = ui->playlistWidget->rowCount();
-        ui->playlistWidget->insertRow(row);
-        QTableWidgetItem *name = new QTableWidgetItem(music->name);
-        QTableWidgetItem *author = new QTableWidgetItem(music->author);
-        QTableWidgetItem *duration = new QTableWidgetItem(music->duration);
-        ui->playlistWidget->setItem(row,0,name);
-        ui->playlistWidget->setItem(row,1,author);
-        ui->playlistWidget->setItem(row,2,duration);
+        insertToPlaylistWidget(row,music);
     }
 }
 
@@ -111,10 +115,40 @@ void PlayListWidget::onSliderVolumePositionChanged(int volume)
     player->setVolume(volume);
 }
 
-void PlayListWidget::clearTable(){
-    while(ui->playlistWidget->rowCount()!=0){
-        ui->playlistWidget->removeRow(ui->playlistWidget->rowCount()-1);
-    }
+void PlayListWidget::addMusicAndPlay(Music *music)
+{
+    int index = ui->playlistWidget->currentRow();
+    index = index<0?0:index;
+    musicList.insert(index,music);
+    QMediaContent media(music->url);
+    playlist->insertMedia(index,media);
+    playlist->setCurrentIndex(index);
+    insertToPlaylistWidget(index,music);
+    player->play();
+}
+
+
+
+void PlayListWidget::clearTable(int listIndex){
+    if(listIndex)
+        while(ui->playlistWidget->rowCount()!=0)
+            ui->playlistWidget->removeRow(ui->playlistWidget->rowCount()-1);
+    else
+        while(ui->recordlist->rowCount()!=0)
+            ui->recordlist->removeRow(ui->recordlist->rowCount()-1);
+
+}
+
+void PlayListWidget::insertToPlaylistWidget(int index, Music *music)
+{
+    ui->playlistWidget->insertRow(index);
+    qDebug()<<"new row success, index at"<<index;
+    QTableWidgetItem *name = new QTableWidgetItem(music->name);
+    QTableWidgetItem *author = new QTableWidgetItem(music->author);
+    QTableWidgetItem *duration = new QTableWidgetItem(music->duration);
+    ui->playlistWidget->setItem(index,0,name);
+    ui->playlistWidget->setItem(index,1,author);
+    ui->playlistWidget->setItem(index,2,duration);
 }
 
 void PlayListWidget::onCurPlaylistIndexChanged(int index)
@@ -146,5 +180,6 @@ void PlayListWidget::on_btnCleanList_clicked()
     //        ui->playlistWidget->removeRow(i);
     //    }
     //上面的写法在多线程时会出现问题
-    clearTable();
+    int whichList = ui->tabWidget->currentIndex();
+    clearTable(whichList);
 }

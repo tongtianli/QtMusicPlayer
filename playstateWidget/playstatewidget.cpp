@@ -6,6 +6,7 @@ PlayStateWidget::PlayStateWidget(QWidget *parent) :
     ui(new Ui::PlayStateWidget)
 {
     ui->setupUi(this);
+    this->hide();
 }
 
 PlayStateWidget::~PlayStateWidget()

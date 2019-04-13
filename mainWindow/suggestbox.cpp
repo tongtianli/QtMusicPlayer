@@ -1,94 +1,40 @@
 #include "suggestbox.h"
+#include "ui_suggestbox.h"
 
-#include <qnetworkreply.h>
-
-SuggestBox::SuggestBox(QLineEdit *parent) : QObject(parent)
+SuggestBox::SuggestBox(QWidget *parent, QLineEdit *lineEdit) :
+    QWidget(parent),
+    ui(new Ui::SuggestBox)
 {
-    editor = parent;
-    popup = new QTreeWidget;
-    popup->setWindowFlags(Qt::Popup);
-    popup->setFocusPolicy(Qt::NoFocus);
-    popup->setFocusProxy(parent);
-    popup->setMouseTracking(true);
-
-    popup->setColumnCount(1);
-    popup->setUniformRowHeights(true);
-    popup->setRootIsDecorated(false);
-    popup->setEditTriggers(QTreeWidget::NoEditTriggers);
-    popup->setSelectionBehavior(QTreeWidget::SelectRows);
-    popup->setFrameStyle(QFrame::Box | QFrame::Plain);
-    popup->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    popup->header()->hide();
-
-    popup->installEventFilter(this);
-
-    connect(popup, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
-            SLOT(doneCompletion()));
-
+    ui->setupUi(this);
+    editor = lineEdit;
+    suggestList = ui->suggestList;
+    x = 200;
+    y = 30;
+    this->setGeometry(x,y,this->width(),this->height());
+    this->setFocusProxy(lineEdit);
+    suggestList->setFrameStyle(QFrame::Box | QFrame::Plain);
     timer.setSingleShot(true);
     timer.setInterval(500);
-    connect(&timer, SIGNAL(timeout()), SLOT(autoSuggest()));
-    connect(editor, SIGNAL(textEdited(QString)), &timer, SLOT(start()));
-
-    connect(&networkManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(handleNetworkData(QNetworkReply*)));
+    connectSlots();
+    this->hide();
 }
 
 SuggestBox::~SuggestBox()
 {
-    delete popup;
+    delete ui;
 }
 
-bool SuggestBox::eventFilter(QObject *obj, QEvent *ev)
+void SuggestBox::connectSlots()
 {
-    if (obj != popup)
-        return false;
-
-    if (ev->type() == QEvent::MouseButtonPress) {
-        popup->hide();
-        editor->setFocus();
-        return true;
-    }
-
-    if (ev->type() == QEvent::KeyPress) {
-        bool consumed = false;
-        int key = static_cast<QKeyEvent*>(ev)->key();
-        switch (key) {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-            doneCompletion();
-            consumed = true;
-            break;
-
-        case Qt::Key_Escape:
-            editor->setFocus();
-            popup->hide();
-            consumed = true;
-            break;
-
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-        case Qt::Key_Home:
-        case Qt::Key_End:
-        case Qt::Key_PageUp:
-        case Qt::Key_PageDown:
-            break;
-
-        default:
-            editor->setFocus();
-            editor->event(ev);
-            popup->hide();
-            break;
-        }
-
-        return consumed;
-    }
-
-    return false;
+    connect(suggestList, SIGNAL(itemClicked(QListWidgetItem*)),
+            SLOT(doneSelection()));
+    connect(&timer, SIGNAL(timeout()), SLOT(autoSuggest()));
+    connect(editor, SIGNAL(textEdited(QString)), &timer, SLOT(start()));
+    connect(&networkManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(handleNetworkData(QNetworkReply*)));
 }
-//! [4]
 
-//! [5]
+
 void SuggestBox::showResult(const QVector<QString> &choices)
 {
     if (choices.isEmpty())
@@ -97,42 +43,56 @@ void SuggestBox::showResult(const QVector<QString> &choices)
     const QPalette &pal = editor->palette();
     QColor color = pal.color(QPalette::Disabled, QPalette::WindowText);
 
-    popup->setUpdatesEnabled(false);
-    popup->clear();
+    suggestList->setUpdatesEnabled(false);
+    suggestList->clear();
 
     for (const auto &choice : choices) {
-        auto item  = new QTreeWidgetItem(popup);
-        item->setText(0, choice);
-        item->setTextColor(0, color);
+        auto item  = new QListWidgetItem();
+        item->setText(choice);
+        item->setTextColor(color);
+        ui->suggestList->addItem(item);
     }
 
-    popup->setCurrentItem(popup->topLevelItem(0));
-    popup->resizeColumnToContents(0);
-    popup->setUpdatesEnabled(true);
+    suggestList->setCurrentRow(0);
+    suggestList->setUpdatesEnabled(true);
 
-    popup->move(editor->mapToGlobal(QPoint(0, editor->height())));
-    popup->setFocus();
-    popup->show();
+    suggestList->move(editor->mapToGlobal(QPoint(0, editor->height())));
+    suggestList->setFocus();
+    this->show();
 }
-//! [5]
 
-//! [6]
-void SuggestBox::doneCompletion()
+void SuggestBox::doneSelection()
 {
     timer.stop();
-//    popup->hide();
+    suggestList->hide();
     editor->setFocus();
-    QTreeWidgetItem *item = popup->currentItem();
+    QListWidgetItem *item = suggestList->currentItem();
+    int curIndex = suggestList->currentRow();
+    qDebug()<<"item = "<<item;
+    qDebug()<<"curIndex="<<curIndex;
     if (item) {
-//        editor->setText(item->text(0));
-        curIndex = popup->currentColumn();
-        qDebug()<<curIndex;
-
+        editor->setText(item->text());
+        QJsonObject object = arrayTemp.at(curIndex).toObject();
+        QUrl url = QUrl(object["url"].toString());
+        QString name = object["name"].toString();
+        QString singer = object["singer"].toString();
+        int id = object["id"].toInt();
+        QUrl pic = QUrl(object["pic"].toString());
+        QUrl lrc = QUrl(object["lrc"].toString());
+        int durInt = object["time"].toInt();
+        int min = durInt/60;
+        int sec = durInt%60;
+        Music *music = new Music();
+        music->ID = id;
+        music->url = url;
+        music->name = name;
+        music->author = singer;
+        music->duration = QString("%1:%2").
+                arg(min,2,10,QLatin1Char('0')).arg(sec,2,10,QLatin1Char('0'));
+        emit selectSearchedSong(music);
     }
 }
-//! [6]
 
-//! [7]
 void SuggestBox::autoSuggest()
 {
     QString str = editor->text();
@@ -140,16 +100,12 @@ void SuggestBox::autoSuggest()
     qDebug()<<url;
     networkManager.get(QNetworkRequest(url));
 }
-//! [7]
 
-//! [8]
 void SuggestBox::preventSuggest()
 {
     timer.stop();
 }
-//! [8]
 
-//! [9]
 void SuggestBox::handleNetworkData(QNetworkReply *networkReply)
 {
     if (networkReply->error() != QNetworkReply::NoError) {
@@ -177,6 +133,4 @@ void SuggestBox::handleNetworkData(QNetworkReply *networkReply)
     }
     showResult(choices);
     arrayTemp = array;
-    networkReply->deleteLater();
 }
-//! [9]
