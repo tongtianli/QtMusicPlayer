@@ -1,8 +1,8 @@
 #include "filemanager.h"
 
-FileManager::FileManager()
+FileManager::FileManager(QString filename)
 {
-    this->defaultDir = QDir::currentPath() + "/playlist.xml";
+    this->defaultDir = QDir::currentPath() +"/"+ filename +"/xml";
 }
 
 QMediaPlaylist* FileManager::loadPlaylist(QObject *parent, QTableWidget *musicTable)
