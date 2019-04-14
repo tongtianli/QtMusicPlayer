@@ -1,0 +1,17 @@
+#ifndef FILEMANAGER_H
+#define FILEMANAGER_H
+#include "music.h"
+
+class FileManager
+{
+public:
+    FileManager(QString filename);
+
+    QMediaPlaylist* load(QObject *parent, QTableWidget *musicTable);
+    bool save(QList<Music*> music);
+
+private:
+    QString fileDir;
+};
+
+#endif // FILEMANAGER_H
