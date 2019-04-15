@@ -12,7 +12,9 @@ PlayListWidget::PlayListWidget(QWidget *parent) :
     list = ui->playlistWidget;
     recordlist = ui->recordlist;
     list->setName("正在播放");
+    list->setColumnWidth(0,200);
     recordlist->setName("历史记录");
+    recordlist->setColumnWidth(0,200);
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(playlist);
     connectSlots();
@@ -156,12 +158,12 @@ void PlayListWidget::onCurPlaylistIndexChanged(int index)
 
 void PlayListWidget::on_btnCleanList_clicked()
 {
-    if(ui->tabWidget->currentWidget() ==
-            ui->tabWidget->widget(0)){     //当前在播放列表
-        list->clearAll();
-        player->stop();
-        playlist->clear();
-    }else{                                      //当前在历史记录
-        recordlist->clearAll();
-    }
+    list->clearAll();
+    player->stop();
+    playlist->clear();
+}
+
+void PlayListWidget::on_btnCleanRecordlist_clicked()
+{
+    recordlist->clearAll();
 }

@@ -52,5 +52,6 @@ private:
 private slots:
     void onCurPlaylistIndexChanged(int index);
     void on_btnCleanList_clicked();
+    void on_btnCleanRecordlist_clicked();
 };
 #endif // PLAYLISTWIDGET_H

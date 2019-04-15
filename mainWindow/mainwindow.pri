@@ -8,3 +8,6 @@ $$PWD/main.cpp \
 
 FORMS += $$PWD/mainwindow.ui \
     $$PWD/suggestbox.ui
+
+RESOURCES += \
+    $$PWD/mainwindow.qrc

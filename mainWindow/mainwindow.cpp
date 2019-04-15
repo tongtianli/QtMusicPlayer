@@ -17,9 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
     favoriteMusicWidget = new UserMusicWidget(this);
     favoriteMusicWidget->setTableName("我喜爱的音乐");
     ui->scrollArea->setWidget(localMusicWidget);
+    ui->splitter->setStretchFactor(1,1);
     localMusicWidget->show();
     connectSlots();
-
+    ui->sliderPlay->setEnabled(false);
+    ui->labelPlayState->setText("");
 }
 
 MainWindow::~MainWindow()
@@ -79,9 +81,13 @@ void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
     if(state == QMediaPlayer::State::PlayingState){
         resizeSubwidget();
         playStateWidget->show();
+        ui->sliderPlay->setEnabled(true);
     }
     else {
         playStateWidget->hide();
+        if(state == QMediaPlayer::State::StoppedState){
+            ui->sliderPlay->setEnabled(false);
+        }
     }
 }
 
