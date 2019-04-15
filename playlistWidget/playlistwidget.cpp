@@ -92,11 +92,15 @@ void PlayListWidget::pause()
 void PlayListWidget::next()
 {
     playlist->next();
+    int row = list->currentRow()+1;
+    list->setCurrentCell(row,0);
 }
 
 void PlayListWidget::previous()
 {
     playlist->previous();
+    int row = list->currentRow()-1;
+    list->setCurrentCell(row,0);
 }
 
 bool PlayListWidget::isPlaying()
@@ -135,21 +139,14 @@ void PlayListWidget::changeListAndPlay(QList<Music *> musiclist, int index)
 
 void PlayListWidget::onCurPlaylistIndexChanged(int index)
 {
-    while(ui->recordlist->rowCount()>=maxRecordNum)
-        ui->recordlist->removeRow(ui->recordlist->rowCount()-1);
-    ui->recordlist->insertRow(0);
+    while(recordlist->rowCount()>=maxRecordNum)
+        recordlist->remove(maxRecordNum);
     Music *music = list->get(index);
-    QTableWidgetItem *name = new QTableWidgetItem(music->name);
-    QTableWidgetItem *author = new QTableWidgetItem(music->singer);
-    QTableWidgetItem *playTime = new QTableWidgetItem(QTime::currentTime().toString());
-    qDebug()<<name->text()<<author->text()<<playTime->text();
-    ui->recordlist->setItem(0,0,name);
-    ui->recordlist->setItem(0,1,author);
-    ui->recordlist->setItem(0,2,playTime);
+    recordlist->insertMusic(0,music);
     for(int i=1;i<ui->recordlist->rowCount();i++){
-        if(ui->recordlist->item(i,0)->text()==music->name&&ui->recordlist->item(i,1)->text()==music->singer)
+        if(recordlist->get(i)==music)
         {
-            ui->recordlist->removeRow(i);
+            recordlist->remove(i);
             break;
         }
     }
@@ -157,8 +154,8 @@ void PlayListWidget::onCurPlaylistIndexChanged(int index)
 
 void PlayListWidget::on_btnCleanList_clicked()
 {
-    if(ui->tabWidget->currentIndex() ==
-            ui->tabWidget->indexOf(ui->playlistWidget)){     //当前在播放列表
+    if(ui->tabWidget->currentWidget() ==
+            ui->tabWidget->widget(0)){     //当前在播放列表
         list->clearAll();
         player->stop();
         playlist->clear();

@@ -94,7 +94,12 @@ void MainWindow::connectSlots()
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
     connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
     connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
 
+}
+
+void MainWindow::setPlaylistBtnTextbycurSize(int size){
+    ui->btnOpenPlaylist->setText(QString::number(size));
 }
 
 void MainWindow::on_btnOpenPlaylist_clicked()
@@ -145,5 +150,12 @@ void MainWindow::on_btnNext_clicked()
 void MainWindow::on_listofMusiclist_itemClicked(QListWidgetItem *item)
 {
     Q_UNUSED(item);
-    ui->scrollArea->setWidget(userMusicWidget);
+    if(ui->listofMusiclist->currentRow()==0){
+        userMusicWidget = qobject_cast<UserMusicWidget*>(ui->scrollArea->takeWidget());
+        ui->scrollArea->setWidget(localMusicWidget);
+    }
+    else{
+        localMusicWidget = qobject_cast<LocalMusicWidget*>(ui->scrollArea->takeWidget());
+        ui->scrollArea->setWidget(userMusicWidget);
+    }
 }

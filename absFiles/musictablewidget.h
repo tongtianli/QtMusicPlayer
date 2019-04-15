@@ -9,7 +9,6 @@ class MusicTableWidget : public QTableWidget
 
 public:
     explicit MusicTableWidget(QWidget *parent = nullptr, QString tableName = "");
-    virtual ~MusicTableWidget();
     void setName(QString tableName);
     void insertMusic(int index, Music *music);
     void setMusiclist(QList<Music*> list);

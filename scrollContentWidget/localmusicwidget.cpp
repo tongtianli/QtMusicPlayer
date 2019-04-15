@@ -11,6 +11,7 @@ LocalMusicWidget::LocalMusicWidget(QWidget *parent) :
     table->setColumnWidth(1,100);
     table->setColumnWidth(2,100);
     ui->labLocalMediaNotFound->hide();
+    connect(table,&MusicTableWidget::sizeChanged,this,&LocalMusicWidget::setTotalMusicLabel);
 }
 
 LocalMusicWidget::~LocalMusicWidget()
@@ -39,4 +40,9 @@ void LocalMusicWidget::on_btnAddMedia_clicked()
         music->size = QString::number(info.size()/1000000)+"MB";
         table->append(music);
     }
+}
+
+void LocalMusicWidget::setTotalMusicLabel(int size)
+{
+    ui->labTotalLocalMedia->setText(QString("共%1首").arg(size));
 }

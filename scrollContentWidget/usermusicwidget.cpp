@@ -7,12 +7,10 @@ UserMusicWidget::UserMusicWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     this->hide();
-    list = new MusicTableWidget(this,QString("For sleeping"));
 }
 
 UserMusicWidget::~UserMusicWidget()
 {
-    delete list;
     delete ui;
 }
 

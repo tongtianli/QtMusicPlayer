@@ -6,12 +6,10 @@ MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
     name = tableName;
     preventChangeSignal = false;
     connect(this,&QTableWidget::itemDoubleClicked,this,&MusicTableWidget::onTableItemClicked);
+    setColumnWidth(0,200);
+    setEditTriggers(EditTrigger::NoEditTriggers);
 }
 
-MusicTableWidget::~MusicTableWidget()
-{
-    delete this;
-}
 
 void MusicTableWidget::setName(QString tableName)
 {
@@ -41,7 +39,7 @@ void MusicTableWidget::insertMusic(int index, Music *music)
             continue;
         }
         if(headerText == "播放时间"){
-            this->setItem(index,i,new QTableWidgetItem(music->size));
+            this->setItem(index,i,new QTableWidgetItem(QTime::currentTime().toString()));
             continue;
         }
     }

@@ -23,10 +23,10 @@ signals:
 
 private slots:
     void on_btnAddMedia_clicked();
+    void setTotalMusicLabel(int size);
 
 private:
     Ui::LocalMusicWidget *ui;
-    void connectSlots(QMainWindow* mainwindow);
 
 };
 

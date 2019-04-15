@@ -1,13 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "filemanager.h"
+#include "music.h"
+#include "suggestbox.h"
 #include "playlistwidget.h"
 #include "playstatewidget.h"
 #include "localmusicwidget.h"
 #include "usermusicwidget.h"
-#include "music.h"
-#include "suggestbox.h"
 
 namespace Ui {
 class MainWindow;
@@ -43,9 +42,9 @@ private slots:
     void on_btnLast_clicked();
     void on_btnNext_clicked();
 
-
     void on_listofMusiclist_itemClicked(QListWidgetItem *item);
 
+    void setPlaylistBtnTextbycurSize(int size);
 private:
     Ui::MainWindow *ui;
     SuggestBox *suggestBox;
@@ -53,10 +52,11 @@ private:
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
     UserMusicWidget *userMusicWidget;
-    void connectSlots();
     qint64 duration;
     QString posiText;
     QString duraText;
+
+    void connectSlots();
 
 
 
