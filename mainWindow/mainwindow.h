@@ -46,12 +46,13 @@ private slots:
 
     void setPlaylistBtnTextbycurSize(int size);
 private:
+    const int bottomHeight = 38;
     Ui::MainWindow *ui;
     SuggestBox *suggestBox;
     PlayListWidget *playlistWidget;
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
-    UserMusicWidget *userMusicWidget;
+    UserMusicWidget *favoriteMusicWidget;
     qint64 duration;
     QString posiText;
     QString duraText;

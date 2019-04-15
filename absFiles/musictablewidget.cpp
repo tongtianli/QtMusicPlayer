@@ -6,8 +6,8 @@ MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
     name = tableName;
     preventChangeSignal = false;
     connect(this,&QTableWidget::itemDoubleClicked,this,&MusicTableWidget::onTableItemClicked);
-    setColumnWidth(0,200);
     setEditTriggers(EditTrigger::NoEditTriggers);
+    horizontalHeader();
 }
 
 
@@ -19,6 +19,9 @@ void MusicTableWidget::setName(QString tableName)
 void MusicTableWidget::insertMusic(int index, Music *music)
 {
     list.insert(index,music);
+//    if(music->ID != -1){
+//        idset.insert(music->ID);
+//    }
     this->insertRow(index);
     for(int i=0;i<this->columnCount();i++){
         QString headerText = this->horizontalHeaderItem(i)->text();
@@ -70,6 +73,7 @@ void MusicTableWidget::clearAll()
 void MusicTableWidget::remove(int index)
 {
     removeRow(index);
+//    idset.remove(list.at(index)->ID);
     list.removeAt(index);
     if(!preventChangeSignal)
         emit sizeChanged(list.size());

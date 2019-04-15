@@ -24,6 +24,7 @@ signals:
 
 private:
     QList<Music*> list;
+//    QSet<int> idset;
     QString name;
     bool preventChangeSignal;
     

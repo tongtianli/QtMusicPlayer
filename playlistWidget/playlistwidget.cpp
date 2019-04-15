@@ -11,6 +11,8 @@ PlayListWidget::PlayListWidget(QWidget *parent) :
     playlist = new QMediaPlaylist(this);
     list = ui->playlistWidget;
     recordlist = ui->recordlist;
+    list->setName("正在播放");
+    recordlist->setName("历史记录");
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(playlist);
     connectSlots();

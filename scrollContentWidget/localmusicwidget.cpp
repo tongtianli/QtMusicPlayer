@@ -7,6 +7,7 @@ LocalMusicWidget::LocalMusicWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     table = ui->tableWidget;
+    table->setName("本地音乐");
     table->setColumnWidth(0,300);
     table->setColumnWidth(1,100);
     table->setColumnWidth(2,100);

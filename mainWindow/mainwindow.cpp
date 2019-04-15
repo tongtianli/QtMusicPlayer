@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
-    userMusicWidget = new UserMusicWidget(this);
-
+    favoriteMusicWidget = new UserMusicWidget(this);
+    favoriteMusicWidget->setTableName("我喜爱的音乐");
     ui->scrollArea->setWidget(localMusicWidget);
     localMusicWidget->show();
     connectSlots();
@@ -28,19 +28,17 @@ MainWindow::~MainWindow()
     delete playlistWidget;
     delete localMusicWidget;
     delete playStateWidget;
-    delete userMusicWidget;
+    delete favoriteMusicWidget;
     delete ui;
 }
 
 void MainWindow::resizeSubwidget(){
-    QSize size = this->size();
-    int width = size.width();
-    int height = size.height();
-    int marginx2 = 16;
-    int playlistHeight = 400;
-    int playlistWidth = 300;
+    int width = this->width();
+    int height = this->height();
+    int playlistHeight = playlistWidget->height();
+    int playlistWidth = playlistWidget->height();
     int posx = width-playlistWidth;
-    int posy = height-playlistHeight-marginx2-25;
+    int posy = height-playlistHeight-bottomHeight;
     playlistWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
 
     int pos = this->size().height()-16-25-100;
@@ -151,11 +149,11 @@ void MainWindow::on_listofMusiclist_itemClicked(QListWidgetItem *item)
 {
     Q_UNUSED(item);
     if(ui->listofMusiclist->currentRow()==0){
-        userMusicWidget = qobject_cast<UserMusicWidget*>(ui->scrollArea->takeWidget());
+        favoriteMusicWidget = qobject_cast<UserMusicWidget*>(ui->scrollArea->takeWidget());
         ui->scrollArea->setWidget(localMusicWidget);
     }
     else{
         localMusicWidget = qobject_cast<LocalMusicWidget*>(ui->scrollArea->takeWidget());
-        ui->scrollArea->setWidget(userMusicWidget);
+        ui->scrollArea->setWidget(favoriteMusicWidget);
     }
 }

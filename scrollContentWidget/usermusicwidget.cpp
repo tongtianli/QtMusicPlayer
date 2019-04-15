@@ -7,10 +7,19 @@ UserMusicWidget::UserMusicWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     this->hide();
+    table = ui->tableWidget;
+    table->setColumnWidth(0,300);
+    table->setColumnWidth(1,100);
+    table->setColumnWidth(2,100);
 }
 
 UserMusicWidget::~UserMusicWidget()
 {
     delete ui;
+}
+
+void UserMusicWidget::setTableName(QString name)
+{
+    table->setName(name);
 }
 
