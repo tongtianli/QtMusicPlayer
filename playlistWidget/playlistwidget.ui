@@ -23,7 +23,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="iconSize">
       <size>
@@ -47,7 +47,7 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="1" column="0">
-        <widget class="QTableWidget" name="playlistWidget">
+        <widget class="MusicTableWidget" name="playlistWidget">
          <column>
           <property name="text">
            <string>正在播放</string>
@@ -139,7 +139,7 @@
         </layout>
        </item>
        <item row="1" column="0">
-        <widget class="QTableWidget" name="recordlist">
+        <widget class="MusicTableWidget" name="recordlist">
          <column>
           <property name="text">
            <string>音乐标题</string>
@@ -163,6 +163,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MusicTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">musictablewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

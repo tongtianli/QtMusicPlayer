@@ -3,15 +3,19 @@
 MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
     QTableWidget(parent)
 {
-    manager = new FileManager(tableName);
     name = tableName;
     preventChangeSignal = false;
+    connect(this,&QTableWidget::itemDoubleClicked,this,&MusicTableWidget::onTableItemClicked);
 }
 
 MusicTableWidget::~MusicTableWidget()
 {
-    delete manager;
     delete this;
+}
+
+void MusicTableWidget::setName(QString tableName)
+{
+    name = tableName;
 }
 
 void MusicTableWidget::insertMusic(int index, Music *music)
@@ -20,7 +24,7 @@ void MusicTableWidget::insertMusic(int index, Music *music)
     this->insertRow(index);
     for(int i=0;i<this->columnCount();i++){
         QString headerText = this->horizontalHeaderItem(i)->text();
-        if(headerText == "音乐标题"){
+        if(headerText == "音乐标题"||headerText == "正在播放"){
             this->setItem(index,i,new QTableWidgetItem(music->name));
             continue;
         }
@@ -33,6 +37,10 @@ void MusicTableWidget::insertMusic(int index, Music *music)
             continue;
         }
         if(headerText == "大小"){
+            this->setItem(index,i,new QTableWidgetItem(music->size));
+            continue;
+        }
+        if(headerText == "播放时间"){
             this->setItem(index,i,new QTableWidgetItem(music->size));
             continue;
         }
@@ -162,5 +170,12 @@ void MusicTableWidget::save()
     writer.writeEndElement();
     writer.writeEndDocument();
     file.close();
+}
+
+void MusicTableWidget::onTableItemClicked(QTableWidgetItem *item)
+{
+    Q_UNUSED(item);
+    int row = this->currentRow();
+    emit musicDoubleClicked(list,row);
 }
 

@@ -9,6 +9,8 @@ PlayListWidget::PlayListWidget(QWidget *parent) :
     this->parent = parent;
     player = new QMediaPlayer(this);
     playlist = new QMediaPlaylist(this);
+    list = ui->playlistWidget;
+    recordlist = ui->recordlist;
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(playlist);
     connectSlots();
@@ -32,6 +34,8 @@ void PlayListWidget::connectSlots()
             parent,SLOT(onPlayerStateChanged(QMediaPlayer::State)));
     connect(playlist,SIGNAL(currentIndexChanged(int)),
             this,SLOT(onCurPlaylistIndexChanged(int)));
+    connect(parent,SIGNAL(sliderPlayPositionChanged(int)),
+            this,SLOT(changePlayPosition(int)));
 }
 
 
@@ -40,18 +44,15 @@ void PlayListWidget::addMedia(Music *music)
     QUrl url = music->url;
     QMediaContent mediaContent(url);
     playlist->addMedia(mediaContent);
-    musicList.append(music);
+    list->append(music);
 }
 
 void PlayListWidget::setPlaylist(QList<Music *> playlist)
 {
     this->playlist->clear();
-    musicList.clear();
-    clearTable(0);
+    list->clearAll();
     foreach(Music* music,playlist){
         addMedia(music);
-        int row = ui->playlistWidget->rowCount();
-        insertToPlaylistWidget(row,music);
     }
 }
 
@@ -90,7 +91,6 @@ void PlayListWidget::pause()
 
 void PlayListWidget::next()
 {
-
     playlist->next();
 }
 
@@ -105,50 +105,32 @@ bool PlayListWidget::isPlaying()
     return (player->state()==QMediaPlayer::PlayingState);
 }
 
-void PlayListWidget::onSliderPlayPositonChanged(int pos)
+void PlayListWidget::changePlayPosition(int pos)
 {
     player->setPosition(pos);
 }
 
-void PlayListWidget::onSliderVolumePositionChanged(int volume)
+void PlayListWidget::changeVolume(int volume)
 {
     player->setVolume(volume);
 }
 
 void PlayListWidget::addMusicAndPlay(Music *music)
 {
-    int index = ui->playlistWidget->currentRow();
+    int index = playlist->currentIndex();
     index = index<0?0:index;
-    musicList.insert(index,music);
+    list->insertMusic(index,music);
     QMediaContent media(music->url);
     playlist->insertMedia(index,media);
     playlist->setCurrentIndex(index);
-    insertToPlaylistWidget(index,music);
     player->play();
 }
 
-
-
-void PlayListWidget::clearTable(int listIndex){
-    if(listIndex)
-        while(ui->playlistWidget->rowCount()!=0)
-            ui->playlistWidget->removeRow(ui->playlistWidget->rowCount()-1);
-    else
-        while(ui->recordlist->rowCount()!=0)
-            ui->recordlist->removeRow(ui->recordlist->rowCount()-1);
-
-}
-
-void PlayListWidget::insertToPlaylistWidget(int index, Music *music)
+void PlayListWidget::changeListAndPlay(QList<Music *> musiclist, int index)
 {
-    ui->playlistWidget->insertRow(index);
-    qDebug()<<"new row success, index at"<<index;
-    QTableWidgetItem *name = new QTableWidgetItem(music->name);
-    QTableWidgetItem *author = new QTableWidgetItem(music->singer);
-    QTableWidgetItem *duration = new QTableWidgetItem(music->duration);
-    ui->playlistWidget->setItem(index,0,name);
-    ui->playlistWidget->setItem(index,1,author);
-    ui->playlistWidget->setItem(index,2,duration);
+    setPlaylist(musiclist);
+    setCurMedia(index);
+    play();
 }
 
 void PlayListWidget::onCurPlaylistIndexChanged(int index)
@@ -156,7 +138,7 @@ void PlayListWidget::onCurPlaylistIndexChanged(int index)
     while(ui->recordlist->rowCount()>=maxRecordNum)
         ui->recordlist->removeRow(ui->recordlist->rowCount()-1);
     ui->recordlist->insertRow(0);
-    Music *music = musicList.at(index);
+    Music *music = list->get(index);
     QTableWidgetItem *name = new QTableWidgetItem(music->name);
     QTableWidgetItem *author = new QTableWidgetItem(music->singer);
     QTableWidgetItem *playTime = new QTableWidgetItem(QTime::currentTime().toString());
@@ -175,11 +157,12 @@ void PlayListWidget::onCurPlaylistIndexChanged(int index)
 
 void PlayListWidget::on_btnCleanList_clicked()
 {
-    //    for(int i = 0 ; i < ui->playlistWidget->rowCount();i++){
-    //        qDebug()<<ui->playlistWidget->rowCount()
-    //        ui->playlistWidget->removeRow(i);
-    //    }
-    //上面的写法在多线程时会出现问题
-    int whichList = ui->tabWidget->currentIndex();
-    clearTable(whichList);
+    if(ui->tabWidget->currentIndex() ==
+            ui->tabWidget->indexOf(ui->playlistWidget)){     //当前在播放列表
+        list->clearAll();
+        player->stop();
+        playlist->clear();
+    }else{                                      //当前在历史记录
+        recordlist->clearAll();
+    }
 }

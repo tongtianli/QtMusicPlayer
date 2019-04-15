@@ -2,7 +2,6 @@
 #define MUSICTABLEWIDGET_H
 
 #include "music.h"
-#include "filemanager.h"
 
 class MusicTableWidget : public QTableWidget
 {
@@ -11,25 +10,29 @@ class MusicTableWidget : public QTableWidget
 public:
     explicit MusicTableWidget(QWidget *parent = nullptr, QString tableName = "");
     virtual ~MusicTableWidget();
+    void setName(QString tableName);
     void insertMusic(int index, Music *music);
     void setMusiclist(QList<Music*> list);
     void clearAll();
     void remove(int index);
     void append(Music *music);
     Music* get(int index);
-    QList<Music*>* getAll();
+    QList<Music*> getAll();
 
 signals:
     void sizeChanged(int size);
-    void itemDoubleClicked(int index);
+    void musicDoubleClicked(QList<Music*> list, int index);
 
-public slots:
-
-protected:
+private:
     QList<Music*> list;
-    FileManager manager;
     QString name;
+    bool preventChangeSignal;
+    
+    void load();
+    void save();
 
+private slots:
+    void onTableItemClicked(QTableWidgetItem *item);
 };
 
 #endif // MUSICTABLEWIDGET_H

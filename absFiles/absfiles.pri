@@ -1,10 +1,8 @@
-HEADERS += $$PWD/filemanager.h\
+HEADERS +=\
 $$PWD/music.h \
-    $$PWD/musicpool.h \
     $$PWD/musictablewidget.h
 
-SOURCES += $$PWD/filemanager.cpp \
-    $$PWD/musicpool.cpp \
+SOURCES += \
     $$PWD/musictablewidget.cpp
 
 FORMS +=

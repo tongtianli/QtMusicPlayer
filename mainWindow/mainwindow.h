@@ -34,8 +34,6 @@ public slots:
     void onPlayerStateChanged(QMediaPlayer::State);
 
 private slots:
-    void addMusicToPool(Music* music);
-    void initLocalWidget(QList<int> idlist);
     void resizeSubwidget();
 
     void on_btnOpenPlaylist_clicked();
@@ -55,7 +53,6 @@ private:
     LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
     UserMusicWidget *userMusicWidget;
-    MusicPool defaultMusicPool;
     void connectSlots();
     qint64 duration;
     QString posiText;

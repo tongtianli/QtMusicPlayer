@@ -18,20 +18,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->scrollArea->setWidget(localMusicWidget);
     localMusicWidget->show();
-    defaultMusicPool.load();
-    localMusicWidget->load();
-
     connectSlots();
 
 }
 
 MainWindow::~MainWindow()
 {
-    defaultMusicPool.save();
     delete suggestBox;
     delete playlistWidget;
     delete localMusicWidget;
     delete playStateWidget;
+    delete userMusicWidget;
     delete ui;
 }
 
@@ -52,6 +49,7 @@ void MainWindow::resizeSubwidget(){
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     resizeSubwidget();
 }
 
@@ -93,12 +91,9 @@ void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
 
 void MainWindow::connectSlots()
 {
-    connect(localMusicWidget,SIGNAL(localWidgetAddMusic(Music*)),this,SLOT(addMusicToPool(Music*)));
-    connect(localMusicWidget,SIGNAL(localWidgetLoadList(QList<int>)),this,SLOT(initLocalWidget(QList<int>)));
-    connect(this,SIGNAL(sliderPlayPositionChanged(int)),playlistWidget,SLOT(onSliderPlayPositonChanged(int)));
-    connect(localMusicWidget,SIGNAL(playLocalMusiclist(int,QList<Music*>)),this,SLOT(onChangelistRequested(int,QList<Music*>)));
-    connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(onSliderVolumePositionChanged(int)));
+    connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
     connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
+    connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
 
 }
 
@@ -121,23 +116,6 @@ void MainWindow::on_btnPlay_clicked()
         playlistWidget->play();
     }
 }
-
-void MainWindow::addMusicToPool(Music *music)
-{
-    defaultMusicPool.addMusic(music);
-}
-
-
-void MainWindow::initLocalWidget(QList<int> idlist)
-{
-    QList<Music*> list;
-    foreach(int id,idlist){
-        list.append(this->defaultMusicPool.getMusicByID(id));
-        qDebug()<<list<<endl;
-    }
-    localMusicWidget->refreshTable(list);
-}
-
 
 void MainWindow::onChangelistRequested(int index, QList<Music *> list)
 {
@@ -166,5 +144,6 @@ void MainWindow::on_btnNext_clicked()
 
 void MainWindow::on_listofMusiclist_itemClicked(QListWidgetItem *item)
 {
+    Q_UNUSED(item);
     ui->scrollArea->setWidget(userMusicWidget);
 }

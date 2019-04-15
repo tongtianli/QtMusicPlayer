@@ -2,6 +2,7 @@
 #define PLAYLISTWIDGET_H
 
 #include "music.h"
+#include "musictablewidget.h"
 
 namespace Ui{
 class PlayListWidget;
@@ -11,6 +12,9 @@ class PlayListWidget : public QWidget
     Q_OBJECT
 
 public:
+    MusicTableWidget *list;
+    MusicTableWidget *recordlist;
+
     explicit PlayListWidget(QWidget *parent = nullptr);
     ~PlayListWidget();
 
@@ -30,22 +34,20 @@ signals:
 
 
 public slots:
-    void onSliderPlayPositonChanged(int pos);
-    void onSliderVolumePositionChanged(int volume);
+    void changePlayPosition(int pos);
+    void changeVolume(int volume);
     void addMusicAndPlay(Music* music);
+    void changeListAndPlay(QList<Music*> musiclist,int index);
 
 private:
+    const int maxRecordNum = 100;
+
     QWidget* parent;
     Ui::PlayListWidget *ui;
-    void refreshMediaInfo();
-    void refreshRandomlist();
-    void connectSlots();
     QMediaPlaylist *playlist;
-    QMediaPlayer *player = new QMediaPlayer(this);
-    void insertToPlaylistWidget(int index, Music *music);
-    QList<Music*> musicList;
-    int maxRecordNum = 100;
-    void clearTable(int listIndex);
+    QMediaPlayer *player;
+
+    void connectSlots();
 
 private slots:
     void onCurPlaylistIndexChanged(int index);

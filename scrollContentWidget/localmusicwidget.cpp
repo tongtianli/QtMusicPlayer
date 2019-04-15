@@ -6,40 +6,17 @@ LocalMusicWidget::LocalMusicWidget(QWidget *parent) :
     ui(new Ui::LocalMusicWidget)
 {
     ui->setupUi(this);
-    ui->tableWidget->setColumnWidth(0,300);
-    ui->tableWidget->setColumnWidth(1,100);
-    ui->tableWidget->setColumnWidth(2,100);
+    table = ui->tableWidget;
+    table->setColumnWidth(0,300);
+    table->setColumnWidth(1,100);
+    table->setColumnWidth(2,100);
     ui->labLocalMediaNotFound->hide();
 }
 
 LocalMusicWidget::~LocalMusicWidget()
 {
-    ui->tableWidget->clear();
+    table->clear();
     delete ui;
-}
-
-
-
-void LocalMusicWidget::addMusicToTable(Music *music)
-{
-    QTableWidget *table = ui->tableWidget;
-    int index = table->rowCount();
-    table->insertRow(index);
-    QTableWidgetItem *item = new QTableWidgetItem(music->name);
-    table->setItem(index,LOCALTABLE::COLUMN_NAME,item);
-    item = new QTableWidgetItem(music->duration);
-    table->setItem(index,LOCALTABLE::COLUMN_DURATION,item);
-    item = new QTableWidgetItem(music->size);
-    table->setItem(index,LOCALTABLE::COLUMN_SIZE,item);
-}
-
-void LocalMusicWidget::refreshTable(QList<Music*> list)
-{
-    ui->tableWidget->clear();
-    foreach(Music* music,list){
-        addMusicToTable(music);
-    }
-    this->list = list;
 }
 
 void LocalMusicWidget::on_btnAddMedia_clicked()
@@ -51,45 +28,15 @@ void LocalMusicWidget::on_btnAddMedia_clicked()
     foreach(QString name,list){
         Music *music = new Music();
         QFileInfo info(name);
+        music->ID = -1;
         music->url = QUrl::fromLocalFile(name);
         music->name = info.baseName();
-        music->ID = 0;
-        music->duration = "未知";
         music->singer = "未知";
+        music->duration = "未知";
+        music->pic = "";
+        music->lrc = "";
+        music->local = true;
         music->size = QString::number(info.size()/1000000)+"MB";
-        addMusicToTable(music);
-        this->list.append(music);
-        emit localWidgetAddMusic(music);
+        table->append(music);
     }
-}
-
-void LocalMusicWidget::load()
-{
-    QDir dir = QDir::currentPath()+"/data/defaultMusicPool.xml";
-    QFile file(dir.path());
-    if(not file.open(QIODevice::ReadOnly|QIODevice::Text)){
-        qDebug()<<"can not open"<<dir<<endl;
-        return;
-    }
-    QXmlStreamReader reader(&file);
-    QList<int> idlist;
-    while(!reader.atEnd()){
-        if(reader.name()=="mediaID")
-            idlist.append(reader.readElementText().toInt());
-        reader.readNext();
-        }
-    file.close();
-    emit localWidgetLoadList(idlist);
-}
-
-void LocalMusicWidget::save()
-{
-    return;
-}
-
-
-
-void LocalMusicWidget::on_tableWidget_itemDoubleClicked(QTableWidgetItem *item)
-{
-    emit playLocalMusiclist(item->row(),list);
 }
