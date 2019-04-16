@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlayListWidget</class>
+ <widget class="QWidget" name="PlayListWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>450</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="tabPosition">
+      <enum>QTabWidget::West</enum>
+     </property>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideNone</enum>
+     </property>
+     <property name="tabBarAutoHide">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="widgetTabPlaylist">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="icon">
+       <iconset>
+        <normaloff>../../ico图标/icon.ico</normaloff>../../ico图标/icon.ico</iconset>
+      </attribute>
+      <attribute name="title">
+       <string/>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,1">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="1" column="0">
+        <widget class="MusicTableWidget" name="playlistWidget">
+         <property name="styleSheet">
+          <string notr="true">QTableView {
+        border: 1px solid rgb(45, 45, 45);
+        background: rgb(57, 58, 60);
+        gridline-color: rgb(60, 60, 60);
+}
+QTableView::item {
+        padding-left: 5px;
+        padding-right: 5px;
+        border: none;
+        background: rgb(72, 72, 74);
+        border-right: 1px solid rgb(45, 45, 45);
+        border-bottom: 1px solid rgb(45, 45, 45);
+}
+QTableView::item:selected {
+        background: rgba(255, 255, 255, 40);
+}
+QTableView::item:selected:!active {
+        color: white;
+}
+QTableView::indicator {
+        width: 20px;
+        height: 20px;
+}
+QTableView::indicator:enabled:unchecked {
+        image: url(:/Black/checkBox);
+}
+QTableView::indicator:enabled:unchecked:hover {
+        image: url(:/Black/checkBoxHover);
+}
+QTableView::indicator:enabled:unchecked:pressed {
+        image: url(:/Black/checkBoxPressed);
+}
+QTableView::indicator:enabled:checked {
+        image: url(:/Black/checkBoxChecked);
+}
+QTableView::indicator:enabled:checked:hover {
+        image: url(:/Black/checkBoxCheckedHover);
+}
+QTableView::indicator:enabled:checked:pressed {
+        image: url(:/Black/checkBoxCheckedPressed);
+}
+QTableView::indicator:enabled:indeterminate {
+        image: url(:/Black/checkBoxIndeterminate);
+}
+QTableView::indicator:enabled:indeterminate:hover {
+        image: url(:/Black/checkBoxIndeterminateHover);
+}
+QTableView::indicator:enabled:indeterminate:pressed {
+        image: url(:/Black/checkBoxIndeterminatePressed);
+}
+QHeaderView{
+        border: none;
+        border-bottom: 3px solid rgb(0, 160, 230);
+        background: rgb(57, 58, 60);
+        min-height: 30px;
+}
+QHeaderView::section:horizontal {
+        border: none;
+        color: white;
+        background: transparent;
+        padding-left: 5px;
+}
+QHeaderView::section:horizontal:hover {
+        background: rgb(0, 160, 230);
+}
+QHeaderView::section:horizontal:pressed {
+        background: rgb(0, 180, 255);
+}
+QHeaderView::up-arrow {
+        width: 13px;
+        height: 11px;
+        padding-right: 5px;
+        image: url(:/Black/topArrow);
+        subcontrol-position: center right;
+}
+QHeaderView::up-arrow:hover, QHeaderView::up-arrow:pressed {
+        image: url(:/Black/topArrowHover);
+}
+QHeaderView::down-arrow {
+        width: 13px;
+        height: 11px;
+        padding-right: 5px;
+        image: url(:/Black/bottomArrow);
+        subcontrol-position: center right;
+}
+QScrollBar:horizontal {
+        height: 20px;
+        background: transparent;
+        margin-top: 3px;
+        margin-bottom: 3px;
+}
+QScrollBar::handle:horizontal {
+        height: 20px;
+        min-width: 30px;
+        background: rgb(68, 69, 73);
+        margin-left: 15px;
+        margin-right: 15px;
+}
+QScrollBar::handle:horizontal:hover {
+        background: rgb(80, 80, 80);
+}
+QScrollBar::sub-line:horizontal {
+        width: 15px;
+        background: transparent;
+        image: url(:/Black/arrowLeft);
+        subcontrol-position: left;
+}
+QScrollBar::add-line:horizontal {
+        width: 15px;
+        background: transparent;
+        image: url(:/Black/arrowRight);
+        subcontrol-position: right;
+}
+QScrollBar::sub-line:horizontal:hover {
+        background: rgb(68, 69, 73);
+}
+QScrollBar::add-line:horizontal:hover {
+        background: rgb(68, 69, 73);
+}
+QScrollBar::add-page:horizontal,QScrollBar::sub-page:horizontal {
+        background: transparent;
+}
+
+/**********滚动条-垂直**********/
+QScrollBar:vertical {
+        width: 20px;
+        background: transparent;
+        margin-left: 3px;
+        margin-right: 3px;
+}
+QScrollBar::handle:vertical {
+        width: 20px;
+        min-height: 30px;
+        background: rgb(68, 69, 73);
+        margin-top: 15px;
+        margin-bottom: 15px;
+}
+QScrollBar::handle:vertical:hover {
+        background: rgb(80, 80, 80);
+}
+QScrollBar::sub-line:vertical {
+        height: 15px;
+        background: transparent;
+        image: url(:/Black/arrowTop);
+        subcontrol-position: top;
+}
+QScrollBar::add-line:vertical {
+        height: 15px;
+        background: transparent;
+        image: url(:/Black/arrowBottom);
+        subcontrol-position: bottom;
+}
+QScrollBar::sub-line:vertical:hover {
+        background: rgb(68, 69, 73);
+}
+QScrollBar::add-line:vertical:hover {
+        background: rgb(68, 69, 73);
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+        background: transparent;
+}
+
+QScrollBar#verticalScrollBar:vertical {
+        margin-top: 30px;
+}
+</string>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="tabKeyNavigation">
+          <bool>false</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="verticalScrollMode">
+          <enum>QAbstractItemView::ScrollPerItem</enum>
+         </property>
+         <property name="horizontalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <attribute name="horizontalHeaderCascadingSectionResizes">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>正在播放</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>作者</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>时长</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="labListCount">
+           <property name="text">
+            <string>共0首</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnCleanList">
+           <property name="text">
+            <string>清空</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="widgetTabPlayrecordList">
+      <attribute name="icon">
+       <iconset>
+        <normaloff>../../ico图标/ooopic_1478350064.ico</normaloff>../../ico图标/ooopic_1478350064.ico</iconset>
+      </attribute>
+      <attribute name="title">
+       <string/>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,1">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="labRecordlistCount">
+           <property name="text">
+            <string>共0首</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnCleanRecordlist">
+           <property name="text">
+            <string>清空</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="MusicTableWidget" name="recordlist">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="tabKeyNavigation">
+          <bool>false</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="horizontalScrollMode">
+          <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <attribute name="horizontalHeaderCascadingSectionResizes">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>音乐标题</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>作者</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>播放时间</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MusicTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">musictablewidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
