@@ -84,6 +84,9 @@
        </property>
        <item row="1" column="0">
         <widget class="MusicTableWidget" name="playlistWidget">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
          </property>

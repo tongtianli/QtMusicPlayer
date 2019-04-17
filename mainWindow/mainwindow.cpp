@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSlots();
     ui->sliderPlay->setEnabled(false);
     ui->labelPlayState->setText("");
+    localMusicWidget->setProperty("centralWidget","true");
+    favoriteMusicWidget->setProperty("centralWidget","true");
+    ui->listofMusiclist->setCurrentRow(1);
 }
 
 MainWindow::~MainWindow()
@@ -44,7 +47,7 @@ void MainWindow::resizeSubwidget(){
     playlistWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
 
     int pos = this->size().height()-16-25-100;
-    playStateWidget->setGeometry(0,pos,200,100);
+    playStateWidget->setGeometry(0,pos,ui->listofMusiclist->size().width(),100);
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -151,15 +154,4 @@ void MainWindow::on_btnNext_clicked()
     playlistWidget->next();
 }
 
-void MainWindow::on_listofMusiclist_itemClicked(QListWidgetItem *item)
-{
-    Q_UNUSED(item);
-    if(ui->listofMusiclist->currentRow()==0){
-        favoriteMusicWidget = qobject_cast<UserMusicWidget*>(ui->scrollArea->takeWidget());
-        ui->scrollArea->setWidget(localMusicWidget);
-    }
-    else{
-        localMusicWidget = qobject_cast<LocalMusicWidget*>(ui->scrollArea->takeWidget());
-        ui->scrollArea->setWidget(favoriteMusicWidget);
-    }
-}
+

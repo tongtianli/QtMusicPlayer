@@ -42,9 +42,8 @@ private slots:
     void on_btnLast_clicked();
     void on_btnNext_clicked();
 
-    void on_listofMusiclist_itemClicked(QListWidgetItem *item);
-
     void setPlaylistBtnTextbycurSize(int size);
+
 private:
     const int bottomHeight = 38;
     Ui::MainWindow *ui;

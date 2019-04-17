@@ -1,0 +1,5 @@
+<RCC>
+    <qresource lang="css" prefix="/qss">
+        <file>resource/tablewidget.qss</file>
+    </qresource>
+</RCC>

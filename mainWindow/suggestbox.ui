@@ -55,6 +55,12 @@
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QListWidget{
+	color: rgb(211, 211, 211);
+	background-color: rgb(50, 50, 50);
+}</string>
+     </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>

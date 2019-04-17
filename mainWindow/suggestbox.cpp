@@ -99,6 +99,7 @@ void SuggestBox::doneSelection()
 void SuggestBox::autoSuggest()
 {
     QString str = editor->text();
+    if(str=="") return;
     QString url = searchUrl.arg(str);
     qDebug()<<url;
     networkManager.get(QNetworkRequest(url));

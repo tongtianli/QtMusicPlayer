@@ -1,11 +1,18 @@
 <RCC>
     <qresource prefix="/image">
-        <file>image/setup.ico</file>
-        <file>image/add.png</file>
-        <file>image/last.png</file>
-        <file>image/next.png</file>
-        <file>image/pause.png</file>
-        <file>image/play.png</file>
-        <file>image/remove.png</file>
+        <file>resource/setup.ico</file>
+        <file>resource/add.png</file>
+        <file>resource/last.png</file>
+        <file>resource/next.png</file>
+        <file>resource/pause.png</file>
+        <file>resource/play.png</file>
+        <file>resource/remove.png</file>
+        <file>resource/addlist.png</file>
+        <file>resource/favorite.png</file>
+        <file>resource/local.png</file>
+        <file>resource/user.png</file>
+    </qresource>
+    <qresource prefix="/stylesheet" lang="qss">
+        <file>resource/darkstyle.qss</file>
     </qresource>
 </RCC>
