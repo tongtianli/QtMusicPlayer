@@ -37,6 +37,31 @@
 		border: 1px solid rgb(50, 50, 50);
 		background: rgb(50, 50, 50);
 }
+/***********按钮************/
+QPushButton{
+
+	border: none;
+	border-radius: 5px;
+	min-width: 22px;
+	min-height: 22px;	
+}
+
+QPushButton:enabled {
+        background: rgb(81, 81, 81);
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+
+
 /***********TabWidget************/
 QTabWidget{
 	border: 1px solid rgb(45, 45, 45);
@@ -219,28 +244,8 @@ QLabel {
         color: rgb(175, 175, 175);
 }
 
-/**********按钮**********/
-QPushButton{
-	border: none;
-	border-radius: 5px;
-	min-width: 40px;
-	min-height: 22px;	
-}
 
-QPushButton:enabled {
-        background: rgb(68, 69, 73);
-        	color: rgb(188, 188, 188);
-}
-QPushButton:!enabled {
-        background: rgb(100, 100, 100);
-        color: rgb(200, 200, 200);
-}
-QPushButton:enabled:hover{
-        background: rgb(85, 85, 85);
-}
-QPushButton:enabled:pressed{
-        background: rgb(80, 80, 80);
-}
+
 /**********输入框***********/
 QLineEdit {
         border-radius: 4px;
@@ -294,12 +299,15 @@ QLineEdit:!enabled {
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="mainwinHead" stretch="0,1,0,0">
+     <layout class="QHBoxLayout" name="mainwinHead" stretch="0,1,0,0,0,0,0">
       <property name="spacing">
        <number>0</number>
       </property>
       <property name="topMargin">
        <number>8</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
       </property>
       <property name="bottomMargin">
        <number>8</number>
@@ -341,8 +349,7 @@ QLineEdit:!enabled {
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">
-</string>
+         <string notr="true"/>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -370,7 +377,8 @@ QLineEdit:!enabled {
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton{
+         <string notr="true">/**********按钮**********/
+QPushButton{
 
 	border: none;
 	border-radius: 5px;
@@ -379,7 +387,7 @@ QLineEdit:!enabled {
 }
 
 QPushButton:enabled {
-        background: rgb(68, 69, 73);
+        background: rgb(81, 81, 81);
         	color: rgb(188, 188, 188);
 }
 QPushButton:!enabled {
@@ -391,8 +399,7 @@ QPushButton:enabled:hover{
 }
 QPushButton:enabled:pressed{
         background: rgb(80, 80, 80);
-}
-</string>
+}</string>
         </property>
         <property name="text">
          <string>搜索</string>
@@ -411,6 +418,126 @@ QPushButton:enabled:pressed{
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnHide">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+
+	border: none;
+	border-radius: 5px;
+	min-width: 22px;
+	min-height: 22px;	
+}
+
+QPushButton:enabled {
+        background: transparent;
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="mainwindow.qrc">
+          <normaloff>:/image/resource/hide.png</normaloff>:/image/resource/hide.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnFullScreen">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+
+	border: none;
+	border-radius: 5px;
+	min-width: 22px;
+	min-height: 22px;	
+}
+
+QPushButton:enabled {
+        background: transparent;
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="mainwindow.qrc">
+          <normaloff>:/image/resource/fullscreen.png</normaloff>:/image/resource/fullscreen.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnExit">
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+
+	border: none;
+	border-radius: 5px;
+	min-width: 22px;
+	min-height: 22px;	
+}
+
+QPushButton:enabled {
+        background: transparent;
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="mainwindow.qrc">
+          <normaloff>:/image/resource/cross.png</normaloff>:/image/resource/cross.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -622,8 +749,8 @@ QListWidget::item:!enabled{
        <widget class="QPushButton" name="btnLast">
         <property name="minimumSize">
          <size>
-          <width>22</width>
-          <height>22</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -714,8 +841,8 @@ QPushButton:enabled:pressed{
        <widget class="QPushButton" name="btnNext">
         <property name="minimumSize">
          <size>
-          <width>22</width>
-          <height>22</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -828,8 +955,8 @@ QSlider::hover {
        <widget class="QPushButton" name="btnOpenPlaylist">
         <property name="minimumSize">
          <size>
-          <width>50</width>
-          <height>22</height>
+          <width>52</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">

@@ -44,6 +44,12 @@ private slots:
 
     void setPlaylistBtnTextbycurSize(int size);
 
+    void on_btnExit_clicked();
+
+    void on_btnFullScreen_clicked();
+
+    void on_btnHide_clicked();
+
 private:
     const int bottomHeight = 38;
     Ui::MainWindow *ui;

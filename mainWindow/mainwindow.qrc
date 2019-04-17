@@ -11,6 +11,12 @@
         <file>resource/favorite.png</file>
         <file>resource/local.png</file>
         <file>resource/user.png</file>
+        <file>resource/cross.png</file>
+        <file>resource/fullscreen.png</file>
+        <file>resource/hide.png</file>
+        <file>resource/cross_hover.png</file>
+        <file>resource/fullscreen_hover.png</file>
+        <file>resource/hide_hover.png</file>
     </qresource>
     <qresource prefix="/stylesheet" lang="qss">
         <file>resource/darkstyle.qss</file>

@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | windowFlags());
     suggestBox = new SuggestBox(this,ui->searchBox);
     playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
@@ -155,3 +156,18 @@ void MainWindow::on_btnNext_clicked()
 }
 
 
+
+void MainWindow::on_btnExit_clicked()
+{
+    this->close();
+}
+
+void MainWindow::on_btnFullScreen_clicked()
+{
+    this->isMaximized() ? this->showNormal() : this->showMaximized();
+}
+
+void MainWindow::on_btnHide_clicked()
+{
+    this->showMinimized();
+}
