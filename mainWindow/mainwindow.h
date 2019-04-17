@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "music.h"
+#include "mainwindowtitle.h"
 #include "suggestbox.h"
 #include "playlistwidget.h"
 #include "playstatewidget.h"
@@ -41,18 +42,13 @@ private slots:
     void on_sliderPlay_sliderReleased();
     void on_btnLast_clicked();
     void on_btnNext_clicked();
-
     void setPlaylistBtnTextbycurSize(int size);
 
-    void on_btnExit_clicked();
-
-    void on_btnFullScreen_clicked();
-
-    void on_btnHide_clicked();
-
 private:
+    const int headHeight = 38;
     const int bottomHeight = 38;
     Ui::MainWindow *ui;
+    MainwindowTitle *title;
     SuggestBox *suggestBox;
     PlayListWidget *playlistWidget;
     LocalMusicWidget *localMusicWidget;

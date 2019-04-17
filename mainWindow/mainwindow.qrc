@@ -17,6 +17,8 @@
         <file>resource/cross_hover.png</file>
         <file>resource/fullscreen_hover.png</file>
         <file>resource/hide_hover.png</file>
+        <file>resource/nomal.png</file>
+        <file>resource/nomal_hover.png</file>
     </qresource>
     <qresource prefix="/stylesheet" lang="qss">
         <file>resource/darkstyle.qss</file>

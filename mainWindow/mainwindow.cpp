@@ -11,7 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | windowFlags());
-    suggestBox = new SuggestBox(this,ui->searchBox);
+    title = new MainwindowTitle(this);
+    ui->head->setWidget(title);
+    suggestBox = new SuggestBox(this,title->getSearchLineEdit());
     playlistWidget = new PlayListWidget(this);
     localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
@@ -22,9 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     localMusicWidget->show();
     connectSlots();
     ui->sliderPlay->setEnabled(false);
-    ui->labelPlayState->setText("");
-    localMusicWidget->setProperty("centralWidget","true");
-    favoriteMusicWidget->setProperty("centralWidget","true");
     ui->listofMusiclist->setCurrentRow(1);
 }
 
@@ -156,18 +155,3 @@ void MainWindow::on_btnNext_clicked()
 }
 
 
-
-void MainWindow::on_btnExit_clicked()
-{
-    this->close();
-}
-
-void MainWindow::on_btnFullScreen_clicked()
-{
-    this->isMaximized() ? this->showNormal() : this->showMaximized();
-}
-
-void MainWindow::on_btnHide_clicked()
-{
-    this->showMinimized();
-}
