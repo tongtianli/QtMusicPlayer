@@ -5,7 +5,7 @@ MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
 {
     name = tableName;
     preventChangeSignal = false;
-    connect(this,&QTableWidget::itemDoubleClicked,this,&MusicTableWidget::onTableItemClicked);
+    connect(this,&QTableWidget::itemDoubleClicked,this,&MusicTableWidget::onTableItemDoubleClicked);
     setEditTriggers(EditTrigger::NoEditTriggers);
 }
 
@@ -194,7 +194,7 @@ void MusicTableWidget::save()
     file.close();
 }
 
-void MusicTableWidget::onTableItemClicked(QTableWidgetItem *item)
+void MusicTableWidget::onTableItemDoubleClicked(QTableWidgetItem *item)
 {
     Q_UNUSED(item);
     int row = this->currentRow();

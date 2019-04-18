@@ -20,6 +20,7 @@ public:
     ~UserMusicWidget();
 
     void setTableName(QString name);
+    void load();
 
 private:
     Ui::UserMusicWidget *ui;

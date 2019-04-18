@@ -22,6 +22,11 @@ LocalMusicWidget::~LocalMusicWidget()
     delete ui;
 }
 
+void LocalMusicWidget::load()
+{
+    table->load();
+}
+
 void LocalMusicWidget::on_btnAddMedia_clicked()
 {
     QString startPath = "E:/音乐/";
