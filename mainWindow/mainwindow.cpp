@@ -18,11 +18,13 @@ MainWindow::MainWindow(QWidget *parent) :
     localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
     favoriteMusicWidget = new UserMusicWidget(this);
+    connectSlots();
     favoriteMusicWidget->setTableName("我喜爱的音乐");
     ui->scrollArea->setWidget(localMusicWidget);
     ui->splitter->setStretchFactor(1,1);
     localMusicWidget->show();
-    connectSlots();
+
+    playlistWidget->load();
     ui->sliderPlay->setEnabled(false);
     ui->listofMusiclist->setCurrentRow(1);
 }

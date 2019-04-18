@@ -12,6 +12,7 @@ LocalMusicWidget::LocalMusicWidget(QWidget *parent) :
     table->setColumnWidth(1,100);
     table->setColumnWidth(2,100);
     ui->labLocalMediaNotFound->hide();
+    table->load();
     connect(table,&MusicTableWidget::sizeChanged,this,&LocalMusicWidget::setTotalMusicLabel);
 }
 
