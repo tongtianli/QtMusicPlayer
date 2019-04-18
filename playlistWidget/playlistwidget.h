@@ -27,6 +27,7 @@ public:
     void next();
     void previous();
     bool isPlaying();
+    void load();
 
 signals:
     void maxPositionChanged(QString duration);

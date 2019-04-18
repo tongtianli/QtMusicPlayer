@@ -113,6 +113,12 @@ bool PlayListWidget::isPlaying()
     return (player->state()==QMediaPlayer::PlayingState);
 }
 
+void PlayListWidget::load()
+{
+    list->load();
+    recordlist->load();
+}
+
 void PlayListWidget::changePlayPosition(int pos)
 {
     player->setPosition(pos);
