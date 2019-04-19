@@ -23,3 +23,8 @@ void UserMusicWidget::setTableName(QString name)
     table->setName(name);
 }
 
+void UserMusicWidget::load()
+{
+    table->load();
+}
+

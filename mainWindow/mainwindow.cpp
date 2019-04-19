@@ -12,30 +12,27 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | windowFlags());
     title = new MainwindowTitle(this);
-    ui->head->setWidget(title);
     suggestBox = new SuggestBox(this,title->getSearchLineEdit());
-    playlistWidget = new PlayListWidget(this);
-    localMusicWidget = new LocalMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
-    favoriteMusicWidget = new UserMusicWidget(this);
+    playlistWidget = new PlayListWidget(this);
+
+
+    ui->head->setWidget(title);
+    ui->splitter->setStretchFactor(0,1);
+    ui->listofMusiclist->setup(this,ui->scrollArea,playlistWidget);
+    ui->listofMusiclist->initialDefaultWidgets();
+    ui->sliderPlay->setEnabled(false);
+
     connectSlots();
-    favoriteMusicWidget->setTableName("我喜爱的音乐");
-    ui->scrollArea->setWidget(localMusicWidget);
-    ui->splitter->setStretchFactor(1,1);
-    localMusicWidget->show();
 
     playlistWidget->load();
-    ui->sliderPlay->setEnabled(false);
-    ui->listofMusiclist->setCurrentRow(1);
 }
 
 MainWindow::~MainWindow()
 {
     delete suggestBox;
     delete playlistWidget;
-    delete localMusicWidget;
     delete playStateWidget;
-    delete favoriteMusicWidget;
     delete ui;
 }
 
@@ -102,7 +99,6 @@ void MainWindow::connectSlots()
 {
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
     connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
-    connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
     connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
 
 }

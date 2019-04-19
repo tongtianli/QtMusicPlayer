@@ -51,9 +51,7 @@ private:
     MainwindowTitle *title;
     SuggestBox *suggestBox;
     PlayListWidget *playlistWidget;
-    LocalMusicWidget *localMusicWidget;
     PlayStateWidget *playStateWidget;
-    UserMusicWidget *favoriteMusicWidget;
     qint64 duration;
     QString posiText;
     QString duraText;

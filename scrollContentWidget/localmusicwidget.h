@@ -17,6 +17,8 @@ public:
     explicit LocalMusicWidget(QWidget *parent = nullptr);
     ~LocalMusicWidget();
 
+    void load();
+
 signals:
     void localWidgetLoadList(QList<int> idlist);
     void playLocalMusiclist(int index,QList<Music*> playlist);

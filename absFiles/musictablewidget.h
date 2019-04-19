@@ -34,7 +34,7 @@ private:
 
 
 private slots:
-    void onTableItemClicked(QTableWidgetItem *item);
+    void onTableItemDoubleClicked(QTableWidgetItem *item);
 };
 
 #endif // MUSICTABLEWIDGET_H
