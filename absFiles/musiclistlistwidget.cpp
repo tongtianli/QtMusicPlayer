@@ -1,13 +1,14 @@
 #include "musiclistlistwidget.h"
 
-MusiclistListWidget::MusiclistListWidget()
-{
 
-}
-
-MusiclistListWidget::MusiclistListWidget(QObject *parent) : QListWidget()
+MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
 {
     Q_UNUSED(parent);
+}
+
+MusiclistListWidget::~MusiclistListWidget()
+{
+
 }
 
 void MusiclistListWidget::setup(QMainWindow *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget)
@@ -15,6 +16,7 @@ void MusiclistListWidget::setup(QMainWindow *parent, QScrollArea *scrollArea, Pl
     this->parent = parent;
     this->scrollArea = scrollArea;
     this->playlistWidget = playlistWidget;
+
 }
 
 
@@ -54,6 +56,21 @@ void MusiclistListWidget::addUserMusiclist(QString listname)
     UserMusicWidget *userMusiclist = new UserMusicWidget(parent);
     userMusiclist->setTableName(listname);
 }
+
+void MusiclistListWidget::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    emit sizeChanged();
+}
+
+void MusiclistListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+    QString curName = item(current.row())->text();
+    scrollArea->takeWidget();
+    scrollArea->setWidget(name_widgetHash.value(curName));
+    QListWidget::currentChanged(current,previous);
+}
+
 
 void MusiclistListWidget::saveUserMusiclist()
 {

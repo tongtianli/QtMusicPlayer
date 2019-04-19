@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->head->setWidget(title);
     ui->splitter->setStretchFactor(0,1);
     ui->listofMusiclist->setup(this,ui->scrollArea,playlistWidget);
+    ui->listofMusiclist->initialDefaultWidgets();
     ui->sliderPlay->setEnabled(false);
 
     connectSlots();
