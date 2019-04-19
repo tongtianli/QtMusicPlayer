@@ -10,9 +10,8 @@ class MusiclistListWidget : public QListWidget
 {
     Q_OBJECT
 public:
-    MusiclistListWidget();
-    explicit MusiclistListWidget(QObject *parent);
-    ~MusiclistListWidget();
+    explicit MusiclistListWidget(QWidget *parent = nullptr);
+    ~MusiclistListWidget() override;
 
     void setup(QMainWindow *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
     void initialDefaultWidgets();
@@ -25,7 +24,8 @@ signals:
 public slots:
 
 protected:
-    virtual void resizeEvent(QResizeEvent *event);
+    virtual void resizeEvent(QResizeEvent *event) override;
+    virtual void currentChanged(const QModelIndex &current,const QModelIndex &previous) override;
 
 private:
     const QSet<QString> defaultListnames = {"发现音乐","本地音乐","我喜欢的音乐"};
@@ -33,6 +33,7 @@ private:
     QScrollArea *scrollArea;
     PlayListWidget *playlistWidget;
     QHash<QString,QWidget*> name_widgetHash;
+
 
 
     void saveUserMusiclist();
