@@ -6,11 +6,15 @@
 #include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+    QWidget(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+//    Qt::WindowStaysOnTopHint     窗口在最顶端，不会拖到任务栏下面
     setWindowFlags(Qt::FramelessWindowHint | windowFlags());
+    setMouseTracking(true);
+    mouseLeftButtonPressed = false;
+    resizeRegion = ResizeRegion::INVALID;
     title = new MainwindowTitle(this);
     suggestBox = new SuggestBox(this,title->getSearchLineEdit());
     playStateWidget = new PlayStateWidget(this);
@@ -18,7 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     ui->head->setWidget(title);
-    ui->splitter->setStretchFactor(0,1);
+    ui->splitter->setStretchFactor(0,0);
+    ui->splitter->setStretchFactor(1,1);
     ui->listofMusiclist->setup(this,ui->scrollArea,playlistWidget);
     ui->listofMusiclist->initialDefaultWidgets();
     ui->sliderPlay->setEnabled(false);
@@ -26,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSlots();
 
     playlistWidget->load();
+
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +111,54 @@ void MainWindow::connectSlots()
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){
     ui->btnOpenPlaylist->setText(QString::number(size));
+}
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton){
+        mouseLeftButtonPressed = true;
+        mouseLastGlobalPos = event->globalPos();
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+    mouseLeftButtonPressed = false;
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint mouseGlobalPos = event->globalPos();
+    if(mouseLeftButtonPressed){
+        QRect size = geometry();
+        QPoint sizeChangedValue = mouseGlobalPos-mouseLastGlobalPos;
+        switch(resizeRegion){
+        case ResizeRegion::BottomLeft:
+            size.setBottomLeft(size.bottomLeft()+sizeChangedValue);
+            break;
+        case ResizeRegion::BottomRight:
+            size.setBottomRight(size.bottomRight()+sizeChangedValue);
+            break;
+        default:
+            return;
+        }
+        setGeometry(size);
+        mouseLastGlobalPos = mouseGlobalPos;
+        return;
+    }
+    if(inSquare(geometry().bottomRight(),mouseGlobalPos,10)){
+        resizeRegion = ResizeRegion::BottomRight;
+        setCursor(Qt::SizeFDiagCursor);
+    }
+    else if(inReverseSquare(mouseGlobalPos,geometry().bottomLeft(),5)){
+        resizeRegion = ResizeRegion::BottomLeft;
+        setCursor(Qt::SizeBDiagCursor);
+    }
+    else{
+        resizeRegion = ResizeRegion::INVALID;
+        setCursor(Qt::ArrowCursor);
+        return;
+    }
 }
 
 void MainWindow::on_btnOpenPlaylist_clicked()

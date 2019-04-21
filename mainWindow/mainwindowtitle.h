@@ -3,9 +3,20 @@
 
 #include "music.h"
 
+inline bool inSquare(QPoint rightBottom, QPoint leftTop, int squareSize){
+    return rightBottom.x()-leftTop.x()>=0 && rightBottom.y()-leftTop.y()>=0 &&
+            rightBottom.x()-leftTop.x()<=squareSize && rightBottom.y()-leftTop.y()<=squareSize;
+}
+inline bool inReverseSquare(QPoint rightTop, QPoint leftBottom, int squareSize){
+    return rightTop.x()-leftBottom.x()>=0 && rightTop.y()-leftBottom.y()<=0 &&
+            rightTop.x()-leftBottom.x()<=squareSize && rightTop.y()-leftBottom.y()>=(-squareSize);
+}
+
 namespace Ui {
 class MainwindowTitle;
 }
+
+enum ResizeRegion{TopLeft,BottomLeft,TopRight,BottomRight,INVALID};
 
 class MainwindowTitle : public QWidget
 {
@@ -29,9 +40,10 @@ private:
 
 private:
     Ui::MainwindowTitle *ui;
-    QMainWindow *mainwindow;
+    QWidget *mainwindow;
     bool movingEnable;
     QPoint lastMousePostion;
+    ResizeRegion resizeRegion;
 };
 
 #endif // MAINWINDOWTITLE_H
