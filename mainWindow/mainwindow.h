@@ -13,6 +13,8 @@ namespace Ui {
 class MainWindow;
 }
 
+enum ResizeRegion{TopLeft,BottomLeft,TopRight,BottomRight,INVALID};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -27,6 +29,9 @@ signals:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event)override;
 
 public slots:
     void onPlayerPositionChanged(qint64 position);
@@ -42,11 +47,15 @@ private slots:
     void on_sliderPlay_sliderReleased();
     void on_btnLast_clicked();
     void on_btnNext_clicked();
-    void setPlaylistBtnTextbycurSize(int size);
-
+    void setPlaylistBtnTextbycurSize(int size);   
 private:
+    ResizeRegion resizeRegion;
     const int headHeight = 38;
     const int bottomHeight = 38;
+
+    bool mouseLeftButtonPressed;
+    QPoint mouseLastGlobalPos;
+
     Ui::MainWindow *ui;
     MainwindowTitle *title;
     SuggestBox *suggestBox;

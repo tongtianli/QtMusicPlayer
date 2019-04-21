@@ -4,6 +4,7 @@
 MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
 {
     Q_UNUSED(parent);
+    setMouseTracking(true);
 }
 
 MusiclistListWidget::~MusiclistListWidget()

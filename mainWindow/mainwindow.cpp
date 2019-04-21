@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+//    Qt::WindowStaysOnTopHint     窗口在最顶端，不会拖到任务栏下面
     setWindowFlags(Qt::FramelessWindowHint | windowFlags());
     title = new MainwindowTitle(this);
     suggestBox = new SuggestBox(this,title->getSearchLineEdit());
@@ -26,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSlots();
 
     playlistWidget->load();
+
+    setAttribute( Qt::WA_Hover,true);
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +108,77 @@ void MainWindow::connectSlots()
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){
     ui->btnOpenPlaylist->setText(QString::number(size));
+}
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton){
+        mouseLeftButtonPressed = true;
+        mouseLastGlobalPos = event->globalPos();
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+    mouseLeftButtonPressed = false;
+}
+
+inline bool inSquare(QPoint rightBottom, QPoint leftTop, int squareSize){
+    return rightBottom.x()-leftTop.x()>=0 && rightBottom.y()-leftTop.y()>=0 &&
+            rightBottom.x()-leftTop.x()<=squareSize && rightBottom.y()-leftTop.y()<=squareSize;
+}
+inline bool inReverseSquare(QPoint rightTop, QPoint leftBottom, int squareSize){
+    return rightTop.x()-leftBottom.x()>=0 && rightTop.y()-leftBottom.y()<=0 &&
+            rightTop.x()-leftBottom.x()<=squareSize && rightTop.y()-leftBottom.y()>=(-squareSize);
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint mouseGlobalPos = event->globalPos();
+    if(inSquare(mouseGlobalPos,geometry().topLeft(),5)){
+        resizeRegion = ResizeRegion::TopLeft;
+        setCursor(Qt::SizeFDiagCursor);
+    }
+    else if(inReverseSquare(geometry().topRight(),mouseGlobalPos,5)){
+        resizeRegion = ResizeRegion::TopRight;
+        setCursor(Qt::SizeBDiagCursor);
+
+    }
+    else if(inSquare(geometry().bottomRight(),mouseGlobalPos,10)){
+        resizeRegion = ResizeRegion::BottomRight;
+        setCursor(Qt::SizeFDiagCursor);
+    }
+    else if(inReverseSquare(mouseGlobalPos,geometry().bottomLeft(),5)){
+        resizeRegion = ResizeRegion::BottomLeft;
+        setCursor(Qt::SizeBDiagCursor);
+    }
+    else{
+        resizeRegion = ResizeRegion::INVALID;
+        setCursor(Qt::ArrowCursor);
+        return;
+    }
+    if(mouseLeftButtonPressed){
+        QRect size = geometry();
+        QPoint sizeChangedValue = mouseGlobalPos-mouseLastGlobalPos;
+        switch(resizeRegion){
+        case ResizeRegion::TopLeft:
+            size.setTopLeft(size.topLeft()+sizeChangedValue);
+            break;
+        case ResizeRegion::TopRight:
+            size.setTopRight(size.topRight()+sizeChangedValue);
+            break;
+        case ResizeRegion::BottomLeft:
+            size.setBottomLeft(size.bottomLeft()+sizeChangedValue);
+            break;
+        case ResizeRegion::BottomRight:
+            size.setBottomRight(size.bottomRight()+sizeChangedValue);
+            break;
+        case ResizeRegion::INVALID:
+            return;
+        }
+        setGeometry(size);
+        mouseLastGlobalPos = mouseGlobalPos;
+    }
 }
 
 void MainWindow::on_btnOpenPlaylist_clicked()
