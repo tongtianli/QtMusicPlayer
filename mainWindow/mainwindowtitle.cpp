@@ -6,8 +6,11 @@ MainwindowTitle::MainwindowTitle(QWidget *parent) :
     ui(new Ui::MainwindowTitle)
 {
     ui->setupUi(this);
-    mainwindow = qobject_cast<QMainWindow*>(parent);
+    mainwindow = qobject_cast<QWidget*>(parent);
+
+    setMouseTracking(true);
     movingEnable = false;
+    resizeRegion = ResizeRegion::INVALID;
 }
 
 MainwindowTitle::~MainwindowTitle()
@@ -58,9 +61,39 @@ void MainwindowTitle::mousePressEvent(QMouseEvent *event)
 
 void MainwindowTitle::mouseMoveEvent(QMouseEvent *event)
 {
+    QPoint mouseGlobalPos = event->globalPos();
     if(movingEnable){
-        mainwindow->move(mainwindow->pos()+(event->globalPos()-lastMousePostion));
+        QRect size = mainwindow->geometry();
+        QPoint sizeChangedValue = mouseGlobalPos-lastMousePostion;
+        switch(resizeRegion){
+        case ResizeRegion::TopLeft:
+            size.setTopLeft(size.topLeft()+sizeChangedValue);
+            mainwindow->setGeometry(size);
+            break;
+        case ResizeRegion::TopRight:
+            size.setTopRight(size.topRight()+sizeChangedValue);
+            mainwindow->setGeometry(size);
+            break;
+        default:
+            mainwindow->move(mainwindow->pos()+(event->globalPos()-lastMousePostion));
+            break;
+        }
         lastMousePostion = event->globalPos();
+        return;
+    }
+    if(inSquare(mouseGlobalPos,mainwindow->geometry().topLeft(),5)){
+        resizeRegion = ResizeRegion::TopLeft;
+        setCursor(Qt::SizeFDiagCursor);
+    }
+    else if(inReverseSquare(mainwindow->geometry().topRight(),mouseGlobalPos,5)){
+        resizeRegion = ResizeRegion::TopRight;
+        setCursor(Qt::SizeBDiagCursor);
+
+    }
+    else{
+        resizeRegion = ResizeRegion::INVALID;
+        setCursor(Qt::ArrowCursor);
+        return;
     }
 }
 
