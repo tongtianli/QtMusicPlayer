@@ -13,7 +13,7 @@ public:
     explicit MusiclistListWidget(QWidget *parent = nullptr);
     ~MusiclistListWidget() override;
 
-    void setup(QMainWindow *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
+    void setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
     void initialDefaultWidgets();
     void loadUserMusiclists();
     void addUserMusiclist(QString listname);

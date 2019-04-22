@@ -4,6 +4,7 @@
 MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
 {
     Q_UNUSED(parent);
+    setMouseTracking(true);
 }
 
 MusiclistListWidget::~MusiclistListWidget()
@@ -11,7 +12,7 @@ MusiclistListWidget::~MusiclistListWidget()
 
 }
 
-void MusiclistListWidget::setup(QMainWindow *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget)
+void MusiclistListWidget::setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget)
 {
     this->parent = parent;
     this->scrollArea = scrollArea;

@@ -1,16 +1,19 @@
-HEADERS += $$PWD/mainwindow.h \
+HEADERS += \
     $$PWD/suggestbox.h \
-    $$PWD/mainwindowtitle.h
+    $$PWD/mainwindowtitle.h \
+    $$PWD/mainwindow.h
 
 
-SOURCES += $$PWD/mainwindow.cpp\
+SOURCES +=\
 $$PWD/main.cpp \
     $$PWD/suggestbox.cpp \
-    $$PWD/mainwindowtitle.cpp
+    $$PWD/mainwindowtitle.cpp \
+    $$PWD/mainwindow.cpp
 
-FORMS += $$PWD/mainwindow.ui \
+FORMS += \
     $$PWD/suggestbox.ui \
-    $$PWD/mainwindowtitle.ui
+    $$PWD/mainwindowtitle.ui \
+    $$PWD/mainwindow.ui
 
 RESOURCES += \
     $$PWD/mainwindow.qrc
