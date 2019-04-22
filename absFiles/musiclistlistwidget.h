@@ -5,6 +5,7 @@
 #include "localmusicwidget.h"
 #include "usermusicwidget.h"
 #include "playlistwidget.h"
+#include "findmusicwidget.h"
 
 class MusiclistListWidget : public QListWidget
 {
@@ -13,7 +14,7 @@ public:
     explicit MusiclistListWidget(QWidget *parent = nullptr);
     ~MusiclistListWidget() override;
 
-    void setup(QMainWindow *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
+    void setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
     void initialDefaultWidgets();
     void loadUserMusiclists();
     void addUserMusiclist(QString listname);
@@ -33,8 +34,6 @@ private:
     QScrollArea *scrollArea;
     PlayListWidget *playlistWidget;
     QHash<QString,QWidget*> name_widgetHash;
-
-
 
     void saveUserMusiclist();
 

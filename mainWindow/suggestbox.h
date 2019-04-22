@@ -19,7 +19,6 @@ public:
 
 public slots:
     void doneSelection();
-    void preventSuggest();
     void autoSuggest();
     void handleNetworkData(QNetworkReply *networkReply);
 

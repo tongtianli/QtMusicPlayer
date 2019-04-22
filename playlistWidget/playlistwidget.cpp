@@ -109,7 +109,6 @@ void PlayListWidget::previous()
 
 bool PlayListWidget::isPlaying()
 {
-    qDebug()<<player->state();
     return (player->state()==QMediaPlayer::PlayingState);
 }
 
@@ -149,10 +148,15 @@ void PlayListWidget::changeListAndPlay(QList<Music *> musiclist, int index)
 
 void PlayListWidget::onCurPlaylistIndexChanged(int index)
 {
+    //将历史纪录100条以后的删去
     while(recordlist->rowCount()>=maxRecordNum)
         recordlist->remove(maxRecordNum);
+
+    //加入历史记录
     Music *music = list->get(index);
     recordlist->insertMusic(0,music);
+
+    //清除之前的记录
     for(int i=1;i<ui->recordlist->rowCount();i++){
         if(recordlist->get(i)==music)
         {
@@ -160,6 +164,8 @@ void PlayListWidget::onCurPlaylistIndexChanged(int index)
             break;
         }
     }
+
+    emit(currentMediaChanged(music));
 }
 
 void PlayListWidget::on_btnCleanList_clicked()

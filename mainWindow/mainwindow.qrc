@@ -10,7 +10,7 @@
         <file>resource/addlist.png</file>
         <file>resource/favorite.png</file>
         <file>resource/local.png</file>
-        <file>resource/user.png</file>
+        <file>resource/music.png</file>
         <file>resource/cross.png</file>
         <file>resource/fullscreen.png</file>
         <file>resource/hide.png</file>
@@ -19,8 +19,11 @@
         <file>resource/hide_hover.png</file>
         <file>resource/nomal.png</file>
         <file>resource/nomal_hover.png</file>
+        <file>resource/findmusic.png</file>
+        <file>resource/findmusic_hover.png</file>
+        <file>resource/localMusicPic.png</file>
     </qresource>
-    <qresource prefix="/stylesheet" lang="qss">
+    <qresource lang="qss" prefix="/stylesheet">
         <file>resource/darkstyle.qss</file>
     </qresource>
 </RCC>

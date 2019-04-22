@@ -4,6 +4,7 @@
 MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
 {
     Q_UNUSED(parent);
+    setMouseTracking(true);
 }
 
 MusiclistListWidget::~MusiclistListWidget()
@@ -11,7 +12,7 @@ MusiclistListWidget::~MusiclistListWidget()
 
 }
 
-void MusiclistListWidget::setup(QMainWindow *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget)
+void MusiclistListWidget::setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget)
 {
     this->parent = parent;
     this->scrollArea = scrollArea;
@@ -23,7 +24,13 @@ void MusiclistListWidget::setup(QMainWindow *parent, QScrollArea *scrollArea, Pl
 void MusiclistListWidget::initialDefaultWidgets()
 {
     foreach(QString name, defaultListnames){
-        //if(name=="发现音乐");
+        if(name=="发现音乐"){
+            FindMusicWidget *findMusicWidget = new FindMusicWidget(parent);
+            findMusicWidget->hide();
+            connect(findMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+            name_widgetHash.insert("发现音乐",findMusicWidget);
+            continue;
+        }
         if(name=="本地音乐"){
             LocalMusicWidget *localMusicWidget = new LocalMusicWidget(parent);
             localMusicWidget->load();

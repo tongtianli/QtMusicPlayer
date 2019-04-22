@@ -15,10 +15,14 @@ public:
     explicit PlayStateWidget(QWidget *parent = nullptr);
     ~PlayStateWidget();
 
+public slots:
+    void changeCurrentDisplay(Music *music);
+    void setPicture(QNetworkReply *reply);
+
 private:
     Ui::PlayStateWidget *ui;
-    QMediaPlayer *player;
-    QMediaPlaylist playlist;
+    QNetworkAccessManager manager;
+    QPixmap defaultPix;
 };
 
 #endif // PLAYSTATEWIDGET_H

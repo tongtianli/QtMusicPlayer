@@ -1,0 +1,14 @@
+#ifndef ALBUM_H
+#define ALBUM_H
+
+#include "music.h"
+
+typedef struct Album{
+    QString name;
+    int id;
+    QString type;
+    int size;
+    qint64 
+}
+
+#endif // ALBUM_H

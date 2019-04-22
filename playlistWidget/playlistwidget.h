@@ -32,6 +32,7 @@ public:
 signals:
     void maxPositionChanged(QString duration);
     void positionChanged(int pos,QString position);
+    void currentMediaChanged(Music *music);
 
 
 public slots:

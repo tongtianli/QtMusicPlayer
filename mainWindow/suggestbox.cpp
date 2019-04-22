@@ -57,14 +57,13 @@ void SuggestBox::showResult(const QVector<QString> &choices)
 //    suggestList->setUpdatesEnabled(true);
 
 //    suggestList->move(editor->mapToGlobal(QPoint(0, editor->height())));
-    suggestList->setFocus();
     this->show();
 }
 
 void SuggestBox::doneSelection()
 {
     timer.stop();
-    suggestList->hide();
+    this->hide();
     editor->setFocus();
     QListWidgetItem *item = suggestList->currentItem();
     int curIndex = suggestList->currentRow();
@@ -98,16 +97,15 @@ void SuggestBox::doneSelection()
 
 void SuggestBox::autoSuggest()
 {
+    timer.stop();
     QString str = editor->text();
-    if(str=="") return;
+    if(str==""){
+        this->hide();
+        return;
+    }
     QString url = searchUrl.arg(str);
     qDebug()<<url;
     networkManager.get(QNetworkRequest(url));
-}
-
-void SuggestBox::preventSuggest()
-{
-    timer.stop();
 }
 
 void SuggestBox::handleNetworkData(QNetworkReply *networkReply)
