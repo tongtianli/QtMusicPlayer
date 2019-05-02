@@ -7,6 +7,9 @@ MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
     preventChangeSignal = false;
     connect(this,&QTableWidget::itemDoubleClicked,this,&MusicTableWidget::onTableItemDoubleClicked);
     setEditTriggers(EditTrigger::NoEditTriggers);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+    setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+    horizontalHeader()->setStretchLastSection(true);
 }
 
 MusicTableWidget::~MusicTableWidget()

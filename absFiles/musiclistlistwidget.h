@@ -5,6 +5,7 @@
 #include "localmusicwidget.h"
 #include "usermusicwidget.h"
 #include "playlistwidget.h"
+#include "findmusicwidget.h"
 
 class MusiclistListWidget : public QListWidget
 {
