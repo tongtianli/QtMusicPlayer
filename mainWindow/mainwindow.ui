@@ -440,6 +440,15 @@ QListWidget::item:!enabled{
       </item>
       <item>
        <property name="text">
+        <string>发现音乐</string>
+       </property>
+       <property name="icon">
+        <iconset resource="mainwindow.qrc">
+         <normaloff>:/image/resource/findmusic.png</normaloff>:/image/resource/findmusic.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>本地音乐</string>
        </property>
        <property name="font">

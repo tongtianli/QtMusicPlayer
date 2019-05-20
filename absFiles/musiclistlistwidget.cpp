@@ -24,7 +24,12 @@ void MusiclistListWidget::setup(QWidget *parent, QScrollArea *scrollArea, PlayLi
 void MusiclistListWidget::initialDefaultWidgets()
 {
     foreach(QString name, defaultListnames){
-        //if(name=="发现音乐");
+        if(name=="发现音乐"){
+            FindMusicWidget *findMusicWidget = new FindMusicWidget(parent);
+            findMusicWidget->hide();
+            name_widgetHash.insert("发现音乐",findMusicWidget);
+            continue;
+        }
         if(name=="本地音乐"){
             LocalMusicWidget *localMusicWidget = new LocalMusicWidget(parent);
             localMusicWidget->load();
