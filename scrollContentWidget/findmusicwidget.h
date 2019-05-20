@@ -31,13 +31,13 @@ private:
     QString searchContect;
     QList<Playlist*> playlistCache;
     QList<Music*> musicCache;
+    QList<Album*> albumCache;
 
 
     QNetworkAccessManager networkManager;
 
     void connectSlots();
     void sendRequest();
-    void showResult();
 };
 
 #endif // FINDMUSICWIDGET_H

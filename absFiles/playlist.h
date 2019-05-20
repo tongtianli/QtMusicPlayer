@@ -18,4 +18,19 @@ typedef struct Playlist{
     QString description;
 }Playlist;
 
+typedef struct Artist{
+    QString name;
+    QUrl picUrl;
+    QString alias;      //别名
+}Artist;
+
+typedef struct Album{
+    QString name;
+    qint64 id;
+    int size;
+    QUrl picUrl;
+    Artist artist;
+    QString alias;      //别名
+}Album;
+
 #endif // PLAYLIST_H
