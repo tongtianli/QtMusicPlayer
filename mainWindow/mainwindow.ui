@@ -25,6 +25,14 @@
 		border: 2px solid rgb(50, 50, 50);
 		background: rgb(50, 50, 50);
 }
+QWidget{
+	border: 1px solid rgb(45, 45, 45);
+    background: rgb(57, 58, 60);
+    gridline-color: rgb(60, 60, 60);
+}
+QWidget#playStateWidget{
+	
+}
 /***********按钮************/
 QPushButton{
 
@@ -56,11 +64,7 @@ QTabWidget{
     background: rgb(57, 58, 60);
     gridline-color: rgb(60, 60, 60);
 }
-QWidget{
-	border: 1px solid rgb(45, 45, 45);
-    background: rgb(57, 58, 60);
-    gridline-color: rgb(60, 60, 60);
-}
+
 /***********TableWidget************/
 QTableWidget {
         border: 1px solid rgb(45, 45, 45);
@@ -557,8 +561,8 @@ QListWidget::item:!enabled{
       <widget class="QPushButton" name="btnLast">
        <property name="minimumSize">
         <size>
-         <width>24</width>
-         <height>27</height>
+         <width>22</width>
+         <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -650,8 +654,8 @@ QPushButton:enabled:pressed{
       <widget class="QPushButton" name="btnNext">
        <property name="minimumSize">
         <size>
-         <width>24</width>
-         <height>27</height>
+         <width>22</width>
+         <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -777,8 +781,8 @@ QSlider::hover {
       <widget class="QPushButton" name="btnOpenPlaylist">
        <property name="minimumSize">
         <size>
-         <width>52</width>
-         <height>24</height>
+         <width>50</width>
+         <height>22</height>
         </size>
        </property>
        <property name="maximumSize">

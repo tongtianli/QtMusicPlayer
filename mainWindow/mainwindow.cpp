@@ -51,9 +51,10 @@ void MainWindow::resizeSubwidget(){
     int posy = height-playlistHeight-bottomHeight;
     playlistWidget->setGeometry(posx,posy,playlistWidth,playlistHeight);
 
-    int pos = this->size().height()-16-25-100;
+    int pos = this->size().height()-16-25-65;
     playStateWidget->setGeometry(0,pos,ui->listofMusiclist->size().width(),100);
 }
+
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
@@ -90,23 +91,24 @@ void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
         resizeSubwidget();
         playStateWidget->show();
         ui->sliderPlay->setEnabled(true);
+        ui->btnPlay->setIcon(QIcon(":/image/resource/pause.png"));
     }
     else {
         playStateWidget->hide();
         if(state == QMediaPlayer::State::StoppedState){
             ui->sliderPlay->setEnabled(false);
         }
+        ui->btnPlay->setIcon(QIcon(":/image/resource/play.png"));
     }
 }
-
-
 
 void MainWindow::connectSlots()
 {
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
     connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
     connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
-
+    connect(ui->listofMusiclist,&MusiclistListWidget::sizeChanged,this,&MainWindow::resizeSubwidget);
+    connect(playlistWidget,&PlayListWidget::currentMediaChanged,playStateWidget,&PlayStateWidget::changeCurrentDisplay);
 }
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){
