@@ -109,6 +109,9 @@ void MainWindow::connectSlots()
     connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
     connect(ui->listofMusiclist,&MusiclistListWidget::sizeChanged,this,&MainWindow::resizeSubwidget);
     connect(playlistWidget,&PlayListWidget::currentMediaChanged,playStateWidget,&PlayStateWidget::changeCurrentDisplay);
+
+    connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
 }
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){

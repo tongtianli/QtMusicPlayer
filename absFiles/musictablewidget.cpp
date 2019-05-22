@@ -46,7 +46,7 @@ void MusicTableWidget::insertMusic(int index, Music *music)
             this->setItem(index,i,new QTableWidgetItem(music->name));
             continue;
         }
-        if(headerText == "歌手"){
+        if(headerText == "歌手"||headerText == "作者"){
             this->setItem(index,i,new QTableWidgetItem(music->singer));
             continue;
         }

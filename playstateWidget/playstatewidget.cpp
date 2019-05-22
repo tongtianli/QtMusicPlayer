@@ -24,11 +24,9 @@ void PlayStateWidget::changeCurrentDisplay(Music *music)
 {
     QUrl picUrl = music->pic;
     if(picUrl.isValid()&&(!picUrl.isLocalFile())){
-        qDebug()<<"online file";
         manager.get(QNetworkRequest(picUrl));
     }
     else {
-        qDebug()<<"local file";
         //defaultPix = QPixmap(":/image/resource/localMusicPic.png").scaled(50,50);
         ui->picture->setPixmap(defaultPix);
     }

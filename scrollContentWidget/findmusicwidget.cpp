@@ -6,7 +6,7 @@ FindMusicWidget::FindMusicWidget(QWidget *parent) :
     ui(new Ui::FindMusicWidget)
 {
     ui->setupUi(this);
-
+    table = ui->musicTable;
     connectSlots();
 }
 
@@ -37,9 +37,7 @@ void FindMusicWidget::handleNetworkData(QNetworkReply *networkReply)
     QJsonValueRef data = object["data"];
     switch (ui->tabWidget->currentIndex()) {
     case 0:{
-        musicCache.clear();
-        while(ui->musicTable->rowCount())
-            ui->musicTable->removeRow(0);
+        table->clearAll();
         QJsonArray songs = data.toArray();
         for(int i=0;i<songs.size();i++){
             QJsonObject song = songs.at(i).toObject();
@@ -50,13 +48,7 @@ void FindMusicWidget::handleNetworkData(QNetworkReply *networkReply)
             newMusic->pic = song["pic"].toString();
             newMusic->url = song["url"].toString();
             newMusic->lrc = song["lrc"].toString();
-            int time = song["time"].toInt();
-            newMusic->duration = QString("%1:%2").arg(time/60,2,10,QLatin1Char('0')).arg(time%60,2,10,QLatin1Char('0'));
-            musicCache.append(newMusic);
-            ui->musicTable->insertRow(i);
-            ui->musicTable->setItem(i,0,new QTableWidgetItem(newMusic->name));
-            ui->musicTable->setItem(i,1,new QTableWidgetItem(newMusic->singer));
-            ui->musicTable->setItem(i,2,new QTableWidgetItem(newMusic->duration));
+            table->append(newMusic);
         }
         break;
     }

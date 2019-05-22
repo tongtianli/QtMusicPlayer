@@ -35,8 +35,6 @@ private:
     PlayListWidget *playlistWidget;
     QHash<QString,QWidget*> name_widgetHash;
 
-
-
     void saveUserMusiclist();
 
 };

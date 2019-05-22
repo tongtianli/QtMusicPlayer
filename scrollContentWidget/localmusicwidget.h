@@ -21,7 +21,6 @@ public:
 
 signals:
     void localWidgetLoadList(QList<int> idlist);
-    void playLocalMusiclist(int index,QList<Music*> playlist);
 
 private slots:
     void on_btnAddMedia_clicked();

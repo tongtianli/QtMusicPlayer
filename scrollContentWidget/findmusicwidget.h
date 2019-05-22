@@ -3,6 +3,7 @@
 
 #include "music.h"
 #include "playlist.h"
+#include "musictablewidget.h"
 
 namespace Ui {
 class FindMusicWidget;
@@ -14,6 +15,7 @@ class FindMusicWidget : public QWidget
     Q_OBJECT
 
 public:
+    MusicTableWidget *table;
     explicit FindMusicWidget(QWidget *parent = nullptr);
     ~FindMusicWidget();
 
@@ -30,7 +32,6 @@ private:
     QString searchUrl;
     QString searchContect;
     QList<Playlist*> playlistCache;
-    QList<Music*> musicCache;
     QList<Album*> albumCache;
 
 

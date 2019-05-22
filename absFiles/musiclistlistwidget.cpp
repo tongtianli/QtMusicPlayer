@@ -27,6 +27,7 @@ void MusiclistListWidget::initialDefaultWidgets()
         if(name=="发现音乐"){
             FindMusicWidget *findMusicWidget = new FindMusicWidget(parent);
             findMusicWidget->hide();
+            connect(findMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
             name_widgetHash.insert("发现音乐",findMusicWidget);
             continue;
         }
