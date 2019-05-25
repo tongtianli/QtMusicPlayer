@@ -159,7 +159,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QTableWidget" name="albumTable">
+        <widget class="StyledTableWidget" name="albumTable">
          <attribute name="horizontalHeaderVisible">
           <bool>false</bool>
          </attribute>
@@ -198,7 +198,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QTableWidget" name="listTable">
+        <widget class="StyledTableWidget" name="listTable">
          <column>
           <property name="text">
            <string>音乐列表</string>
@@ -237,6 +237,11 @@
    <class>MusicTableWidget</class>
    <extends>QTableWidget</extends>
    <header location="global">musictablewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>StyledTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">styledtablewidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
