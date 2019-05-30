@@ -43,6 +43,11 @@ void UserMusicWidget::setName(QString name)
     ui->nameLbl->setText(name);
 }
 
+void UserMusicWidget::setInitDate(QString dateText)
+{
+    ui->createTime->setText(dateText+"创建");
+}
+
 void UserMusicWidget::load()
 {
     table->load();

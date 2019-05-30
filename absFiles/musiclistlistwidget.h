@@ -6,6 +6,7 @@
 #include "usermusicwidget.h"
 #include "playlistwidget.h"
 #include "findmusicwidget.h"
+#include "addnewmusiclist.h"
 
 class MusiclistListWidget : public QListWidget
 {
@@ -16,26 +17,33 @@ public:
 
     void setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
     void initialDefaultWidgets();
+    void buildMenu();
     void loadUserMusiclists();
+    QHash<QString,QWidget*> name_widgetHash;
+
+public slots:
     void addUserMusiclist(QString listname);
 
-    QHash<QString,QWidget*> name_widgetHash;
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
 
 signals:
     void sizeChanged();
 
-public slots:
-
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
     virtual void currentChanged(const QModelIndex &current,const QModelIndex &previous) override;
+
+private slots:
+    void onActionAddTriggered(bool checked);
 
 private:
     const QSet<QString> defaultListnames = {"发现音乐","本地音乐","我喜欢的音乐"};
     QWidget *parent;
     QScrollArea *scrollArea;
     PlayListWidget *playlistWidget;
-
+    QMenu *menu;
+    AddNewMusiclist *question;
 
     void saveUserMusiclist();
 

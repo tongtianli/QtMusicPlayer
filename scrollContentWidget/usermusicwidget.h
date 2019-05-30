@@ -24,6 +24,7 @@ public:
     void remove(Music *music);
 
     void setName(QString name);
+    void setInitDate(QString dateText);
     void load();
 
 private slots:

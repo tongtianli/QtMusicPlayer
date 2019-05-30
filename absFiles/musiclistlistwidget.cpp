@@ -5,12 +5,25 @@ MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
 {
     Q_UNUSED(parent);
     setMouseTracking(true);
+    buildMenu();
+    question = new AddNewMusiclist(this);
+    question->hide();
+    connect(question,&AddNewMusiclist::addlist,this,&MusiclistListWidget::addUserMusiclist);
 }
 
 MusiclistListWidget::~MusiclistListWidget()
 {
-
+    delete question;
 }
+
+void MusiclistListWidget::buildMenu()
+{
+    menu = new QMenu(this);
+    QAction *create = new QAction(QIcon(":/image/resource/addlist.png"),"添加",this);
+    connect(create,&QAction::triggered,this,&MusiclistListWidget::onActionAddTriggered);
+    menu->addAction(create);
+}
+
 
 void MusiclistListWidget::setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget)
 {
@@ -52,6 +65,7 @@ void MusiclistListWidget::initialDefaultWidgets()
     }
 }
 
+
 void MusiclistListWidget::loadUserMusiclists()
 {
 }
@@ -60,8 +74,19 @@ void MusiclistListWidget::addUserMusiclist(QString listname)
 {
     UserMusicWidget *userMusiclist = new UserMusicWidget(parent);
     userMusiclist->setName(listname);
-    addItem(listname);
+    addItem(new QListWidgetItem(QIcon(":/image/resource/music.png"),listname));
     name_widgetHash.insert(listname,userMusiclist);
+    QDate date = QDate::currentDate();
+    QString dateText = QString::asprintf("%d-%d-%d",date.year(),date.month(),date.day());
+    userMusiclist->setInitDate(dateText);
+}
+
+void MusiclistListWidget::mousePressEvent(QMouseEvent *event)
+{
+    QListWidget::mousePressEvent(event);
+    if(event->button()==Qt::RightButton){
+        menu->popup(QCursor::pos());
+    }
 }
 
 void MusiclistListWidget::resizeEvent(QResizeEvent *event)
@@ -76,6 +101,14 @@ void MusiclistListWidget::currentChanged(const QModelIndex &current, const QMode
     scrollArea->takeWidget();
     scrollArea->setWidget(name_widgetHash.value(curName));
     QListWidget::currentChanged(current,previous);
+}
+
+void MusiclistListWidget::onActionAddTriggered(bool checked)
+{
+    Q_UNUSED(checked);
+    QPoint position = QWidget::mapFromGlobal(QCursor::pos());
+    question->setGeometry(position.x(),position.y(),150,150);
+    question->show();
 }
 
 
