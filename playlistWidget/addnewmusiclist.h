@@ -1,13 +1,13 @@
 #ifndef ADDNEWMUSICLIST_H
 #define ADDNEWMUSICLIST_H
 
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class AddNewMusiclist;
 }
 
-class AddNewMusiclist : public QWidget
+class AddNewMusiclist : public QDialog
 {
     Q_OBJECT
 

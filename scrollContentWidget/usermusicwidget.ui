@@ -103,7 +103,7 @@
            <item>
             <widget class="QLabel" name="numLbl">
              <property name="text">
-              <string>16</string>
+              <string>0</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

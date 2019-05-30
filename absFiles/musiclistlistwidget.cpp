@@ -7,7 +7,6 @@ MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
     setMouseTracking(true);
     buildMenu();
     question = new AddNewMusiclist(this);
-    question->hide();
     connect(question,&AddNewMusiclist::addlist,this,&MusiclistListWidget::addUserMusiclist);
 }
 
@@ -85,7 +84,23 @@ void MusiclistListWidget::mousePressEvent(QMouseEvent *event)
 {
     QListWidget::mousePressEvent(event);
     if(event->button()==Qt::RightButton){
-        menu->popup(QCursor::pos());
+        QPoint position = QWidget::mapFromGlobal(QCursor::pos());
+        if(itemAt(position)){
+            QString curListName = itemAt(position)->text();
+            if(defaultListnames.contains(curListName)){
+                //鼠标放在默认歌单上
+                menu->popup(QCursor::pos());
+            }
+            else{
+                //鼠标放在用户歌单上
+                qDebug()<<curListName;
+                menu->popup(QCursor::pos());
+            }
+        }
+        else{
+            //鼠标放在界面中，而非任一歌单上
+            menu->popup(QCursor::pos());
+        }
     }
 }
 
@@ -106,7 +121,7 @@ void MusiclistListWidget::currentChanged(const QModelIndex &current, const QMode
 void MusiclistListWidget::onActionAddTriggered(bool checked)
 {
     Q_UNUSED(checked);
-    QPoint position = QWidget::mapFromGlobal(QCursor::pos());
+    QPoint position = QCursor::pos();
     question->setGeometry(position.x(),position.y(),150,150);
     question->show();
 }
