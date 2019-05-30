@@ -31,6 +31,7 @@
 #include <QTreeWidget>
 #include <QtNetwork>
 #include <qnetworkreply.h>
+#include <QMessageBox>
 
 enum Playmode{loop,single,random};
 

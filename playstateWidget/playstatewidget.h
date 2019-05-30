@@ -2,6 +2,7 @@
 #define PLAYSTATEWIDGET_H
 
 #include "music.h"
+#include "musicdownloader.h"
 
 namespace Ui {
 class PlayStateWidget;
@@ -19,10 +20,15 @@ public slots:
     void changeCurrentDisplay(Music *music);
     void setPicture(QNetworkReply *reply);
 
+private slots:
+    void on_downloadBtn_clicked();
+
 private:
     Ui::PlayStateWidget *ui;
     QNetworkAccessManager manager;
+    MusicDownloader downloader;
     QPixmap defaultPix;
+    Music *curMusic;
 };
 
 #endif // PLAYSTATEWIDGET_H

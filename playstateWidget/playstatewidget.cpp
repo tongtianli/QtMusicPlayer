@@ -32,6 +32,7 @@ void PlayStateWidget::changeCurrentDisplay(Music *music)
     }
     ui->author->setText(music->singer);
     ui->songName->setText(music->name);
+    this->curMusic = music;
 }
 
 void PlayStateWidget::setPicture(QNetworkReply *reply)
@@ -42,4 +43,9 @@ void PlayStateWidget::setPicture(QNetworkReply *reply)
     pix.loadFromData(picData);
     pix = pix.scaled(50,50);
     ui->picture->setPixmap(pix);
+}
+
+void PlayStateWidget::on_downloadBtn_clicked()
+{
+    downloader.downloadMusic(curMusic);
 }
