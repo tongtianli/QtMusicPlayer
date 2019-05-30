@@ -54,13 +54,14 @@ void MusiclistListWidget::initialDefaultWidgets()
 
 void MusiclistListWidget::loadUserMusiclists()
 {
-
 }
 
 void MusiclistListWidget::addUserMusiclist(QString listname)
 {
     UserMusicWidget *userMusiclist = new UserMusicWidget(parent);
     userMusiclist->setName(listname);
+    addItem(listname);
+    name_widgetHash.insert(listname,userMusiclist);
 }
 
 void MusiclistListWidget::resizeEvent(QResizeEvent *event)
