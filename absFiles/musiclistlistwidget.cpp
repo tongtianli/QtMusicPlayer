@@ -42,15 +42,14 @@ void MusiclistListWidget::initialDefaultWidgets()
         if(name=="我喜欢的音乐"){
             UserMusicWidget *favoriteMusicWidget = new UserMusicWidget(parent);
             favoriteMusicWidget->hide();
-            favoriteMusicWidget->setTableName("我喜欢的音乐");
+            favoriteMusicWidget->setName("我喜欢的音乐");
+            connect(favoriteMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+
             favoriteMusicWidget->load();
             name_widgetHash.insert("我喜欢的音乐",favoriteMusicWidget);
             continue;
         }
     }
-
-
-
 }
 
 void MusiclistListWidget::loadUserMusiclists()
@@ -61,7 +60,7 @@ void MusiclistListWidget::loadUserMusiclists()
 void MusiclistListWidget::addUserMusiclist(QString listname)
 {
     UserMusicWidget *userMusiclist = new UserMusicWidget(parent);
-    userMusiclist->setTableName(listname);
+    userMusiclist->setName(listname);
 }
 
 void MusiclistListWidget::resizeEvent(QResizeEvent *event)

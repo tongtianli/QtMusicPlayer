@@ -44,18 +44,21 @@
       <number>5</number>
      </property>
      <item>
-      <widget class="QGraphicsView" name="graphicsView">
+      <widget class="QLabel" name="picture">
        <property name="minimumSize">
         <size>
-         <width>180</width>
-         <height>180</height>
+         <width>150</width>
+         <height>150</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>180</width>
-         <height>180</height>
+         <width>150</width>
+         <height>150</height>
         </size>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -64,7 +67,12 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="labelName">
+          <widget class="QLabel" name="nameLbl">
+           <property name="font">
+            <font>
+             <pointsize>18</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>For sleeping</string>
            </property>
@@ -93,7 +101,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="labeltotalNum">
+            <widget class="QLabel" name="numLbl">
              <property name="text">
               <string>16</string>
              </property>
@@ -107,26 +115,40 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="labelCreateTime">
+        <widget class="QLabel" name="createTime">
          <property name="text">
           <string>2017-06-25创建</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4"/>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QPushButton" name="btnPlayAll">
+          <widget class="QPushButton" name="playAllBtn">
            <property name="text">
             <string>播放全部</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnDownloadAll">
+          <widget class="QPushButton" name="downloadAllBtn">
            <property name="text">
             <string>下载全部</string>
            </property>

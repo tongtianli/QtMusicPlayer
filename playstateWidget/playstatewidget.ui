@@ -102,18 +102,28 @@
     <widget class="QPushButton" name="downloadBtn">
      <property name="minimumSize">
       <size>
-       <width>16</width>
-       <height>16</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>18</width>
-       <height>18</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="playstatewidget.qrc">
+       <normaloff>:/image/resource/download.png</normaloff>:/image/resource/download.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </widget>
    </item>
@@ -141,29 +151,35 @@
     <widget class="QPushButton" name="likeBtn">
      <property name="minimumSize">
       <size>
-       <width>16</width>
-       <height>16</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>18</width>
-       <height>18</height>
+       <width>20</width>
+       <height>20</height>
       </size>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../mainWindow/mainwindow.qrc">
-       <normaloff>:/image/resource/favorite.png</normaloff>:/image/resource/favorite.png</iconset>
+      <iconset resource="playstatewidget.qrc">
+       <normaloff>:/image/resource/like_no.png</normaloff>:/image/resource/like_no.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
  <resources>
-  <include location="../mainWindow/mainwindow.qrc"/>
+  <include location="playstatewidget.qrc"/>
  </resources>
  <connections/>
 </ui>

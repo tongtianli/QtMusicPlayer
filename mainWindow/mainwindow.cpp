@@ -104,6 +104,9 @@ void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
 
 void MainWindow::connectSlots()
 {
+    FindMusicWidget *findMusicWidget =  qobject_cast<FindMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("发现音乐"));
+    LocalMusicWidget *localMusicWidget = qobject_cast<LocalMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("本地音乐"));
+    UserMusicWidget *favourateMusicWidget = qobject_cast<UserMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("我喜欢的音乐"));
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
     connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
     connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
@@ -112,6 +115,9 @@ void MainWindow::connectSlots()
 
     connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
     connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+
+    connect(playStateWidget,&PlayStateWidget::likeMusic,favourateMusicWidget,&UserMusicWidget::prepend);
+    connect(playStateWidget,&PlayStateWidget::dislikeMusic,favourateMusicWidget,&UserMusicWidget::remove);
 }
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){

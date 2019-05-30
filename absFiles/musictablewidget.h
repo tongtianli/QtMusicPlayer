@@ -2,6 +2,7 @@
 #define MUSICTABLEWIDGET_H
 
 #include "music.h"
+#include "musicdownloader.h"
 
 class MusicTableWidget : public QTableWidget
 {
@@ -15,10 +16,13 @@ public:
     void setMusiclist(QList<Music*> list);
     void clearAll();
     void remove(int index);
+    void remove(Music *music);
     void append(Music *music);
+    void play();
     Music* get(int index);
     QList<Music*> getAll();
     void load();
+    void downloadAllMusic();
 
 
 signals:

@@ -11,3 +11,6 @@ SOURCES += $$PWD/localmusicwidget.cpp \
 FORMS += $$PWD/localmusicwidget.ui \
     $$PWD/usermusicwidget.ui \
     $$PWD/findmusicwidget.ui
+
+RESOURCES += \
+    $$PWD/scrollcontentwidget.qrc

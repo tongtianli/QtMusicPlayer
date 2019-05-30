@@ -19,6 +19,8 @@ public:
     void loadUserMusiclists();
     void addUserMusiclist(QString listname);
 
+    QHash<QString,QWidget*> name_widgetHash;
+
 signals:
     void sizeChanged();
 
@@ -33,7 +35,7 @@ private:
     QWidget *parent;
     QScrollArea *scrollArea;
     PlayListWidget *playlistWidget;
-    QHash<QString,QWidget*> name_widgetHash;
+
 
     void saveUserMusiclist();
 

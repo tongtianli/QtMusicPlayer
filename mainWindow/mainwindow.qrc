@@ -8,7 +8,6 @@
         <file>resource/play.png</file>
         <file>resource/remove.png</file>
         <file>resource/addlist.png</file>
-        <file>resource/favorite.png</file>
         <file>resource/local.png</file>
         <file>resource/music.png</file>
         <file>resource/cross.png</file>
@@ -21,7 +20,7 @@
         <file>resource/nomal_hover.png</file>
         <file>resource/findmusic.png</file>
         <file>resource/findmusic_hover.png</file>
-        <file>resource/localMusicPic.png</file>
+        <file>resource/favourite.png</file>
     </qresource>
     <qresource lang="qss" prefix="/stylesheet">
         <file>resource/darkstyle.qss</file>

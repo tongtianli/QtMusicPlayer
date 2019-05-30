@@ -3,6 +3,7 @@
 
 #include "music.h"
 #include "musictablewidget.h"
+#include "musicdownloader.h"
 
 
 namespace Ui {
@@ -19,11 +20,25 @@ public:
     explicit UserMusicWidget(QWidget *parent = nullptr);
     ~UserMusicWidget();
 
-    void setTableName(QString name);
+    void prepend(Music *music);
+    void remove(Music *music);
+
+    void setName(QString name);
     void load();
+
+private slots:
+    void on_playAllBtn_clicked();
+    void onTableSizeChanged(int size);
+    void setPicture(QNetworkReply *reply);
+
+    void on_downloadAllBtn_clicked();
 
 private:
     Ui::UserMusicWidget *ui;
+
+    QNetworkAccessManager manager;
+    QPixmap defaultPix;
+    MusicDownloader download;
 
 };
 

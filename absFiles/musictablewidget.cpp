@@ -96,11 +96,26 @@ void MusicTableWidget::remove(int index)
         emit sizeChanged(list.size());
 }
 
+void MusicTableWidget::remove(Music *music)
+{
+    for(int i = 0;i<list.size();i++){
+        if(list.at(i)->name==music->name&&list.at(i)->singer==music->singer){
+            this->remove(i);
+            return;
+        }
+    }
+}
+
 void MusicTableWidget::append(Music *music)
 {
     int size = list.size();
     size = size<0?0:size;
     insertMusic(size,music);
+}
+
+void MusicTableWidget::play()
+{
+    emit musicDoubleClicked(list,0);
 }
 
 Music *MusicTableWidget::get(int index)
@@ -159,6 +174,13 @@ void MusicTableWidget::load()
     }
     if(music!=nullptr)
         append(music);
+}
+
+void MusicTableWidget::downloadAllMusic()
+{
+    MusicDownloader downloader;
+    for(int i=0;i<list.count();i++)
+        downloader.downloadMusic(list.at(i));
 }
 
 void MusicTableWidget::save()

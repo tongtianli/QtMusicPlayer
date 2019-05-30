@@ -44,6 +44,7 @@ typedef struct Music{
     QUrl lrc;
     QUrl url;
     bool local;
+    bool like;
     QString size;
 }Music;
 
