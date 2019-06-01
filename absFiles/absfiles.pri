@@ -4,7 +4,8 @@ $$PWD/music.h \
     $$PWD/musiclistlistwidget.h \
     $$PWD/playlist.h \
     $$PWD/styledtablewidget.h \
-    $$PWD/musicdownloader.h
+    $$PWD/musicdownloader.h \
+    $$PWD/defaultmusiclist.h
 
 SOURCES += \
     $$PWD/musictablewidget.cpp \

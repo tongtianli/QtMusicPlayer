@@ -156,7 +156,7 @@ void PlayListWidget::playListLater(QList<Music *> musiclist)
 {
     int i = playlist->currentIndex();
     for(int j=0;j<musiclist.size();j++){
-        insertMedia(i++,musiclist.at(j));
+        insertMedia(++i,musiclist.at(j));
     }
 }
 

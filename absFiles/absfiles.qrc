@@ -1,5 +1,5 @@
 <RCC>
-    <qresource lang="qss" prefix="/stylesheet">
+    <qresource prefix="/stylesheet" lang="qss">
         <file>resource/tablewidget.qss</file>
     </qresource>
     <qresource prefix="/image">
@@ -9,5 +9,6 @@
         <file>resource/downloadAll.png</file>
         <file>resource/edit.png</file>
         <file>resource/userPlaylistIcon.png</file>
+        <file>resource/book.png</file>
     </qresource>
 </RCC>

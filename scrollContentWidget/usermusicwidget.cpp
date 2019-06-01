@@ -30,6 +30,7 @@ void UserMusicWidget::prepend(Music *music)
     table->insertMusic(0,music);
     if(!music->local)
         manager.get(QNetworkRequest(music->pic));
+
 }
 
 void UserMusicWidget::remove(Music *music)

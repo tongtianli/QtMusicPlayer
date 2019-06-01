@@ -13,6 +13,9 @@ MusiclistListWidget::MusiclistListWidget(QWidget *parent) : QListWidget(parent)
 MusiclistListWidget::~MusiclistListWidget()
 {
     delete addNewMusiclist;
+    delete itemMenu_user;
+    delete menu;
+    delete itemMenu_default;
 }
 
 void MusiclistListWidget::buildMenu()
@@ -66,6 +69,7 @@ void MusiclistListWidget::initialDefaultWidgets()
             FindMusicWidget *findMusicWidget = new FindMusicWidget(parent);
             findMusicWidget->hide();
             connect(findMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+            connect(this,&MusiclistListWidget::listChanged,findMusicWidget->table,&MusicTableWidget::buildBookMenu);
             name_widgetHash.insert("发现音乐",findMusicWidget);
             continue;
         }
@@ -75,6 +79,7 @@ void MusiclistListWidget::initialDefaultWidgets()
             localMusicWidget->hide();
             connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
             connect(localMusicWidget->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
+            connect(this,&MusiclistListWidget::listChanged,localMusicWidget->table,&MusicTableWidget::buildBookMenu);
             name_widgetHash.insert("本地音乐",localMusicWidget);
             continue;
         }
@@ -84,11 +89,13 @@ void MusiclistListWidget::initialDefaultWidgets()
             favoriteMusicWidget->setName("我喜欢的音乐");
             connect(favoriteMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
             connect(favoriteMusicWidget->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
+            connect(this,&MusiclistListWidget::listChanged,favoriteMusicWidget->table,&MusicTableWidget::buildBookMenu);
             favoriteMusicWidget->load();
             name_widgetHash.insert("我喜欢的音乐",favoriteMusicWidget);
             continue;
         }
     }
+    emit listChanged(name_widgetHash);
 }
 
 
@@ -118,12 +125,16 @@ void MusiclistListWidget::addUserMusiclist(QString listname)
     if(defaultListnames.contains(listname))
         return;
     UserMusicWidget *userMusiclist = new UserMusicWidget(parent);
+    connect(userMusiclist->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(userMusiclist->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
+    connect(this,&MusiclistListWidget::listChanged,userMusiclist->table,&MusicTableWidget::buildBookMenu);
     userMusiclist->setName(listname);
     addItem(new QListWidgetItem(QIcon(":/image/resource/userPlaylistIcon.png"),listname));
     name_widgetHash.insert(listname,userMusiclist);
     QDate date = QDate::currentDate();
     QString dateText = QString::asprintf("%d-%d-%d",date.year(),date.month(),date.day());
     userMusiclist->setInitDate(dateText);
+    emit listChanged(name_widgetHash);
 }
 
 void MusiclistListWidget::mousePressEvent(QMouseEvent *event)
@@ -217,6 +228,7 @@ void MusiclistListWidget::onActionEditTriggered(bool checked)
         if(i!=count())
             item(i)->setText(newName);
         widget->setName(newName);
+        emit listChanged(name_widgetHash);
     }
 }
 
@@ -232,9 +244,8 @@ void MusiclistListWidget::onActionDeletelistTriggered(bool checked)
 {
     Q_UNUSED(checked);
     deleteList(curListName);
-
+    emit listChanged(name_widgetHash);
 }
-
 
 void MusiclistListWidget::saveUserMusiclist()
 {
