@@ -118,6 +118,11 @@ void MusicTableWidget::play()
     emit musicDoubleClicked(list,0);
 }
 
+void MusicTableWidget::playLater()
+{
+    emit playThisListLater(list);
+}
+
 Music *MusicTableWidget::get(int index)
 {
     return list[index];

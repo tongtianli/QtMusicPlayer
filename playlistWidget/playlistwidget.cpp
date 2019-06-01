@@ -45,8 +45,7 @@ void PlayListWidget::connectSlots()
 
 void PlayListWidget::addMedia(Music *music)
 {
-    QUrl url = music->url;
-    QMediaContent mediaContent(url);
+    QMediaContent mediaContent(music->url);
     playlist->addMedia(mediaContent);
     list->append(music);
 }
@@ -63,6 +62,13 @@ void PlayListWidget::setPlaylist(QList<Music *> playlist)
 void PlayListWidget::setCurMedia(int index)
 {
     playlist->setCurrentIndex(index);
+}
+
+void PlayListWidget::insertMedia(int index, Music *music)
+{
+    QMediaContent mediaContent(music->url);
+    playlist->insertMedia(index,mediaContent);
+    list->insertMusic(index,music);
 }
 
 
@@ -144,6 +150,14 @@ void PlayListWidget::changeListAndPlay(QList<Music *> musiclist, int index)
     setPlaylist(musiclist);
     setCurMedia(index);
     play();
+}
+
+void PlayListWidget::playListLater(QList<Music *> musiclist)
+{
+    int i = playlist->currentIndex();
+    for(int j=0;j<musiclist.size();j++){
+        insertMedia(i++,musiclist.at(j));
+    }
 }
 
 void PlayListWidget::onCurPlaylistIndexChanged(int index)

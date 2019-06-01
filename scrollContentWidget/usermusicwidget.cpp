@@ -40,7 +40,13 @@ void UserMusicWidget::remove(Music *music)
 void UserMusicWidget::setName(QString name)
 {
     table->setName(name);
+    listname = name;
     ui->nameLbl->setText(name);
+}
+
+QString UserMusicWidget::name()
+{
+    return  listname;
 }
 
 void UserMusicWidget::setInitDate(QString dateText)

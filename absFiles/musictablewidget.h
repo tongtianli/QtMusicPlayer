@@ -19,6 +19,7 @@ public:
     void remove(Music *music);
     void append(Music *music);
     void play();
+    void playLater();
     Music* get(int index);
     QList<Music*> getAll();
     void load();
@@ -28,6 +29,7 @@ public:
 signals:
     void sizeChanged(int size);
     void musicDoubleClicked(QList<Music*> list, int index);
+    void playThisListLater(QList<Music*> list);
 
 private:
     QList<Music*> list;

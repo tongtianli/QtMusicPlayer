@@ -24,6 +24,7 @@ public:
     void remove(Music *music);
 
     void setName(QString name);
+    QString name();
     void setInitDate(QString dateText);
     void load();
 
@@ -36,7 +37,7 @@ private slots:
 
 private:
     Ui::UserMusicWidget *ui;
-
+    QString listname;
     QNetworkAccessManager manager;
     QPixmap defaultPix;
     MusicDownloader download;

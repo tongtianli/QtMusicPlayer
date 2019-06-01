@@ -19,6 +19,7 @@ public:
     void initialDefaultWidgets();
     void buildMenu();
     void loadUserMusiclists();
+    void deleteList(QString name);
     QHash<QString,QWidget*> name_widgetHash;
 
 public slots:
@@ -36,6 +37,11 @@ protected:
 
 private slots:
     void onActionAddTriggered(bool checked);
+    void onActionPlayTriggered(bool checked);
+    void onActionPlayLaterTriggered(bool checked);
+    void onActionEditTriggered(bool checked);
+    void onActionDownloadTriggered(bool checked);
+    void onActionDeletelistTriggered(bool checked);
 
 private:
     const QSet<QString> defaultListnames = {"发现音乐","本地音乐","我喜欢的音乐"};
@@ -43,7 +49,10 @@ private:
     QScrollArea *scrollArea;
     PlayListWidget *playlistWidget;
     QMenu *menu;
-    AddNewMusiclist *question;
+    QMenu *itemMenu_user;
+    QMenu *itemMenu_default;
+    AddNewMusiclist *addNewMusiclist;
+    QString curListName ;
 
     void saveUserMusiclist();
 

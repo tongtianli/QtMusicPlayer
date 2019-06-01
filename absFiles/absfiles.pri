@@ -13,3 +13,6 @@ SOURCES += \
     $$PWD/musicdownloader.cpp
 
 FORMS +=
+
+RESOURCES += \
+    $$PWD/absfiles.qrc
