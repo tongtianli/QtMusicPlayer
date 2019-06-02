@@ -58,8 +58,11 @@ void UserMusicWidget::setInitDate(QString dateText)
 void UserMusicWidget::load()
 {
     table->load();
-}
+    QUrl pixUrl = table->get(0)->pic;
+    if(pixUrl.isValid())
+        manager.get(QNetworkRequest(pixUrl));
 
+}
 
 void UserMusicWidget::on_playAllBtn_clicked()
 {

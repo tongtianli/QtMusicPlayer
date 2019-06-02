@@ -25,6 +25,7 @@ public:
     void downloadAllMusic();
     void play();
     void playLater();
+    void save();
 
 public slots:
     void buildBookMenu(QHash<QString,QWidget*> name_widgetHash);
@@ -45,7 +46,7 @@ private:
     QHash<QString, QWidget*> name_widgetHash;
     QString name;
     bool preventChangeSignal;
-    void save();                                        //当析构时调用
+
 
     QAction *actPlay;
     QAction *actPlayLater;

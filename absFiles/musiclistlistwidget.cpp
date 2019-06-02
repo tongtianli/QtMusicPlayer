@@ -101,7 +101,26 @@ void MusiclistListWidget::initialDefaultWidgets()
 
 void MusiclistListWidget::loadUserMusiclists()
 {
-
+    QString fileDir = QDir::currentPath() +"/data/userlist.xml";
+    QFile file(fileDir);
+    if(not file.open(QFile::ReadOnly | QFile::Text))
+    {
+        qDebug()<<"No cache file:"<<fileDir;
+        return;
+    }
+    QXmlStreamReader reader(&file);
+    reader.readNextStartElement();
+    if(reader.isStartElement()&&reader.name()!="userlists")
+        return;
+    int listnum = reader.attributes().at(0).value().toInt();
+    for(int i=0;i<listnum;i++){
+        reader.readNextStartElement();
+        QString listname = reader.readElementText();
+        UserMusicWidget *widget = new UserMusicWidget(parent);
+        widget->setName(listname);
+        widget->load();
+        name_widgetHash.insert(listname,widget);
+    }
 }
 
 void MusiclistListWidget::deleteList(QString name)
@@ -249,9 +268,30 @@ void MusiclistListWidget::onActionDeletelistTriggered(bool checked)
 
 void MusiclistListWidget::saveUserMusiclist()
 {
-//    foreach(QString name, name_widgetHash.keys()){
-//        if(defaultListnames.contains(name))
-//            continue;
-
-//    }
+    QString path = QDir::currentPath() + "/data";
+    QDir pathDir(path);
+    if(!pathDir.exists())
+        pathDir.mkdir(path);
+    QString fileDir = QDir::currentPath() +"/data/userlist.xml";
+    QFile file(fileDir);
+    if(not file.open(QIODevice::ReadWrite|QIODevice::Truncate)){
+        qDebug()<<"can not open"<<fileDir<<endl;
+        return;
+    }
+    QXmlStreamWriter writer(&file);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeStartElement("userlists");
+    writer.writeAttribute("listnum",QString::number(count()-4));
+    for(int i=4;i<count();i++){
+        QString name = item(i)->text();
+        if(defaultListnames.contains(name))
+            continue;
+        writer.writeStartElement("playlist");
+        writer.writeTextElement("name",name);
+        writer.writeEndElement();
+    }
+    writer.writeEndElement();
+    writer.writeEndDocument();
+    file.close();
 }

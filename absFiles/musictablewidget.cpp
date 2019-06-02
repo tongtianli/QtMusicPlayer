@@ -33,17 +33,18 @@ MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
 
 MusicTableWidget::~MusicTableWidget()
 {
-    this->save();
+    save();
     delete actPlay;
     delete actPlayLater;
     delete actDownload;
     delete actRemove;
-    delete menu;
+
     foreach(QAction *act,bookMenu->actions()){
         bookMenu->removeAction(act);
         delete act;
     }
     delete bookMenu;
+    delete menu;
 }
 
 
@@ -186,8 +187,9 @@ void MusicTableWidget::load()
         return;
     }
     QXmlStreamReader reader(&file);
-    reader.readNextStartElement();
-    qDebug()<<reader.text();
+    bool success = reader.readNextStartElement();
+    if(!success)
+        return;
     if(reader.isStartElement()&&reader.name()!="musiclist")
         return;
     name = reader.attributes().at(0).value().toString();
@@ -222,6 +224,7 @@ void MusicTableWidget::load()
     }
     if(music!=nullptr)
         append(music);
+
 }
 
 void MusicTableWidget::downloadAllMusic()

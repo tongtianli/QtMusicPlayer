@@ -39,7 +39,6 @@ public:
 
     private slots:
         void resizeSubwidget();
-
         void on_btnOpenPlaylist_clicked();
         void on_btnPlay_clicked();
         void onChangelistRequested(int index,QList<Music*> list);
@@ -47,6 +46,8 @@ public:
         void on_btnLast_clicked();
         void on_btnNext_clicked();
         void setPlaylistBtnTextbycurSize(int size);
+        void aboutToExit();
+
     private:
         ResizeRegion resizeRegion;
         const int headHeight = 38;

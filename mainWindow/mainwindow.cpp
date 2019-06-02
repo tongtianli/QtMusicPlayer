@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->setStretchFactor(1,1);
     ui->listofMusiclist->setup(this,ui->scrollArea,playlistWidget);
     ui->listofMusiclist->initialDefaultWidgets();
+    ui->listofMusiclist->loadUserMusiclists();
     ui->sliderPlay->setEnabled(false);
 
     connectSlots();
@@ -118,10 +119,18 @@ void MainWindow::connectSlots()
 
     connect(playStateWidget,&PlayStateWidget::likeMusic,favourateMusicWidget,&UserMusicWidget::prepend);
     connect(playStateWidget,&PlayStateWidget::dislikeMusic,favourateMusicWidget,&UserMusicWidget::remove);
+
+    connect(title,&MainwindowTitle::userWantExit,this,aboutToExit);
 }
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){
     ui->btnOpenPlaylist->setText(QString::number(size));
+}
+
+void MainWindow::aboutToExit()
+{
+    ui->listofMusiclist->saveUserMusiclist();
+    close();
 }
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {

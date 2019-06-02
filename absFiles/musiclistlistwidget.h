@@ -20,6 +20,7 @@ public:
     void initialDefaultWidgets();
     void buildMenu();
     void loadUserMusiclists();
+    void saveUserMusiclist();
     void deleteList(QString name);
     QHash<QString,QWidget*> name_widgetHash;
 
@@ -53,7 +54,7 @@ private:
     AddNewMusiclist *addNewMusiclist;
     QString curListName ;
 
-    void saveUserMusiclist();
+
 
 };
 
