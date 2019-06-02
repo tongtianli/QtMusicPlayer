@@ -30,7 +30,7 @@ void UserMusicWidget::prepend(Music *music)
     table->insertMusic(0,music);
     if(!music->local)
         manager.get(QNetworkRequest(music->pic));
-
+    emit addMusic(music);
 }
 
 void UserMusicWidget::remove(Music *music)
@@ -55,13 +55,20 @@ void UserMusicWidget::setInitDate(QString dateText)
     ui->createTime->setText(dateText+"创建");
 }
 
-void UserMusicWidget::load()
+void UserMusicWidget::setList(QHash<int, Music *> musicpool, QList<int> idlist)
 {
-    table->load();
+    table->clearAll();
+    for(int i=0;i<idlist.size();i++){
+        Music *music = musicpool.value(idlist[i]);
+        table->append(music);
+    }
+}
+
+void UserMusicWidget::loadPic()
+{
     QUrl pixUrl = table->get(0)->pic;
     if(pixUrl.isValid())
         manager.get(QNetworkRequest(pixUrl));
-
 }
 
 void UserMusicWidget::on_playAllBtn_clicked()

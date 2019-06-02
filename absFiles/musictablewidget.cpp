@@ -33,16 +33,11 @@ MusicTableWidget::MusicTableWidget(QWidget *parent, QString tableName) :
 
 MusicTableWidget::~MusicTableWidget()
 {
-    save();
     delete actPlay;
     delete actPlayLater;
     delete actDownload;
     delete actRemove;
-
-    foreach(QAction *act,bookMenu->actions()){
-        bookMenu->removeAction(act);
-        delete act;
-    }
+    bookMenu->clear();
     delete bookMenu;
     delete menu;
 }
@@ -99,9 +94,8 @@ void MusicTableWidget::insertMusic(int index, Music *music)
 void MusicTableWidget::setMusiclist(QList<Music *> list)
 {
     preventChangeSignal = true;
-    this->list=list;
-    foreach(Music* music, list){
-        append(music);
+    for(int i=0;i<list.size();i++){
+        append(list[i]);
     }
     emit sizeChanged(list.size());
     preventChangeSignal = false;
@@ -152,6 +146,14 @@ void MusicTableWidget::playLater()
     emit playThisListLater(list);
 }
 
+bool MusicTableWidget::contains(int id)
+{
+    for(int i=0;i<list.size();i++){
+        if(list.at(i)->ID==id) return true;
+    }
+    return false;
+}
+
 void MusicTableWidget::buildBookMenu(QHash<QString, QWidget *> name_widgetHash)
 {
     foreach(QAction* act, bookMenu->actions()){
@@ -175,56 +177,6 @@ Music *MusicTableWidget::get(int index)
 QList<Music *> MusicTableWidget::getAll()
 {
     return list;
-}
-
-void MusicTableWidget::load()
-{
-    QString fileDir = QDir::currentPath() +"/data/"+ name +".xml";
-    QFile file(fileDir);
-    if(not file.open(QFile::ReadOnly | QFile::Text))
-    {
-        qDebug()<<"No cache file:"<<fileDir;
-        return;
-    }
-    QXmlStreamReader reader(&file);
-    bool success = reader.readNextStartElement();
-    if(!success)
-        return;
-    if(reader.isStartElement()&&reader.name()!="musiclist")
-        return;
-    name = reader.attributes().at(0).value().toString();
-    reader.readNextStartElement();
-    Music *music = nullptr;
-    while(!reader.atEnd()){
-        if(reader.isStartElement()&&reader.name()=="music"){
-            if(music!=nullptr)
-                append(music);
-            music = new Music();
-            reader.readNext();
-        }
-        if(reader.name()=="id")
-            music->ID = reader.readElementText().toInt();
-        else if(reader.name()=="name")
-            music->name = reader.readElementText();
-        else if(reader.name()=="singer")
-            music->singer = reader.readElementText();
-        else if(reader.name()=="duration")
-            music->duration = reader.readElementText();
-        else if(reader.name()=="pic")
-            music->pic = reader.readElementText();
-        else if(reader.name()=="lrc")
-            music->lrc = reader.readElementText();
-        else if(reader.name()=="url")
-            music->url = reader.readElementText();
-        else if(reader.name()=="local")
-            music->local = reader.readElementText()=="true"?true:false;
-        else if(reader.name()=="size")
-            music->size = reader.readElementText();
-        reader.readNext();
-    }
-    if(music!=nullptr)
-        append(music);
-
 }
 
 void MusicTableWidget::downloadAllMusic()
@@ -254,42 +206,6 @@ void MusicTableWidget::selectionChanged(const QItemSelection &selected, const QI
     }
     sortedSelectionIndexes = selectedIndexes.toList();
     std::sort(sortedSelectionIndexes.begin(),sortedSelectionIndexes.end());
-}
-
-void MusicTableWidget::save()
-{
-    QString path = QDir::currentPath() + "/data";
-    QDir pathDir(path);
-    if(!pathDir.exists())
-        pathDir.mkdir(path);
-    QString fileDir = QDir::currentPath() +"/data/"+ name +".xml";
-    QFile file(fileDir);
-    if(not file.open(QIODevice::ReadWrite|QIODevice::Truncate)){
-        qDebug()<<"can not open"<<fileDir<<endl;
-        return;
-    }
-    QXmlStreamWriter writer(&file);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeStartElement("musiclist");
-    writer.writeAttribute("listname",name);
-    for(int i=0;i<list.count();i++){
-        Music *music = list[i];
-        writer.writeStartElement("music");
-        writer.writeTextElement("id",QString::number(music->ID,10));
-        writer.writeTextElement("name",music->name);
-        writer.writeTextElement("singer",music->singer);
-        writer.writeTextElement("duration",music->duration);
-        writer.writeTextElement("pic",music->pic.toString());
-        writer.writeTextElement("lrc",music->lrc.toString());
-        writer.writeTextElement("url",music->url.toString());
-        writer.writeTextElement("local",music->local?"true":"false");
-        writer.writeTextElement("size",music->size);
-        writer.writeEndElement();
-    }
-    writer.writeEndElement();
-    writer.writeEndDocument();
-    file.close();
 }
 
 void MusicTableWidget::onTableItemDoubleClicked(QTableWidgetItem *item)

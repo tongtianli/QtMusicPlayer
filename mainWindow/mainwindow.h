@@ -47,8 +47,11 @@ public:
         void on_btnNext_clicked();
         void setPlaylistBtnTextbycurSize(int size);
         void aboutToExit();
+        void onAddMusic(Music* music);
 
     private:
+        void loadData();
+        void saveData();
         ResizeRegion resizeRegion;
         const int headHeight = 38;
         const int bottomHeight = 38;
@@ -64,6 +67,7 @@ public:
         qint64 duration;
         QString posiText;
         QString duraText;
+        QHash<int,Music*> musicpool;
 
         void connectSlots();
 

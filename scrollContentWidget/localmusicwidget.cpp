@@ -12,7 +12,6 @@ LocalMusicWidget::LocalMusicWidget(QWidget *parent) :
     table->setColumnWidth(1,100);
     table->setColumnWidth(2,100);
     ui->labLocalMediaNotFound->hide();
-    table->load();
     connect(table,&MusicTableWidget::sizeChanged,this,&LocalMusicWidget::setTotalMusicLabel);
 }
 
@@ -20,11 +19,6 @@ LocalMusicWidget::~LocalMusicWidget()
 {
     table->clear();
     delete ui;
-}
-
-void LocalMusicWidget::load()
-{
-    table->load();
 }
 
 void LocalMusicWidget::on_btnAddMedia_clicked()
@@ -36,7 +30,9 @@ void LocalMusicWidget::on_btnAddMedia_clicked()
     foreach(QString name,list){
         Music *music = new Music();
         QFileInfo info(name);
-        music->ID = -1;
+        do{
+            music->ID = 0 - rand()%100000;
+        }while(table->contains(music->ID));
         music->url = QUrl::fromLocalFile(name);
         music->name = info.baseName();
         music->singer = "未知";
@@ -44,8 +40,9 @@ void LocalMusicWidget::on_btnAddMedia_clicked()
         music->pic = "";
         music->lrc = "";
         music->local = true;
-        music->size = QString::number(info.size()/1000000)+"MB";
+        music->size = QString::number(double(info.size()/1000000))+"MB";
         table->append(music);
+        emit addMusic(music);
     }
 }
 

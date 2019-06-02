@@ -3,6 +3,7 @@
 
 #include "music.h"
 #include "musictablewidget.h"
+#include "datamanager.h"
 
 namespace Ui{
 class PlayListWidget;
@@ -28,7 +29,8 @@ public:
     void next();
     void previous();
     bool isPlaying();
-    void load();
+    void save();
+    void setPlaylist(QList<Music *> play, QList<Music *> record);
 
 signals:
     void maxPositionChanged(QString duration);

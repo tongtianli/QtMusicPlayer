@@ -17,10 +17,8 @@ public:
     explicit LocalMusicWidget(QWidget *parent = nullptr);
     ~LocalMusicWidget();
 
-    void load();
-
 signals:
-    void localWidgetLoadList(QList<int> idlist);
+    void addMusic(Music* music);
 
 private slots:
     void on_btnAddMedia_clicked();

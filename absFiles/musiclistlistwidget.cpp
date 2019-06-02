@@ -58,11 +58,10 @@ void MusiclistListWidget::setup(QWidget *parent, QScrollArea *scrollArea, PlayLi
     this->parent = parent;
     this->scrollArea = scrollArea;
     this->playlistWidget = playlistWidget;
-
 }
 
 
-void MusiclistListWidget::initialDefaultWidgets()
+void MusiclistListWidget::initialDefaultWidgets(QHash<int,Music*> musicpool)
 {
     foreach(QString name, defaultListnames){
         if(name=="发现音乐"){
@@ -75,11 +74,12 @@ void MusiclistListWidget::initialDefaultWidgets()
         }
         else if(name=="本地音乐"){
             LocalMusicWidget *localMusicWidget = new LocalMusicWidget(parent);
-            localMusicWidget->load();
+            DataManager::loadLocalMusiclist(localMusicWidget);
             localMusicWidget->hide();
             connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
             connect(localMusicWidget->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
             connect(this,&MusiclistListWidget::listChanged,localMusicWidget->table,&MusicTableWidget::buildBookMenu);
+            connect(localMusicWidget,&LocalMusicWidget::addMusic,this,&MusiclistListWidget::sendAddSignal);
             name_widgetHash.insert("本地音乐",localMusicWidget);
             continue;
         }
@@ -90,7 +90,9 @@ void MusiclistListWidget::initialDefaultWidgets()
             connect(favoriteMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
             connect(favoriteMusicWidget->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
             connect(this,&MusiclistListWidget::listChanged,favoriteMusicWidget->table,&MusicTableWidget::buildBookMenu);
-            favoriteMusicWidget->load();
+            connect(favoriteMusicWidget,&UserMusicWidget::addMusic,this,&MusiclistListWidget::sendAddSignal);
+            QList<int> idlist = DataManager::loadMusiclist("我喜欢的音乐");
+            favoriteMusicWidget->setList(musicpool,idlist);
             name_widgetHash.insert("我喜欢的音乐",favoriteMusicWidget);
             continue;
         }
@@ -99,28 +101,18 @@ void MusiclistListWidget::initialDefaultWidgets()
 }
 
 
-void MusiclistListWidget::loadUserMusiclists()
+void MusiclistListWidget::loadUserMusiclists(QHash<int,Music*> musicpool)
 {
-    QString fileDir = QDir::currentPath() +"/data/userlist.xml";
-    QFile file(fileDir);
-    if(not file.open(QFile::ReadOnly | QFile::Text))
-    {
-        qDebug()<<"No cache file:"<<fileDir;
-        return;
-    }
-    QXmlStreamReader reader(&file);
-    reader.readNextStartElement();
-    if(reader.isStartElement()&&reader.name()!="userlists")
-        return;
-    int listnum = reader.attributes().at(0).value().toInt();
-    for(int i=0;i<listnum;i++){
-        reader.readNextStartElement();
-        QString listname = reader.readElementText();
-        UserMusicWidget *widget = new UserMusicWidget(parent);
-        widget->setName(listname);
-        widget->load();
-        name_widgetHash.insert(listname,widget);
-    }
+   QList<QString> userlistnames = DataManager::loadlists();
+   if(!userlistnames.empty())
+       for(int i=0;i<userlistnames.size();i++){
+           QString name = userlistnames.at(i);
+           UserMusicWidget *newWidget = new UserMusicWidget();
+           newWidget->setName(name);
+           QList<int> idlist = DataManager::loadMusiclist(name);
+           newWidget->setList(musicpool,idlist);
+           name_widgetHash.insert(name,newWidget);
+       }
 }
 
 void MusiclistListWidget::deleteList(QString name)
@@ -266,32 +258,26 @@ void MusiclistListWidget::onActionDeletelistTriggered(bool checked)
     emit listChanged(name_widgetHash);
 }
 
+void MusiclistListWidget::sendAddSignal(Music *music)
+{
+    emit addMusic(music);
+}
+
 void MusiclistListWidget::saveUserMusiclist()
 {
-    QString path = QDir::currentPath() + "/data";
-    QDir pathDir(path);
-    if(!pathDir.exists())
-        pathDir.mkdir(path);
-    QString fileDir = QDir::currentPath() +"/data/userlist.xml";
-    QFile file(fileDir);
-    if(not file.open(QIODevice::ReadWrite|QIODevice::Truncate)){
-        qDebug()<<"can not open"<<fileDir<<endl;
-        return;
+    QList<QString> userlistnames;
+    for(int i=USERLIST_STARTINDEX;i<count();i++){
+        QString listname = item(i)->text();
+        UserMusicWidget *widget = qobject_cast<UserMusicWidget*>(name_widgetHash.value(listname));
+        DataManager::saveMusiclist(listname,widget);
+        userlistnames.append(listname);
     }
-    QXmlStreamWriter writer(&file);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeStartElement("userlists");
-    writer.writeAttribute("listnum",QString::number(count()-4));
-    for(int i=4;i<count();i++){
-        QString name = item(i)->text();
-        if(defaultListnames.contains(name))
-            continue;
-        writer.writeStartElement("playlist");
-        writer.writeTextElement("name",name);
-        writer.writeEndElement();
-    }
-    writer.writeEndElement();
-    writer.writeEndDocument();
-    file.close();
+    if(!userlistnames.empty())
+        DataManager::savelists(userlistnames);
+}
+
+void MusiclistListWidget::saveLocalMusiclist()
+{
+    LocalMusicWidget *widget = qobject_cast<LocalMusicWidget*>(name_widgetHash.value("本地音乐"));
+    DataManager::saveLocalMusiclist(widget);
 }

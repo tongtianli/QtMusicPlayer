@@ -118,10 +118,16 @@ bool PlayListWidget::isPlaying()
     return (player->state()==QMediaPlayer::PlayingState);
 }
 
-void PlayListWidget::load()
+void PlayListWidget::save()
 {
-    list->load();
-    recordlist->load();
+    DataManager::saveMusiclist("正在播放",ui->playlistWidget);
+    DataManager::saveMusiclist("历史记录",ui->recordlist);
+}
+
+void PlayListWidget::setPlaylist(QList<Music*> play,QList<Music*> record)
+{
+    ui->playlistWidget->setMusiclist(play);
+    ui->recordlist->setMusiclist(record);
 }
 
 void PlayListWidget::changePlayPosition(int pos)

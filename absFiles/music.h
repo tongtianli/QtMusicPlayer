@@ -32,11 +32,13 @@
 #include <QtNetwork>
 #include <qnetworkreply.h>
 #include <QMessageBox>
+#include <QMultiHash>
 
 enum Playmode{loop,single,random};
 
 typedef struct Music{
     int ID;
+    int quote;
     QString name;
     QString singer;
     QString duration;

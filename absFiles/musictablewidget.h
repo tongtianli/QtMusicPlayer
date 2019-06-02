@@ -21,11 +21,10 @@ public:
     void append(Music *music);
     Music* get(int index);
     QList<Music*> getAll();
-    void load();
     void downloadAllMusic();
     void play();
     void playLater();
-    void save();
+    bool contains(int id);
 
 public slots:
     void buildBookMenu(QHash<QString,QWidget*> name_widgetHash);

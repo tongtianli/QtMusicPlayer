@@ -8,6 +8,7 @@
 #include "findmusicwidget.h"
 #include "addnewmusiclist.h"
 #include "defaultmusiclist.h"
+#include "datamanager.h"
 
 class MusiclistListWidget : public QListWidget
 {
@@ -17,12 +18,15 @@ public:
     ~MusiclistListWidget() override;
 
     void setup(QWidget *parent, QScrollArea *scrollArea, PlayListWidget *playlistWidget);
-    void initialDefaultWidgets();
+    void initialDefaultWidgets(QHash<int,Music*> musicpool);
     void buildMenu();
-    void loadUserMusiclists();
+    void loadUserMusiclists(QHash<int,Music*> musicpool);
     void saveUserMusiclist();
+    void saveLocalMusiclist();
     void deleteList(QString name);
     QHash<QString,QWidget*> name_widgetHash;
+
+    const int USERLIST_STARTINDEX = 5;
 
 public slots:
     void addUserMusiclist(QString listname);
@@ -30,6 +34,7 @@ public slots:
 signals:
     void sizeChanged();
     void listChanged(QHash<QString,QWidget*> name_widgetHash);
+    void addMusic(Music* music);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
@@ -43,6 +48,7 @@ private slots:
     void onActionEditTriggered(bool checked);
     void onActionDownloadTriggered(bool checked);
     void onActionDeletelistTriggered(bool checked);
+    void sendAddSignal(Music *music);
 
 private:
     QWidget *parent;
@@ -53,9 +59,6 @@ private:
     QMenu *itemMenu_default;
     AddNewMusiclist *addNewMusiclist;
     QString curListName ;
-
-
-
 };
 
 #endif // MUSICLISTLISTWIDGET_H

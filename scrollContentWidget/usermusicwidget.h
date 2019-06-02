@@ -19,14 +19,18 @@ public:
 
     explicit UserMusicWidget(QWidget *parent = nullptr);
     ~UserMusicWidget();
-
-    void prepend(Music *music);
-    void remove(Music *music);
-
     void setName(QString name);
     QString name();
     void setInitDate(QString dateText);
-    void load();
+    void setList(QHash<int,Music*> musicpool, QList<int> idlist);
+    void loadPic();
+
+signals:
+    void addMusic(Music* music);
+
+public slots:
+    void prepend(Music *music);
+    void remove(Music *music);
 
 private slots:
     void on_playAllBtn_clicked();
