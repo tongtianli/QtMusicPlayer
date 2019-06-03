@@ -64,12 +64,12 @@ void UserMusicWidget::setList(QHash<int, Music *> musicpool, QList<int> idlist)
     }
 }
 
-void UserMusicWidget::loadPic()
+void UserMusicWidget::requestPicture(QUrl url)
 {
-    QUrl pixUrl = table->get(0)->pic;
-    if(pixUrl.isValid())
-        manager.get(QNetworkRequest(pixUrl));
+    if(url.isValid())
+        manager.get(QNetworkRequest(url));
 }
+
 
 void UserMusicWidget::on_playAllBtn_clicked()
 {
@@ -95,3 +95,5 @@ void UserMusicWidget::setPicture(QNetworkReply *reply)
 void UserMusicWidget::on_downloadAllBtn_clicked(){
     table->downloadAllMusic();
 }
+
+
