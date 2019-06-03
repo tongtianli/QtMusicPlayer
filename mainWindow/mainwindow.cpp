@@ -1,5 +1,3 @@
-
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -13,29 +11,48 @@ MainWindow::MainWindow(QWidget *parent) :
 //    Qt::WindowStaysOnTopHint     窗口在最顶端，不会拖到任务栏下面
     setWindowFlags(Qt::FramelessWindowHint | windowFlags());
     setMouseTracking(true);
-    mouseLeftButtonPressed = false;
-    resizeRegion = ResizeRegion::INVALID;
+
+    //init
     title = new MainwindowTitle(this);
     suggestBox = new SuggestBox(this,title->getSearchLineEdit());
     playStateWidget = new PlayStateWidget(this);
     playlistWidget = new PlayListWidget(this);
 
-
+    //setup
+    mouseLeftButtonPressed = false;
+    resizeRegion = ResizeRegion::INVALID;
     ui->head->setWidget(title);
     ui->splitter->setStretchFactor(0,0);
     ui->splitter->setStretchFactor(1,1);
     ui->listofMusiclist->setup(this,ui->scrollArea,playlistWidget);
-    ui->listofMusiclist->initialDefaultWidgets();
     ui->sliderPlay->setEnabled(false);
 
+    loadData();
     connectSlots();
 
-    playlistWidget->load();
+}
 
+void MainWindow::loadData()
+{
+    musicpool = DataManager::loadMusicPool();
+    ui->listofMusiclist->initialDefaultWidgets(musicpool);
+    ui->listofMusiclist->loadUserMusiclists(musicpool);
+    QList<Music*> play = DataManager::fromIDlist(musicpool,DataManager::loadMusiclist("正在播放"));
+    QList<Music*> record = DataManager::fromIDlist(musicpool,DataManager::loadMusiclist("历史记录"));
+    playlistWidget->setPlaylist(play,record);
+}
+
+void MainWindow::saveData()
+{
+    DataManager::saveMusicPool(musicpool);
+    ui->listofMusiclist->saveLocalMusiclist();
+    ui->listofMusiclist->saveUserMusiclist();
+    playlistWidget->save();
 }
 
 MainWindow::~MainWindow()
 {
+    saveData();
     delete suggestBox;
     delete playlistWidget;
     delete playStateWidget;
@@ -104,6 +121,9 @@ void MainWindow::onPlayerStateChanged(QMediaPlayer::State state)
 
 void MainWindow::connectSlots()
 {
+    FindMusicWidget *findMusicWidget =  qobject_cast<FindMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("发现音乐"));
+    LocalMusicWidget *localMusicWidget = qobject_cast<LocalMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("本地音乐"));
+    UserMusicWidget *favourateMusicWidget = qobject_cast<UserMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("我喜欢的音乐"));
     connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
     connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
     connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
@@ -112,11 +132,36 @@ void MainWindow::connectSlots()
 
     connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
     connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+
+    connect(playStateWidget,&PlayStateWidget::likeMusic,favourateMusicWidget,&UserMusicWidget::prepend);
+    connect(playStateWidget,&PlayStateWidget::dislikeMusic,favourateMusicWidget,&UserMusicWidget::remove);
+
+    connect(title,&MainwindowTitle::userWantExit,this,&MainWindow::aboutToExit);
+
+    connect(ui->listofMusiclist,&MusiclistListWidget::addMusic,this,&MainWindow::onAddMusic);
+
+    connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
 }
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){
     ui->btnOpenPlaylist->setText(QString::number(size));
 }
+
+void MainWindow::aboutToExit()
+{
+    qDebug()<<"about to exit";
+    close();
+}
+
+void MainWindow::onAddMusic(Music *music)
+{
+    if(musicpool.contains(music->ID))
+        return;
+    musicpool.insert(music->ID,music);
+}
+
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     if(event->button()==Qt::LeftButton){

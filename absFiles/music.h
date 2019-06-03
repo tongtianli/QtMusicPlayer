@@ -31,11 +31,14 @@
 #include <QTreeWidget>
 #include <QtNetwork>
 #include <qnetworkreply.h>
+#include <QMessageBox>
+#include <QMultiHash>
 
 enum Playmode{loop,single,random};
 
 typedef struct Music{
     int ID;
+    int quote;
     QString name;
     QString singer;
     QString duration;
@@ -43,6 +46,7 @@ typedef struct Music{
     QUrl lrc;
     QUrl url;
     bool local;
+    bool like;
     QString size;
 }Music;
 

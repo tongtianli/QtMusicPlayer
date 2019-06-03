@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-03-31T13:18:25
 #
 #-------------------------------------------------
-
+QT       += widgets
 QT       += core gui
 QT       += multimedia
 QT       += network widgets

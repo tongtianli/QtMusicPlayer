@@ -25,7 +25,7 @@ QLineEdit* MainwindowTitle::getSearchLineEdit()
 
 void MainwindowTitle::on_btnExit_clicked()
 {
-    mainwindow->close();
+    emit userWantExit();
 }
 
 void MainwindowTitle::on_btnFullScreen_clicked()

@@ -5,3 +5,6 @@ SOURCES += $$PWD/playstatewidget.cpp
 
 
 FORMS += $$PWD/playstatewidget.ui
+
+RESOURCES += \
+    $$PWD/playstatewidget.qrc

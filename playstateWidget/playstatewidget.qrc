@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>resource/like_no.png</file>
+        <file>resource/like_yes.png</file>
+        <file>resource/complete.png</file>
+        <file>resource/download.png</file>
+        <file>resource/localMusicPic.png</file>
+    </qresource>
+</RCC>

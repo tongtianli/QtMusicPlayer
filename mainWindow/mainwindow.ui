@@ -478,7 +478,7 @@ QListWidget::item:!enabled{
        </property>
        <property name="icon">
         <iconset resource="mainwindow.qrc">
-         <normaloff>:/image/resource/favorite.png</normaloff>:/image/resource/favorite.png</iconset>
+         <normaloff>:/image/resource/favourite.png</normaloff>:/image/resource/favourite.png</iconset>
        </property>
       </item>
      </widget>

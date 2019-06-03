@@ -3,6 +3,7 @@
 
 #include "music.h"
 #include "musictablewidget.h"
+#include "datamanager.h"
 
 namespace Ui{
 class PlayListWidget;
@@ -21,13 +22,15 @@ public:
     void addMedia(Music* music);
     void setPlaylist(QList<Music*> playlist);
     void setCurMedia(int index);
+    void insertMedia(int index, Music *music);
     void play();
     void setMode(Playmode mode);
     void pause();
     void next();
     void previous();
     bool isPlaying();
-    void load();
+    void save();
+    void setPlaylist(QList<Music *> play, QList<Music *> record);
 
 signals:
     void maxPositionChanged(QString duration);
@@ -40,6 +43,7 @@ public slots:
     void changeVolume(int volume);
     void addMusicAndPlay(Music* music);
     void changeListAndPlay(QList<Music*> musiclist,int index);
+    void playListLater(QList<Music*> musiclist);
 
 private:
     const int maxRecordNum = 100;

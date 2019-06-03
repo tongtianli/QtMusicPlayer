@@ -27,6 +27,9 @@ public:
     ~MainwindowTitle();
     QLineEdit* getSearchLineEdit();
 
+signals:
+    void userWantExit();
+
 private slots:
     void on_btnExit_clicked();
     void on_btnFullScreen_clicked();
