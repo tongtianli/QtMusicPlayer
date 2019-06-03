@@ -307,6 +307,9 @@ QTabBar:tab:hover:!selected {
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
          </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>120</number>
+         </attribute>
          <column>
           <property name="text">
            <string>音乐列表</string>

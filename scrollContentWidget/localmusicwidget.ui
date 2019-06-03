@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>614</width>
-    <height>497</height>
+    <width>618</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,6 +27,31 @@
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+
+	border: none;
+	border-radius: 5px;
+	min-width: 22px;
+	min-height: 22px;	
+}
+
+QPushButton:enabled {
+        background: rgb(81, 81, 81);
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -107,7 +132,17 @@
      <item>
       <widget class="QPushButton" name="btnAddMedia">
        <property name="text">
-        <string>添加</string>
+        <string>打开本地mp3</string>
+       </property>
+       <property name="icon">
+        <iconset resource="scrollcontentwidget.qrc">
+         <normaloff>:/image/resource/addLocalMusic.png</normaloff>:/image/resource/addLocalMusic.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -135,12 +170,52 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="searchLocalMedia"/>
+      <widget class="QLineEdit" name="searchLocalMedia">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+        border-radius: 4px;
+        height: 25px;
+        border: 1px solid rgb(100, 100, 100);
+        background: rgb(72, 72, 73);
+}
+QLineEdit:enabled {
+        color: rgb(175, 175, 175);
+}
+QLineEdit:enabled:hover, QLineEdit:enabled:focus {
+        color: rgb(230, 230, 230);
+}
+QLineEdit:!enabled {
+        color: rgb(155, 155, 155);
+}</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnSearchLocalMedia">
        <property name="text">
-        <string>搜索</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../mainWindow/mainwindow.qrc">
+         <normaloff>:/image/resource/search.png</normaloff>:/image/resource/search.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -210,6 +285,9 @@
    <header location="global">musictablewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../mainWindow/mainwindow.qrc"/>
+  <include location="scrollcontentwidget.qrc"/>
+ </resources>
  <connections/>
 </ui>

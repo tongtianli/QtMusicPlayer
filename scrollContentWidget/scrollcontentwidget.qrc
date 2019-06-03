@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/image">
         <file>resource/default_list.png</file>
+        <file>resource/addLocalMusic.png</file>
+        <file>resource/downloadAll.png</file>
+        <file>resource/playAll.png</file>
     </qresource>
 </RCC>

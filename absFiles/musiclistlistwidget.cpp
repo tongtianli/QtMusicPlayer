@@ -258,6 +258,7 @@ void MusiclistListWidget::onActionEditTriggered(bool checked)
 {
     Q_UNUSED(checked);
     QWidget *curWidget = name_widgetHash.value(curListName);
+    QString oldName = curListName;
     UserMusicWidget *widget = qobject_cast<UserMusicWidget*>(curWidget);
     bool *ok = new bool();
     QString newName = QInputDialog::getText(this,"重命名歌单","新歌单名",QLineEdit::Normal,widget->name(),ok);
@@ -269,6 +270,8 @@ void MusiclistListWidget::onActionEditTriggered(bool checked)
         if(i!=count())
             item(i)->setText(newName);
         widget->setName(newName);
+        name_widgetHash.insert(newName,widget);
+        name_widgetHash.remove(oldName);
         emit listChanged(name_widgetHash);
     }
 }

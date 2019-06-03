@@ -41,7 +41,7 @@ protected:
 
 private:
     QList<Music*> list;
-    QSet<QString> musicSet;
+    QSet<int> idSet;
     QHash<QString, QWidget*> name_widgetHash;
     QString name;
     bool preventChangeSignal;
