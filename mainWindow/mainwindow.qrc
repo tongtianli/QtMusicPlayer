@@ -21,8 +21,9 @@
         <file>resource/findmusic.png</file>
         <file>resource/findmusic_hover.png</file>
         <file>resource/favourite.png</file>
+        <file>resource/search.png</file>
     </qresource>
-    <qresource lang="qss" prefix="/stylesheet">
+    <qresource prefix="/stylesheet" lang="qss">
         <file>resource/darkstyle.qss</file>
     </qresource>
 </RCC>

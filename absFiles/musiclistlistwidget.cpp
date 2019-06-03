@@ -129,11 +129,19 @@ void MusiclistListWidget::loadUserMusiclists(QHash<int,Music*> musicpool)
    if(!userlistnames.empty())
        for(int i=0;i<userlistnames.size();i++){
            QString name = userlistnames.at(i);
-           UserMusicWidget *newWidget = new UserMusicWidget();
-           newWidget->setName(name);
-           QList<int> idlist = DataManager::loadMusiclist(name);
-           newWidget->setList(musicpool,idlist);
-           name_widgetHash.insert(name,newWidget);
+           if(name=="我喜欢的音乐"){
+               UserMusicWidget *favor = qobject_cast<UserMusicWidget*>(name_widgetHash.value("我喜欢的音乐"));
+               QList<int> idlist = DataManager::loadMusiclist(name);
+               favor->setList(musicpool,idlist);
+               favor->requestPicture(favor->table->get(0)->pic);
+           }
+           else{
+               UserMusicWidget *newWidget = new UserMusicWidget();
+               newWidget->setName(name);
+               QList<int> idlist = DataManager::loadMusiclist(name);
+               newWidget->setList(musicpool,idlist);
+               name_widgetHash.insert(name,newWidget);
+           }
        }
 }
 

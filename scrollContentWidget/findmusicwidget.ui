@@ -34,7 +34,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -62,12 +62,51 @@
          <height>0</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+        border-radius: 4px;
+        height: 25px;
+        border: 1px solid rgb(100, 100, 100);
+        background: rgb(72, 72, 73);
+}
+QLineEdit:enabled {
+        color: rgb(175, 175, 175);
+}
+QLineEdit:enabled:hover, QLineEdit:enabled:focus {
+        color: rgb(230, 230, 230);
+}
+QLineEdit:!enabled {
+        color: rgb(155, 155, 155);
+}</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnSearch">
+       <property name="styleSheet">
+        <string notr="true">QPushButton:enabled {
+	border:none;
+        background: rgb(81, 81, 81);
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+</string>
+       </property>
        <property name="text">
-        <string>搜索</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../mainWindow/mainwindow.qrc">
+         <normaloff>:/image/resource/search.png</normaloff>:/image/resource/search.png</iconset>
        </property>
       </widget>
      </item>
@@ -88,6 +127,30 @@
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="styleSheet">
+      <string notr="true">QTabWidget:pane {
+    border: none;
+}
+
+QTabBar:tab {
+    background: rgba(0, 0, 0, 120);
+    color: #a59400;
+    width: 128px;
+    height: 19px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-right: 2px;
+}
+
+QTabBar:tab:selected {
+    background: rgba(0, 0, 0, 166);
+    color: #fae119;
+}
+
+QTabBar:tab:hover:!selected {
+    background: rgba(0, 0, 0, 156);
+}</string>
+     </property>
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
@@ -214,6 +277,30 @@
        </property>
        <item row="0" column="0">
         <widget class="StyledTableWidget" name="listTable">
+         <property name="styleSheet">
+          <string notr="true">QTabWidget:pane {
+    border: none;
+}
+
+QTabBar:tab {
+    background: rgba(0, 0, 0, 120);
+    color: #a59400;
+    width: 128px;
+    height: 19px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-right: 2px;
+}
+
+QTabBar:tab:selected {
+    background: rgba(0, 0, 0, 166);
+    color: #fae119;
+}
+
+QTabBar:tab:hover:!selected {
+    background: rgba(0, 0, 0, 156);
+}</string>
+         </property>
          <property name="selectionMode">
           <enum>QAbstractItemView::SingleSelection</enum>
          </property>
@@ -265,6 +352,8 @@
    <header location="global">styledtablewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../mainWindow/mainwindow.qrc"/>
+ </resources>
  <connections/>
 </ui>
