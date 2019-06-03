@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listofMusiclist->setup(this,ui->scrollArea,playlistWidget);
     ui->sliderPlay->setEnabled(false);
 
-    connectSlots();
     loadData();
+    connectSlots();
 
 }
 
