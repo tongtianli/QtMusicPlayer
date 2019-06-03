@@ -23,7 +23,7 @@ public:
     QString name();
     void setInitDate(QString dateText);
     void setList(QHash<int,Music*> musicpool, QList<int> idlist);
-    void loadPic();
+    void requestPicture(QUrl url);
 
 signals:
     void addMusic(Music* music);
@@ -39,10 +39,12 @@ private slots:
 
     void on_downloadAllBtn_clicked();
 
+
 private:
     Ui::UserMusicWidget *ui;
     QString listname;
     QNetworkAccessManager manager;
+    QNetworkAccessManager setup;
     QPixmap defaultPix;
     MusicDownloader download;
 

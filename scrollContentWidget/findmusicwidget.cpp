@@ -32,6 +32,7 @@ void FindMusicWidget::handleNetworkData(QNetworkReply *networkReply)
     QJsonDocument parseDocument = QJsonDocument::fromJson(response,&jsonError);
     if(jsonError.error!=QJsonParseError::NoError){
         qDebug()<<"Json parse error!";
+        return;
     }
     QJsonObject object = parseDocument.object();
     QJsonValueRef data = object["data"];
@@ -48,6 +49,11 @@ void FindMusicWidget::handleNetworkData(QNetworkReply *networkReply)
             newMusic->pic = song["pic"].toString();
             newMusic->url = song["url"].toString();
             newMusic->lrc = song["lrc"].toString();
+            int durInt = object["time"].toInt();
+            int min = durInt/60;
+            int sec = durInt%60;
+            newMusic->duration = QString("%1:%2").
+                    arg(min,2,10,QLatin1Char('0')).arg(sec,2,10,QLatin1Char('0'));
             table->append(newMusic);
         }
         break;
@@ -68,6 +74,7 @@ void FindMusicWidget::handleNetworkData(QNetworkReply *networkReply)
             newAlbum->artist.picUrl = artist["picUrl"].toString();
             newAlbum->artist.alias = artist["alias"].toArray().at(0).toString();
             newAlbum->alias = album["alias"].toArray().at(0).toString();
+            albumCache.append(newAlbum);
             ui->albumTable->insertRow(i);
             ui->albumTable->setItem(i,0,new QTableWidgetItem(newAlbum->name));
             ui->albumTable->setItem(i,1,new QTableWidgetItem(newAlbum->artist.name));
@@ -132,4 +139,18 @@ void FindMusicWidget::on_tabWidget_currentChanged(int index)
 void FindMusicWidget::on_btnSearch_clicked()
 {
     on_searchBox_returnPressed();
+}
+
+void FindMusicWidget::on_albumTable_itemDoubleClicked(QTableWidgetItem *item)
+{
+    int index = item->row();
+    Album *album = albumCache.at(index);
+    emit albumDoubleClicked(album);
+}
+
+void FindMusicWidget::on_listTable_itemDoubleClicked(QTableWidgetItem *item)
+{
+    int index = item->row();
+    Playlist *list = playlistCache.at(index);
+    emit playlistDoubleClicked(list);
 }

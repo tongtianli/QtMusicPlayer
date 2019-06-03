@@ -67,8 +67,14 @@ void MusiclistListWidget::initialDefaultWidgets(QHash<int,Music*> musicpool)
         if(name=="发现音乐"){
             FindMusicWidget *findMusicWidget = new FindMusicWidget(parent);
             findMusicWidget->hide();
-            connect(findMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
-            connect(this,&MusiclistListWidget::listChanged,findMusicWidget->table,&MusicTableWidget::buildBookMenu);
+            connect(findMusicWidget->table,&MusicTableWidget::musicDoubleClicked,
+                    playlistWidget,&PlayListWidget::changeListAndPlay);
+            connect(this,&MusiclistListWidget::listChanged,
+                    findMusicWidget->table,&MusicTableWidget::buildBookMenu);
+            connect(findMusicWidget,&FindMusicWidget::albumDoubleClicked,
+                    this,&MusiclistListWidget::requestNetAlbum);
+            connect(findMusicWidget,&FindMusicWidget::playlistDoubleClicked,this,
+                    &MusiclistListWidget::requestNetMusiclist);
             name_widgetHash.insert("发现音乐",findMusicWidget);
             continue;
         }
@@ -76,10 +82,14 @@ void MusiclistListWidget::initialDefaultWidgets(QHash<int,Music*> musicpool)
             LocalMusicWidget *localMusicWidget = new LocalMusicWidget(parent);
             DataManager::loadLocalMusiclist(localMusicWidget);
             localMusicWidget->hide();
-            connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
-            connect(localMusicWidget->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
-            connect(this,&MusiclistListWidget::listChanged,localMusicWidget->table,&MusicTableWidget::buildBookMenu);
-            connect(localMusicWidget,&LocalMusicWidget::addMusic,this,&MusiclistListWidget::sendAddSignal);
+            connect(localMusicWidget->table,&MusicTableWidget::musicDoubleClicked,
+                    playlistWidget,&PlayListWidget::changeListAndPlay);
+            connect(localMusicWidget->table,&MusicTableWidget::playThisListLater,
+                    playlistWidget,&PlayListWidget::playListLater);
+            connect(this,&MusiclistListWidget::listChanged,
+                    localMusicWidget->table,&MusicTableWidget::buildBookMenu);
+            connect(localMusicWidget,&LocalMusicWidget::addMusic,
+                    this,&MusiclistListWidget::sendAddSignal);
             name_widgetHash.insert("本地音乐",localMusicWidget);
             continue;
         }
@@ -87,16 +97,28 @@ void MusiclistListWidget::initialDefaultWidgets(QHash<int,Music*> musicpool)
             UserMusicWidget *favoriteMusicWidget = new UserMusicWidget(parent);
             favoriteMusicWidget->hide();
             favoriteMusicWidget->setName("我喜欢的音乐");
-            connect(favoriteMusicWidget->table,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
-            connect(favoriteMusicWidget->table,&MusicTableWidget::playThisListLater,playlistWidget,&PlayListWidget::playListLater);
-            connect(this,&MusiclistListWidget::listChanged,favoriteMusicWidget->table,&MusicTableWidget::buildBookMenu);
-            connect(favoriteMusicWidget,&UserMusicWidget::addMusic,this,&MusiclistListWidget::sendAddSignal);
+            connect(favoriteMusicWidget->table,&MusicTableWidget::musicDoubleClicked,
+                    playlistWidget,&PlayListWidget::changeListAndPlay);
+            connect(favoriteMusicWidget->table,&MusicTableWidget::playThisListLater,
+                    playlistWidget,&PlayListWidget::playListLater);
+            connect(this,&MusiclistListWidget::listChanged,
+                    favoriteMusicWidget->table,&MusicTableWidget::buildBookMenu);
+            connect(favoriteMusicWidget,&UserMusicWidget::addMusic,
+                    this,&MusiclistListWidget::sendAddSignal);
             QList<int> idlist = DataManager::loadMusiclist("我喜欢的音乐");
             favoriteMusicWidget->setList(musicpool,idlist);
             name_widgetHash.insert("我喜欢的音乐",favoriteMusicWidget);
             continue;
         }
     }
+    netListTemp = new UserMusicWidget(parent);
+    connect(netListTemp->table,&MusicTableWidget::musicDoubleClicked,
+            playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(netListTemp->table,&MusicTableWidget::playThisListLater,
+            playlistWidget,&PlayListWidget::playListLater);
+    connect(this,&MusiclistListWidget::listChanged,
+            netListTemp->table,&MusicTableWidget::buildBookMenu);
+    netListTemp->hide();
     emit listChanged(name_widgetHash);
 }
 
@@ -261,6 +283,112 @@ void MusiclistListWidget::onActionDeletelistTriggered(bool checked)
 void MusiclistListWidget::sendAddSignal(Music *music)
 {
     emit addMusic(music);
+}
+
+void MusiclistListWidget::requestNetMusiclist(Playlist *playlist)
+{
+    QUrl url(QString("https://api.itooi.cn/music/netease/songList?key=579621905&id=%1")
+                     .arg(playlist->id));
+    connect(&manager,&QNetworkAccessManager::finished,
+            this,&MusiclistListWidget::handlePlaylistData);
+    manager.get(QNetworkRequest(url));
+    netListTemp->setName(playlist->name);
+    netListTemp->requestPicture(playlist->coverImgUrl);
+    netListTemp->setInitDate("");
+    scrollArea->takeWidget();
+    scrollArea->setWidget(netListTemp);
+    netListTemp->show();
+}
+
+void MusiclistListWidget::requestNetAlbum(Album *album)
+{
+    QUrl url(QString("https://api.itooi.cn/music/netease/album?key=579621905&id=%1")
+                     .arg(album->id));
+    connect(&manager,&QNetworkAccessManager::finished,
+             this,&MusiclistListWidget::handleAlbumData);
+    manager.get(QNetworkRequest(url));
+    netListTemp->setName(album->name);
+    netListTemp->requestPicture(album->picUrl);
+    netListTemp->setInitDate("");
+    scrollArea->takeWidget();
+    scrollArea->setWidget(netListTemp);
+    netListTemp->show();
+}
+
+void MusiclistListWidget::handlePlaylistData(QNetworkReply *reply)
+{
+    disconnect(&manager,&QNetworkAccessManager::finished,
+            this,&MusiclistListWidget::handlePlaylistData);
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug()<<"NetworkReply error!";
+        return;
+    }
+    QByteArray response(reply->readAll());
+    QJsonParseError jsonError;
+    QJsonDocument parseDocument = QJsonDocument::fromJson(response,&jsonError);
+    if(jsonError.error!=QJsonParseError::NoError){
+        qDebug()<<"Json parse error!";
+        return;
+    }
+    QJsonObject object = parseDocument.object();
+    QList<Music*> list;
+    QJsonValueRef data = object["data"];
+    QJsonArray songs = data.toObject()["songs"].toArray();
+    for(int i=0;i<songs.size();i++){
+        QJsonObject song = songs.at(i).toObject();
+        Music *newMusic = new Music();
+        newMusic->ID = song["id"].toInt();
+        newMusic->name = song["name"].toString();
+        newMusic->singer = song["singer"].toString();
+        newMusic->pic = song["pic"].toString();
+        newMusic->url = song["url"].toString();
+        newMusic->lrc = song["lrc"].toString();
+        int durInt = object["time"].toInt();
+        int min = durInt/60;
+        int sec = durInt%60;
+        newMusic->duration = QString("%1:%2").
+                arg(min,2,10,QLatin1Char('0')).arg(sec,2,10,QLatin1Char('0'));
+        list.append(newMusic);
+    }
+    netListTemp->table->setMusiclist(list);
+}
+
+void MusiclistListWidget::handleAlbumData(QNetworkReply *reply)
+{
+    disconnect(&manager,&QNetworkAccessManager::finished,
+            this,&MusiclistListWidget::handleAlbumData);
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug()<<"NetworkReply error!";
+        return;
+    }
+    QByteArray response(reply->readAll());
+    QJsonParseError jsonError;
+    QJsonDocument parseDocument = QJsonDocument::fromJson(response,&jsonError);
+    if(jsonError.error!=QJsonParseError::NoError){
+        qDebug()<<"Json parse error!";
+        return;
+    }
+    QJsonObject object = parseDocument.object();
+    QList<Music*> list;
+    QJsonValueRef data = object["data"];
+    QJsonArray songs = data.toArray();
+    for(int i=0;i<songs.size();i++){
+        QJsonObject song = songs.at(i).toObject();
+        Music *newMusic = new Music();
+        newMusic->ID = song["id"].toInt();
+        newMusic->name = song["name"].toString();
+        newMusic->singer = song["singer"].toString();
+        newMusic->pic = song["pic"].toString();
+        newMusic->url = song["url"].toString();
+        newMusic->lrc = song["lrc"].toString();
+        int durInt = object["time"].toInt();
+        int min = durInt/60;
+        int sec = durInt%60;
+        newMusic->duration = QString("%1:%2").
+                arg(min,2,10,QLatin1Char('0')).arg(sec,2,10,QLatin1Char('0'));
+        list.append(newMusic);
+    }
+    netListTemp->table->setMusiclist(list);
 }
 
 void MusiclistListWidget::saveUserMusiclist()

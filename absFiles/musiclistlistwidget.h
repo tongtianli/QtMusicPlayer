@@ -9,6 +9,7 @@
 #include "addnewmusiclist.h"
 #include "defaultmusiclist.h"
 #include "datamanager.h"
+#include "playlist.h"
 
 class MusiclistListWidget : public QListWidget
 {
@@ -49,8 +50,13 @@ private slots:
     void onActionDownloadTriggered(bool checked);
     void onActionDeletelistTriggered(bool checked);
     void sendAddSignal(Music *music);
+    void requestNetMusiclist(Playlist *playlist);
+    void requestNetAlbum(Album *album);
+    void handlePlaylistData(QNetworkReply *reply);
+    void handleAlbumData(QNetworkReply *reply);
 
 private:
+    UserMusicWidget *netListTemp;
     QWidget *parent;
     QScrollArea *scrollArea;
     PlayListWidget *playlistWidget;
@@ -59,6 +65,7 @@ private:
     QMenu *itemMenu_default;
     AddNewMusiclist *addNewMusiclist;
     QString curListName ;
+    QNetworkAccessManager manager;
 };
 
 #endif // MUSICLISTLISTWIDGET_H
