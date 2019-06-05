@@ -126,7 +126,7 @@ void PlayListWidget::save()
 
 void PlayListWidget::setPlaylist(QList<Music*> play,QList<Music*> record)
 {
-    ui->playlistWidget->setMusiclist(play);
+    setPlaylist(play);
     ui->recordlist->setMusiclist(record);
 }
 

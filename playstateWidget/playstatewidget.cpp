@@ -13,6 +13,7 @@ PlayStateWidget::PlayStateWidget(QWidget *parent) :
 
     connect(&manager,&QNetworkAccessManager::finished,
             this, &PlayStateWidget::setPicture);
+    ui->picture->installEventFilter(this);
 }
 
 PlayStateWidget::~PlayStateWidget()
@@ -50,6 +51,14 @@ void PlayStateWidget::setPicture(QNetworkReply *reply)
     pix.loadFromData(picData);
     pix = pix.scaled(50,50);
     ui->picture->setPixmap(pix);
+}
+
+bool PlayStateWidget::eventFilter(QObject *ob, QEvent *e)
+{
+    if(ob->objectName()==ui->picture->objectName() && e->type()==QEvent::MouseButtonRelease){
+        emit curPictureClicked(curMusic);
+    }
+    return QWidget::eventFilter(ob,e);
 }
 
 void PlayStateWidget::on_downloadBtn_clicked()

@@ -14,15 +14,19 @@ class PlayStateWidget : public QWidget
 
 public:
     explicit PlayStateWidget(QWidget *parent = nullptr);
-    ~PlayStateWidget();
+    ~PlayStateWidget() override;
 
 signals:
     void likeMusic(Music *music);
     void dislikeMusic(Music *music);
+    void curPictureClicked(Music *music);
 
 public slots:
     void changeCurrentDisplay(Music *music);
     void setPicture(QNetworkReply *reply);
+
+protected:
+    bool eventFilter(QObject *ob, QEvent *e) override;
 
 private slots:
     void on_downloadBtn_clicked();

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //init
     title = new MainwindowTitle(this);
     suggestBox = new SuggestBox(this,title->getSearchLineEdit());
+    currentMusicWidget = new CurrentMusicWidget(this);
     playStateWidget = new PlayStateWidget(this);
     playlistWidget = new PlayListWidget(this);
 
@@ -53,6 +54,7 @@ void MainWindow::saveData()
 MainWindow::~MainWindow()
 {
     saveData();
+    delete currentMusicWidget;
     delete suggestBox;
     delete playlistWidget;
     delete playStateWidget;
@@ -124,24 +126,42 @@ void MainWindow::connectSlots()
     FindMusicWidget *findMusicWidget =  qobject_cast<FindMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("发现音乐"));
     LocalMusicWidget *localMusicWidget = qobject_cast<LocalMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("本地音乐"));
     UserMusicWidget *favourateMusicWidget = qobject_cast<UserMusicWidget*>(ui->listofMusiclist->name_widgetHash.value("我喜欢的音乐"));
-    connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),playlistWidget,SLOT(changeVolume(int)));
-    connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),playlistWidget,SLOT(addMusicAndPlay(Music*)));
-    connect(playlistWidget->list,&MusicTableWidget::sizeChanged,this,&MainWindow::setPlaylistBtnTextbycurSize);
-    connect(ui->listofMusiclist,&MusiclistListWidget::sizeChanged,this,&MainWindow::resizeSubwidget);
-    connect(playlistWidget,&PlayListWidget::currentMediaChanged,playStateWidget,&PlayStateWidget::changeCurrentDisplay);
+    connect(ui->sliderVolumn,SIGNAL(valueChanged(int)),
+            playlistWidget,SLOT(changeVolume(int)));
+    connect(suggestBox,SIGNAL(selectSearchedSong(Music*)),
+            playlistWidget,SLOT(addMusicAndPlay(Music*)));
+    connect(playlistWidget->list,&MusicTableWidget::sizeChanged,
+            this,&MainWindow::setPlaylistBtnTextbycurSize);
+    connect(ui->listofMusiclist,&MusiclistListWidget::sizeChanged,
+            this,&MainWindow::resizeSubwidget);
 
-    connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
-    connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(ui->listofMusiclist,&MusiclistListWidget::listChanged,
+            playlistWidget->list,&MusicTableWidget::buildBookMenu);
+    connect(ui->listofMusiclist,&MusiclistListWidget::listChanged,
+            playlistWidget->recordlist,&MusicTableWidget::buildBookMenu);
 
-    connect(playStateWidget,&PlayStateWidget::likeMusic,favourateMusicWidget,&UserMusicWidget::prepend);
-    connect(playStateWidget,&PlayStateWidget::dislikeMusic,favourateMusicWidget,&UserMusicWidget::remove);
+    connect(playlistWidget,&PlayListWidget::currentMediaChanged,
+            playStateWidget,&PlayStateWidget::changeCurrentDisplay);
 
-    connect(title,&MainwindowTitle::userWantExit,this,&MainWindow::aboutToExit);
+    connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,
+            playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,
+            playlistWidget,&PlayListWidget::changeListAndPlay);
 
-    connect(ui->listofMusiclist,&MusiclistListWidget::addMusic,this,&MainWindow::onAddMusic);
+    connect(playStateWidget,&PlayStateWidget::likeMusic,
+            favourateMusicWidget,&UserMusicWidget::prepend);
+    connect(playStateWidget,&PlayStateWidget::dislikeMusic,
+            favourateMusicWidget,&UserMusicWidget::remove);
 
-    connect(playlistWidget->list,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
-    connect(playlistWidget->recordlist,&MusicTableWidget::musicDoubleClicked,playlistWidget,&PlayListWidget::changeListAndPlay);
+    connect(title,&MainwindowTitle::userWantExit,
+            this,&MainWindow::aboutToExit);
+
+    connect(suggestBox,&SuggestBox::selectSearchedSong,
+            this,&MainWindow::onAddMusic);
+    connect(ui->listofMusiclist,&MusiclistListWidget::addMusic,
+            this,&MainWindow::onAddMusic);
+    connect(playStateWidget,&PlayStateWidget::curPictureClicked,
+            this,&MainWindow::showCurMusicInfo);
 }
 
 void MainWindow::setPlaylistBtnTextbycurSize(int size){
@@ -150,7 +170,6 @@ void MainWindow::setPlaylistBtnTextbycurSize(int size){
 
 void MainWindow::aboutToExit()
 {
-    qDebug()<<"about to exit";
     close();
 }
 
@@ -159,6 +178,15 @@ void MainWindow::onAddMusic(Music *music)
     if(musicpool.contains(music->ID))
         return;
     musicpool.insert(music->ID,music);
+}
+
+void MainWindow::showCurMusicInfo(Music *music)
+{
+    currentMusicWidget->requestPicture(music->pic);
+    currentMusicWidget->requestLrc(music->lrc);
+    ui->scrollArea->takeWidget();
+    ui->scrollArea->setWidget(currentMusicWidget);
+    currentMusicWidget->show();
 }
 
 

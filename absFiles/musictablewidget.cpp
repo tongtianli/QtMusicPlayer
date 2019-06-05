@@ -50,9 +50,9 @@ void MusicTableWidget::setName(QString tableName)
 
 void MusicTableWidget::insertMusic(int index, Music *music)
 {
-    if(musicSet.contains(music->name+music->singer)){
+    if(idSet.contains(music->ID)){
         for(int i = 0;i<list.size();i++){
-            if(list.at(i)->name==music->name&&list.at(i)->singer==music->singer){
+            if(list.at(i)->ID==music->ID){
                 this->remove(i);
                 index = 0;
                 break;
@@ -60,7 +60,7 @@ void MusicTableWidget::insertMusic(int index, Music *music)
         }
     }
     else{
-        musicSet.insert(music->name+music->singer);
+        idSet.insert(music->ID);
     }
     list.insert(index,music);
     this->insertRow(index);
@@ -113,7 +113,7 @@ void MusicTableWidget::clearAll()
 void MusicTableWidget::remove(int index)
 {
     removeRow(index);
-    musicSet.remove(list.at(index)->name+list.at(index)->singer);
+    idSet.remove(list.at(index)->ID);
     list.removeAt(index);
     if(!preventChangeSignal)
         emit sizeChanged(list.size());

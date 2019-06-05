@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>TTPlayer</string>
+   <string>GuGu-Player</string>
   </property>
   <property name="windowIcon">
    <iconset resource="mainwindow.qrc">
@@ -89,34 +89,12 @@ QTableWidget::indicator {
         width: 20px;
         height: 20px;
 }
-QTableWidget::indicator:enabled:unchecked {
-        image: url(:/Black/checkBox);
-}
-QTableWidget::indicator:enabled:unchecked:hover {
-        image: url(:/Black/checkBoxHover);
-}
-QTableWidget::indicator:enabled:unchecked:pressed {
-        image: url(:/Black/checkBoxPressed);
-}
-QTableWidget::indicator:enabled:checked {
-        image: url(:/Black/checkBoxChecked);
-}
-QTableWidget::indicator:enabled:checked:hover {
-        image: url(:/Black/checkBoxCheckedHover);
-}
-QTableWidget::indicator:enabled:checked:pressed {
-        image: url(:/Black/checkBoxCheckedPressed);
-}
-QTableWidget::indicator:enabled:indeterminate {
-        image: url(:/Black/checkBoxIndeterminate);
-}
-QTableWidget::indicator:enabled:indeterminate:hover {
-        image: url(:/Black/checkBoxIndeterminateHover);
-}
-QTableWidget::indicator:enabled:indeterminate:pressed {
-        image: url(:/Black/checkBoxIndeterminatePressed);
-}
 /*********QHeaderView*************/
+QTableCornerButton::section{
+		border: none;
+        background: rgb(57, 58, 60);
+        min-height: 30px;
+}
 QHeaderView{
         border: none;
         border-bottom: 3px solid rgb(0, 160, 230);
@@ -139,17 +117,6 @@ QHeaderView::up-arrow {
         width: 13px;
         height: 11px;
         padding-right: 5px;
-        image: url(:/Black/topArrow);
-        subcontrol-position: center right;
-}
-QHeaderView::up-arrow:hover, QHeaderView::up-arrow:pressed {
-        image: url(:/Black/topArrowHover);
-}
-QHeaderView::down-arrow {
-        width: 13px;
-        height: 11px;
-        padding-right: 5px;
-        image: url(:/Black/bottomArrow);
         subcontrol-position: center right;
 }
 QScrollBar:horizontal {
@@ -514,8 +481,8 @@ QListWidget::item:!enabled{
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>548</width>
-         <height>508</height>
+         <width>550</width>
+         <height>510</height>
         </rect>
        </property>
        <property name="sizePolicy">

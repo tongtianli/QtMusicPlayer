@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/image">
-        <file>resource/setup.ico</file>
         <file>resource/add.png</file>
         <file>resource/last.png</file>
         <file>resource/next.png</file>
@@ -21,6 +20,8 @@
         <file>resource/findmusic.png</file>
         <file>resource/findmusic_hover.png</file>
         <file>resource/favourite.png</file>
+        <file>resource/search.png</file>
+        <file>resource/setup.ico</file>
     </qresource>
     <qresource lang="qss" prefix="/stylesheet">
         <file>resource/darkstyle.qss</file>

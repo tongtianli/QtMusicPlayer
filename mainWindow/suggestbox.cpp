@@ -72,10 +72,10 @@ void SuggestBox::doneSelection()
     if (item) {
         editor->setText(item->text());
         QJsonObject object = arrayTemp.at(curIndex).toObject();
+        int id = object["id"].toInt();
         QUrl url = QUrl(object["url"].toString());
         QString name = object["name"].toString();
         QString singer = object["singer"].toString();
-        int id = object["id"].toInt();
         QUrl pic = QUrl(object["pic"].toString());
         QUrl lrc = QUrl(object["lrc"].toString());
         int durInt = object["time"].toInt();

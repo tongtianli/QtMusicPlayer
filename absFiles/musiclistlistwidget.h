@@ -27,7 +27,7 @@ public:
     void deleteList(QString name);
     QHash<QString,QWidget*> name_widgetHash;
 
-    const int USERLIST_STARTINDEX = 5;
+    const int USERLIST_STARTINDEX = 3;//我喜欢的音乐的index
 
 public slots:
     void addUserMusiclist(QString listname);

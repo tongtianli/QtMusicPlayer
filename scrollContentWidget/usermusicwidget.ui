@@ -16,6 +16,31 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+
+	border: none;
+	border-radius: 5px;
+	min-width: 22px;
+	min-height: 22px;	
+}
+
+QPushButton:enabled {
+        background: rgb(81, 81, 81);
+        	color: rgb(188, 188, 188);
+}
+QPushButton:!enabled {
+        background: rgb(100, 100, 100);
+        color: rgb(200, 200, 200);
+}
+QPushButton:enabled:hover{
+        background: rgb(85, 85, 85);
+}
+QPushButton:enabled:pressed{
+        background: rgb(80, 80, 80);
+}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1">
    <property name="leftMargin">
     <number>0</number>
@@ -145,12 +170,31 @@
            <property name="text">
             <string>播放全部</string>
            </property>
+           <property name="icon">
+            <iconset resource="scrollcontentwidget.qrc">
+             <normaloff>:/image/resource/playAll.png</normaloff>:/image/resource/playAll.png</iconset>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="downloadAllBtn">
            <property name="text">
             <string>下载全部</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../absFiles/absfiles.qrc">
+             <normaloff>:/image/resource/downloadAll.png</normaloff>:/image/resource/downloadAll.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>收藏歌单</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../absFiles/absfiles.qrc">
+             <normaloff>:/image/resource/book.png</normaloff>:/image/resource/book.png</iconset>
            </property>
           </widget>
          </item>
@@ -210,6 +254,9 @@
    <header location="global">musictablewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../absFiles/absfiles.qrc"/>
+  <include location="scrollcontentwidget.qrc"/>
+ </resources>
  <connections/>
 </ui>
