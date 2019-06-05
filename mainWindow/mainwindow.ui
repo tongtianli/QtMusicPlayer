@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>TTPlayer</string>
+   <string>GuGu-Player</string>
   </property>
   <property name="windowIcon">
    <iconset resource="mainwindow.qrc">
@@ -481,8 +481,8 @@ QListWidget::item:!enabled{
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>548</width>
-         <height>508</height>
+         <width>550</width>
+         <height>510</height>
         </rect>
        </property>
        <property name="sizePolicy">

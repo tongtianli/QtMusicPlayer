@@ -170,7 +170,6 @@ void MainWindow::setPlaylistBtnTextbycurSize(int size){
 
 void MainWindow::aboutToExit()
 {
-    qDebug()<<"about to exit";
     close();
 }
 
